@@ -1,4 +1,4 @@
-import { render } from '../render.js';
+import { render, RenderPosition } from '../render.js';
 import SortView from '../view/sort-view.js';
 import TripListView from '../view/trip-list-view.js';
 import TripItemView from '../view/trip-item-view.js';
@@ -14,7 +14,7 @@ export default class TripPresenter {
 
     render(new SortView(), tripContainer);
     render(this.tripList, tripContainer);
-    render(this.tripItem, this.tripList.getElement());
+    render(this.tripItem, this.tripList.getElement(), RenderPosition.AFTERBEGIN);
     render(new EventEditView(), this.tripItem.getElement());
 
     for (let i = 0; i < 3; i++) {
