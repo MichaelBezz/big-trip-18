@@ -1,7 +1,5 @@
-import { createElement } from '../render.js';
-
-const createEventTemplate = () => (
-  `<div class="event">
+export default () => /*html*/`
+  <div class="event">
     <time class="event__date" datetime="2019-03-18">MAR 18</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
@@ -28,23 +26,5 @@ const createEventTemplate = () => (
     <button class="event__rollup-btn" type="button">
       <span class="visually-hidden">Open event</span>
     </button>
-  </div>`
-);
-
-export default class EventView {
-  getTemplate() {
-    return createEventTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
-}
+  </div>
+`;
