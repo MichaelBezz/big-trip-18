@@ -1,23 +1,22 @@
-import SortView from '../view/trip-sort-view.js';
-import RouteView from '../view/trip-route-view.js';
-import PointView from '../view/trip-point-view.js';
-import PointEditorView from '../view/trip-point-editor-view.js';
+import TripRouteView from '../view/trip-route-view.js';
+import TripPointView from '../view/trip-point-view.js';
+import TripPointEditorView from '../view/trip-point-editor-view.js';
 
 const MAX_POINT = 3;
 
 /** Управление маршрутом путешествия */
 export default class TripRoutePresenter {
-  tripRoute = new RouteView();
+  tripRouteView = new TripRouteView();
 
   init(сontainer) {
     this.сontainer = сontainer;
 
-    сontainer.append(new SortView);
-    сontainer.append(this.tripRoute);
-    this.tripRoute.append(new PointEditorView);
+    this.tripRouteView.append(new TripPointEditorView);
 
     for (let i = 0; i < MAX_POINT; i++) {
-      this.tripRoute.append(new PointView);
+      this.tripRouteView.append(new TripPointView);
     }
+
+    сontainer.append(this.tripRouteView);
   }
 }
