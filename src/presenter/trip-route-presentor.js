@@ -1,5 +1,6 @@
 import TripRouteView from '../view/trip-route-view.js';
 import TripPointView from '../view/trip-point-view.js';
+import TripPointCreatorView from '../view/trip-point-creator-view.js';
 import TripPointEditorView from '../view/trip-point-editor-view.js';
 
 const MAX_POINT = 3;
@@ -16,6 +17,8 @@ export default class TripRoutePresenter {
     for (let i = 0; i < MAX_POINT; i++) {
       this.tripRouteView.append(new TripPointView);
     }
+
+    this.tripRouteView.append(new TripPointCreatorView);
 
     сontainer.append(this.tripRouteView);
   }
