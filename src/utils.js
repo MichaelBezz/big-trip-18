@@ -6,4 +6,10 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(result);
 };
 
-export { getRandomInteger };
+/** Получает случайный элемент из массива данных */
+const getRandomElement = (elements) => {
+  const randomIndex = getRandomInteger(0, elements.length - 1);
+  return elements[randomIndex];
+};
+
+export { getRandomInteger, getRandomElement };

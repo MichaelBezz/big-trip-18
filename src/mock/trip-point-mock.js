@@ -1,8 +1,8 @@
-import { getRandomInteger } from '../utils.js';
+import { getRandomElement } from '../utils.js';
 
-/** Создает случайный тип события на маршруте */
+/** Генерирует случайный тип события на маршруте */
 const generatePointType = () => {
-  const pointType = [
+  const pointTypes = [
     'taxi',
     'bus',
     'train',
@@ -14,12 +14,10 @@ const generatePointType = () => {
     'restaurant'
   ];
 
-  const randomIndex = getRandomInteger(0, pointType.length - 1);
-
-  return pointType[randomIndex];
+  return getRandomElement(pointTypes);
 };
 
-/** Создает данные для события на маршруте путешествия */
+/** Генерирует данные для события на маршруте путешествия */
 const generatePoint = () => ({
   type: generatePointType(),
   destination: '$Destination.id$',
