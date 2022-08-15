@@ -1,4 +1,4 @@
-import { generatePoint } from '../mock/trip-point-mock.js';
+import { generatePoint } from '../mock/route-mock.js';
 
 /** Получает данные для события на маршруте путешествия */
 export default class TripPointModel {

@@ -1,7 +1,7 @@
 import BaseView from './base-view.js';
 
 /** Маршрут путешествия */
-export default class TripRouteView extends BaseView {
+export default class RouteView extends BaseView {
   constructor() {
     super();
 
@@ -13,4 +13,4 @@ export default class TripRouteView extends BaseView {
   }
 }
 
-customElements.define('trip-route', TripRouteView);
+customElements.define('trip-route', RouteView);

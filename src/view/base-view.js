@@ -1,8 +1,8 @@
 /** Базовое представление */
 export default class BaseView extends HTMLElement {
-  constructor() {
+  constructor(...args) {
     super();
-    this.insertAdjacentHTML(this.adjacentHtmlPosition, this.createAdjacentHtml(...arguments));
+    this.insertAdjacentHTML(this.adjacentHtmlPosition, this.createAdjacentHtml(...args));
   }
 
   /** Задаёт позицию дополнительной html-разметки */
