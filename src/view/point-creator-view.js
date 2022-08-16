@@ -5,7 +5,7 @@ import createPointCreatorTemplate from './point-creator-template.js';
 export default class PointCreatorView extends BaseView {
   /** @override */
   createAdjacentHtml() {
-    return createPointCreatorTemplate();
+    return createPointCreatorTemplate(...arguments);
   }
 }
 

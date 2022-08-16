@@ -1,8 +1,8 @@
 /** Базовое представление */
 export default class BaseView extends HTMLElement {
-  constructor(...args) {
+  constructor() {
     super();
-    this.insertAdjacentHTML(this.adjacentHtmlPosition, this.createAdjacentHtml(...args));
+    this.insertAdjacentHTML(this.adjacentHtmlPosition, this.createAdjacentHtml(...arguments));
   }
 
   /** Задаёт позицию дополнительной html-разметки */
@@ -13,5 +13,20 @@ export default class BaseView extends HTMLElement {
   /** Создаст дополнительную html-разметку */
   createAdjacentHtml() {
     return '';
+  }
+
+  /**
+   * @param {string} selector
+   * @param {string | Object} properties
+   */
+  set(selector, properties) {
+    const view = this.querySelector(selector);
+
+    if (typeof properties === 'string') {
+      properties = {textContent: properties};
+    }
+    Object.assign(view, properties);
+
+    return this;
   }
 }

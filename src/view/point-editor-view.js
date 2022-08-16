@@ -5,7 +5,7 @@ import createPointEditorTemplate from './point-editor-template.js';
 export default class PointEditorView extends BaseView {
   /** @override */
   createAdjacentHtml() {
-    return createPointEditorTemplate();
+    return createPointEditorTemplate(...arguments);
   }
 }
 

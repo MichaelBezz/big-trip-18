@@ -5,7 +5,7 @@ import createFilterTemplate from './filter-template.js';
 export default class FilterView extends BaseView {
   /** @override */
   createAdjacentHtml() {
-    return createFilterTemplate();
+    return createFilterTemplate(...arguments);
   }
 }
 

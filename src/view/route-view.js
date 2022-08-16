@@ -6,10 +6,16 @@ export default class RouteView extends BaseView {
     super();
 
     this.classList.add('trip-events__list');
+  }
 
-    [...this.children].forEach((view) => {
+  append(...views) {
+    views.forEach((view) => {
       view.classList.add('trip-events__item');
     });
+
+    super.append(...views);
+
+    return this;
   }
 }
 
