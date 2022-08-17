@@ -19,6 +19,26 @@ const getRandomElement = (elements) => {
 };
 
 /**
+ * Возвращает случайный id
+ * @param {number} min
+ * @param {number} max
+ */
+const getRandomId = (min, max) => {
+  const previousValues = [];
+
+  return () => {
+    let currentValue = getRandomInteger(min, max);
+
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
+/**
  * Возврашает дату в формате 'MMM YY'
  * @param {string} isoDate
  * @return {string}
@@ -32,4 +52,4 @@ const formatDate = (isoDate) => dayjs(isoDate).format('MMM YY');
  */
 const formatTime = (isoDate) => dayjs(isoDate).format('HH:mm');
 
-export {getRandomInteger, getRandomElement, formatDate, formatTime};
+export {getRandomInteger, getRandomElement, getRandomId, formatDate, formatTime};

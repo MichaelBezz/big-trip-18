@@ -6,7 +6,7 @@ export default class PointView extends BaseView {
 
   /** @override */
   createAdjacentHtml() {
-    return createPointTemplate(...arguments);
+    return createPointTemplate();
   }
 
   /**
@@ -89,6 +89,18 @@ export default class PointView extends BaseView {
     const pricePoint = this.querySelector('.event__price-value');
 
     Object.assign(pricePoint, {textContent: price});
+
+    return this;
+  }
+
+  /**
+   * Добавляет опции
+   * @param {HTMLElement} offer
+   */
+  appendOffer(offer) {
+    const offerListPoint = this.querySelector('.event__selected-offers');
+
+    offerListPoint.append(offer);
 
     return this;
   }
