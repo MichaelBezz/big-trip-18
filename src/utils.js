@@ -19,14 +19,14 @@ const getRandomElement = (elements) => {
 };
 
 /**
- * Возврашает дату в формате MMM YY
+ * Возврашает дату в формате 'MMM YY'
  * @param {string} isoDate
  * @return {string}
  */
 const formatDate = (isoDate) => dayjs(isoDate).format('MMM YY');
 
 /**
- * Возвращает время в формате HH:mm
+ * Возвращает время в формате 'HH:mm'
  * @param {string} isoDate
  * @return {string}
  */

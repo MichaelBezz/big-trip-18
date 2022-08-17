@@ -24,15 +24,22 @@ export default class RoutePresenter {
    * @param {AggregatedPoint} point
    */
   createPointView(point) {
-    const startDate = point['date_from'];
-    const endDate = point['date_to'];
+    const {
+      type,
+      destination,
+      dateFrom,
+      dateTo,
+      basePrice
+    } = point;
+
+    const title = `${type} ${destination.name}`;
 
     return new PointView()
-      .setDate(formatDate(startDate), startDate)
-      .setIcon(point.type)
-      .setTitle(point.destination.name)
-      .setStartTime(formatTime(startDate), startDate)
-      .setEndTime(formatTime(endDate), endDate)
-      .setPrice(point['base_price']);
+      .setDate(formatDate(dateFrom), dateFrom)
+      .setIcon(type)
+      .setTitle(title)
+      .setStartTime(formatTime(dateFrom), dateFrom)
+      .setEndTime(formatTime(dateTo), dateTo)
+      .setPrice(basePrice);
   }
 }

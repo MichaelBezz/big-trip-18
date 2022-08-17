@@ -15,10 +15,14 @@ export default class PointView extends BaseView {
    * @param {string} isoDate
    */
   setDate(date, isoDate) {
-    return this.set('.event__date', {
+    const datePoint = this.querySelector('.event__date');
+
+    Object.assign(datePoint, {
       dateTime: isoDate,
       textContent: date
     });
+
+    return this;
   }
 
   /**
@@ -26,7 +30,11 @@ export default class PointView extends BaseView {
    * @param {string} type
    */
   setIcon(type) {
-    return this.set('.event__type-icon', {src: `img/icons/${type}.png`});
+    const iconPoint = this.querySelector('.event__type-icon');
+
+    Object.assign(iconPoint, {src: `img/icons/${type}.png`});
+
+    return this;
   }
 
   /**
@@ -34,7 +42,11 @@ export default class PointView extends BaseView {
    * @param {string} title
    */
   setTitle(title) {
-    return this.set('.event__title', title);
+    const titlePoint = this.querySelector('.event__title');
+
+    Object.assign(titlePoint, {textContent: title});
+
+    return this;
   }
 
   /**
@@ -43,10 +55,14 @@ export default class PointView extends BaseView {
    * @param {string} isoDate
    */
   setStartTime(time, isoDate) {
-    return this.set('.event__start-time', {
+    const startTimePoint = this.querySelector('.event__start-time');
+
+    Object.assign(startTimePoint, {
       textContent: time,
       dateTime: isoDate
     });
+
+    return this;
   }
 
   /**
@@ -55,10 +71,14 @@ export default class PointView extends BaseView {
    * @param {string} isoDate
    */
   setEndTime(time, isoDate) {
-    return this.set('.event__end-time', {
+    const endTimePoint = this.querySelector('.event__end-time');
+
+    Object.assign(endTimePoint, {
       textContent: time,
       dateTime: isoDate
     });
+
+    return this;
   }
 
   /**
@@ -66,7 +86,11 @@ export default class PointView extends BaseView {
    * @param {number} price
    */
   setPrice(price) {
-    return this.set('.event__price-value', {textContent: price});
+    const pricePoint = this.querySelector('.event__price-value');
+
+    Object.assign(pricePoint, {textContent: price});
+
+    return this;
   }
 }
 
