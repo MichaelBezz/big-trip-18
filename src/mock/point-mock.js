@@ -9,27 +9,34 @@ const PointPrise = {
 };
 
 const PointDate = {
-  MIN_HOUR: 1,
-  MAX_HOUR: 7,
-  MIN_DAY: 1,
-  MAX_DAY: 7
+  MIN_GAP: 1,
+  MINUTE_GAP: 59,
+  HOUR_GAP: 3,
+  DAY_GAP: 14
 };
 
-const createDate = () => {
-  const hoursGap = getRandomInteger(PointDate.MIN_HOUR, PointDate.MAX_HOUR);
-  const daysGap = getRandomInteger(PointDate.MIN_DAY, PointDate.MAX_DAY);
+const generateType = () => getRandomElement(POINT_TYPES);
 
-  const getDate = dayjs().add(daysGap, 'day').toDate();
+const generatePrice = () => getRandomInteger(PointPrise.MIN, PointPrise.MAX) * PointPrise.MULTIPLIER;
 
-  return ({
-    from: getDate,
-    to: getDate
-  });
-};
+const generateRandomDate = () => ({
+  minute: getRandomInteger(PointDate.MIN_GAP, PointDate.MINUTE_GAP),
+  hour: getRandomInteger(PointDate.MIN_GAP, PointDate.HOUR_GAP),
+  day: getRandomInteger(PointDate.MIN_GAP, PointDate.DAY_GAP)
+});
 
-console.log(createDate());
+const generateDateFrom = ({minute, hour, day}) =>
+  dayjs()
+    .add(minute, 'minute')
+    .add(hour, 'hour')
+    .add(day, 'day')
+    .format();
 
-const getPrice = () => getRandomInteger(PointPrise.MIN, PointPrise.MAX) * PointPrise.MULTIPLIER;
+const generateDateTo = (dateFrom, {minute, hour}) =>
+  dayjs(dateFrom)
+    .add(minute, 'minute')
+    .add(hour, 'hour')
+    .format();
 
 /**
  * Генерирует событие на маршруте
@@ -37,17 +44,27 @@ const getPrice = () => getRandomInteger(PointPrise.MIN, PointPrise.MAX) * PointP
  * @return {Point}
  */
 const generatePoint = (id) => {
-  const date = createDate();
+  const randomDate = generateRandomDate();
+  const dateFrom = generateDateFrom(randomDate);
+  const dateTo = generateDateTo(dateFrom, randomDate);
 
-  return({
+  return ({
     id,
-    type: getRandomElement(POINT_TYPES),
+    type: generateType(),
     destination: id,
-    dateFrom: date.from,
-    dateTo: date.to,
-    basePrice: getPrice(),
+    dateFrom,
+    dateTo,
+    basePrice: generatePrice(),
     offers: [id]
   });
 };
 
-export {generatePoint};
+/**
+ * Генерирует список событий на маршруте
+ * @param {number} length
+ * @returns {Point[]}
+ */
+const generatePoints = (length = 10) =>
+  Array.from({length}, (_item, index) => generatePoint(index + 1));
+
+export {generatePoints};

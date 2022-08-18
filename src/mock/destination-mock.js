@@ -23,21 +23,26 @@ const PictureQuantity = {
   MAX: 5
 };
 
+const generateName = () => getRandomElement(POINT_NAMES);
+const generateDescription = () => getRandomElement(POINT_DESCRIPTIONS);
+const generatePictureSrc = () => `http://picsum.photos/300/200?r=${Math.random()}`;
+const generatePictureDescription = () => getRandomElement(POINT_PICTURE_DESCRIPTIONS);
+
 /**
- * Создает список с картинками
+ * Генерирует список с картинками
  * @param {number} min
  * @param {number} max
  * @return {Picture[]}
  */
-const createPictures = (min, max) => {
-  const pictureQuantity = getRandomInteger(min, max);
+const generatePictures = () => {
+  const pictureQuantity = getRandomInteger(PictureQuantity.MIN, PictureQuantity.MAX);
 
-  const getPicture = () => ({
-    src: `http://picsum.photos/300/200?r=${Math.random()}`,
-    description: getRandomElement(POINT_PICTURE_DESCRIPTIONS)
+  const generatePicture = () => ({
+    src: generatePictureSrc(),
+    description: generatePictureDescription()
   });
 
-  return Array.from({length: pictureQuantity}, getPicture);
+  return Array.from({length: pictureQuantity}, generatePicture);
 };
 
 /**
@@ -47,9 +52,17 @@ const createPictures = (min, max) => {
  */
 const generateDestination = (id) => ({
   id,
-  name: getRandomElement(POINT_NAMES),
-  description: getRandomElement(POINT_DESCRIPTIONS),
-  pictures: createPictures(PictureQuantity.MIN, PictureQuantity.MAX)
+  name: generateName(),
+  description: generateDescription(),
+  pictures: generatePictures()
 });
 
-export {generateDestination};
+/**
+ * Генерирует список пунктов назначения
+ * @param {number} length
+ * @returns {Destination[]}
+ */
+const generateDestinations = (length = 10) =>
+  Array.from({length}, (_item, index) => generateDestination(index + 1));
+
+export {generateDestinations};

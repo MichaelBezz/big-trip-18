@@ -16,39 +16,43 @@ const OfferPrise = {
 
 const OfferQuantity = {
   MIN: 1,
-  MAX: 3
+  MAX: 5
 };
 
+const generateTitle = () => getRandomElement(OFFER_TITLES);
+const generatePrice = () => getRandomInteger(OfferPrise.MIN, OfferPrise.MAX);
+
 /**
- * Создает дополнительную опцию
+ * Генерирует дополнительную опцию
  * @param {number} id
  * @return {Offer}
  */
-const createOffer = (id) => ({
+const generateOffer = (id) => ({
   id,
-  title: getRandomElement(OFFER_TITLES),
-  price: getRandomInteger(OfferPrise.MIN, OfferPrise.MAX)
+  title: generateTitle(),
+  price: generatePrice()
 });
 
 /**
  * Генерирует список дополнительных опций
+ * @param {number} min
+ * @param {number} max
+ * @returns {Offer[]}
+ */
+const generateOffers = () => {
+  const offerQuantity = getRandomInteger(OfferQuantity.MIN, OfferQuantity.MAX);
+
+  return Array.from({length: offerQuantity}, (_item, index) => generateOffer(index + 1));
+};
+
+/**
+ * Генерирует группы дополнительных опций
  * @return {OfferGroup}
  */
-const generateOfferGroups = (id) => {
-  const offerGroups = [];
-
-  for (const type of POINT_TYPES) {
-    const offerQuantity = getRandomInteger(OfferQuantity.MIN, OfferQuantity.MAX);
-
-    const group = {
-      type,
-      offers: Array.from({length: offerQuantity}, () => createOffer(id))
-    };
-
-    offerGroups.push(group);
-  }
-
-  return offerGroups;
-};
+const generateOfferGroups = () =>
+  POINT_TYPES.map((type) => ({
+    type,
+    offers: generateOffers()
+  }));
 
 export {generateOfferGroups};
