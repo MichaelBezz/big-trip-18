@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 /**
- * Получает случайное положительное число
+ * Получит случайное положительное число
  * @param {number} a
  * @param {number} b
  */
@@ -13,7 +13,7 @@ const getRandomInteger = (a = 0, b = 1) => {
 };
 
 /**
- * Возвращает уникальное случайное число
+ * Получит уникальное случайное число
  * @param {number} min
  * @param {number} max
  */
@@ -32,21 +32,21 @@ const getRandomUniqueInteger = (min, max) => {
   };
 };
 
-/** Получает случайный элемент из массива данных */
+/** Получит случайный элемент из массива данных */
 const getRandomElement = (elements) => {
   const randomIndex = getRandomInteger(0, elements.length - 1);
   return elements[randomIndex];
 };
 
 /**
- * Возврашает дату в формате 'MMM D'
+ * Вернет дату в формате 'MMM D'
  * @param {string} isoDate
  * @return {string}
  */
 const formatDate = (isoDate) => dayjs(isoDate).format('MMM D');
 
 /**
- * Возвращает время в формате 'HH:mm'
+ * Вернет время в формате 'HH:mm'
  * @param {string} isoDate
  * @return {string}
  */

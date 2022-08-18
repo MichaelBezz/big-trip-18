@@ -39,7 +39,7 @@ const generateDateTo = (dateFrom, {minute, hour}) =>
     .format();
 
 /**
- * Генерирует событие на маршруте
+ * Сгенерирует событие на маршруте
  * @param {number} id
  * @return {Point}
  */
@@ -60,7 +60,7 @@ const generatePoint = (id) => {
 };
 
 /**
- * Генерирует список событий на маршруте
+ * Сгенерирует список событий на маршруте
  * @param {number} length
  * @returns {Point[]}
  */

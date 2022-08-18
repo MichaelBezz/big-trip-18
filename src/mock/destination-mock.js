@@ -29,7 +29,7 @@ const generatePictureSrc = () => `http://picsum.photos/300/200?r=${Math.random()
 const generatePictureDescription = () => getRandomElement(POINT_PICTURE_DESCRIPTIONS);
 
 /**
- * Генерирует список с картинками
+ * Сгенерирует список с картинками
  * @param {number} min
  * @param {number} max
  * @return {Picture[]}
@@ -46,7 +46,7 @@ const generatePictures = () => {
 };
 
 /**
- * Генерирует пункт назначения
+ * Сгенерирует пункт назначения
  * @param {number} id
  * @return {Destination}
  */
@@ -58,7 +58,7 @@ const generateDestination = (id) => ({
 });
 
 /**
- * Генерирует список пунктов назначения
+ * Сгенерирует список пунктов назначения
  * @param {number} length
  * @returns {Destination[]}
  */

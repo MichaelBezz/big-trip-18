@@ -1,6 +1,6 @@
 import BaseView from './base-view.js';
 
-/** Маршрут путешествия */
+/** Представление маршрута путешествия */
 export default class RouteView extends BaseView {
   constructor() {
     super();

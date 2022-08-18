@@ -1,8 +1,15 @@
 import BaseView from './base-view.js';
 import createPointTemplate from './point-template.js';
 
-/** Точка на маршруте */
+/** Представление точки на маршруте */
 export default class PointView extends BaseView {
+  constructor() {
+    super();
+
+    this.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      this.dispatchEvent(new CustomEvent('expand'));
+    });
+  }
 
   /** @override */
   createAdjacentHtml() {
@@ -10,7 +17,7 @@ export default class PointView extends BaseView {
   }
 
   /**
-   * Устанавливает дату
+   * Установит дату
    * @param {string} date
    * @param {string} isoDate
    */
@@ -26,8 +33,8 @@ export default class PointView extends BaseView {
   }
 
   /**
-   * Устанавливает иконку
-   * @param {string} type
+   * Установит иконку
+   * @param {OfferType} type
    */
   setIcon(type) {
     const iconPoint = this.querySelector('.event__type-icon');
@@ -38,7 +45,7 @@ export default class PointView extends BaseView {
   }
 
   /**
-   * Устанавливает заголовок
+   * Установит заголовок
    * @param {string} title
    */
   setTitle(title) {
@@ -50,7 +57,7 @@ export default class PointView extends BaseView {
   }
 
   /**
-   * Устанавливает время начала
+   * Установит время начала
    * @param {string} time
    * @param {string} isoDate
    */
@@ -66,7 +73,7 @@ export default class PointView extends BaseView {
   }
 
   /**
-   * Устанавливает время окончания
+   * Установит время окончания
    * @param {string} time
    * @param {string} isoDate
    */
@@ -82,7 +89,7 @@ export default class PointView extends BaseView {
   }
 
   /**
-   * Устанавливает цену
+   * Установит цену
    * @param {number} price
    */
   setPrice(price) {
@@ -94,13 +101,11 @@ export default class PointView extends BaseView {
   }
 
   /**
-   * Добавляет опции
-   * @param {HTMLElement} offer
+   * Заменит дополнительные опции
+   * @param {...HTMLElement} offerViews
    */
-  appendOffer(offer) {
-    const offerListPoint = this.querySelector('.event__selected-offers');
-
-    offerListPoint.append(offer);
+  replaceOffers(...offerViews) {
+    this.querySelector('.event__selected-offers').replaceChildren(...offerViews);
 
     return this;
   }

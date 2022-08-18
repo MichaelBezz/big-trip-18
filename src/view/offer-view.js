@@ -1,7 +1,7 @@
 import BaseView from './base-view.js';
 import createOfferTemplate from './offer-template.js';
 
-/** Дополнительная опция */
+/** Представление дополнительной опции */
 export default class OfferView extends BaseView {
   constructor() {
     super();
@@ -14,7 +14,7 @@ export default class OfferView extends BaseView {
   }
 
   /**
-   * Устанавливает заголовок
+   * Установит заголовок
    * @param {string} title
    */
   setTitle(title) {
@@ -26,7 +26,7 @@ export default class OfferView extends BaseView {
   }
 
   /**
-   * Устанавливает цену
+   * Установит цену
    * @param {number} price
    */
   setPrice(price) {

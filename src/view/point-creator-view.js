@@ -1,7 +1,7 @@
 import BaseView from './base-view.js';
 import createPointCreatorTemplate from './point-creator-template.js';
 
-/** Форма создания новой точки на маршруте */
+/** Представление формы создания новой точки */
 export default class PointCreatorView extends BaseView {
   /** @override */
   createAdjacentHtml() {

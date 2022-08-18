@@ -6,10 +6,10 @@ const points = generatePoints();
 const destinations = generateDestinations();
 const offerGroups = generateOfferGroups();
 
-/** Получает данные для маршрута */
+/** Модель маршрута */
 export default class RouteModel {
   /**
-   * Возвращает точки маршрута
+   * Получит точки маршрута
    * @return {AggregatedPoint[]}
    */
   get() {
@@ -19,4 +19,11 @@ export default class RouteModel {
       offers: offerGroups.find((group) => group.type === point.type).offers
     }));
   }
+
+  //TODO метод для получения доступных офферов
+  /**
+   * Получит доступные опции для определенного типа точки
+   * @param {OfferGroup} type
+   */
+  // getAvailableOffers(type) {}
 }
