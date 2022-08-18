@@ -16,7 +16,7 @@ const OfferPrise = {
 
 const OfferQuantity = {
   MIN: 1,
-  MAX: 5
+  MAX: 3
 };
 
 /**
@@ -34,15 +34,15 @@ const createOffer = (id) => ({
  * Генерирует список дополнительных опций
  * @return {OfferGroup}
  */
-const generateOfferGroup = (id) => {
+const generateOfferGroups = (id) => {
   const offerGroups = [];
 
   for (const type of POINT_TYPES) {
-    const getOfferQuantity = getRandomInteger(OfferQuantity.MIN, OfferQuantity.MAX);
+    const offerQuantity = getRandomInteger(OfferQuantity.MIN, OfferQuantity.MAX);
 
     const group = {
       type,
-      offers: Array.from({length: getOfferQuantity}, () => createOffer(id))
+      offers: Array.from({length: offerQuantity}, () => createOffer(id))
     };
 
     offerGroups.push(group);
@@ -51,4 +51,4 @@ const generateOfferGroup = (id) => {
   return offerGroups;
 };
 
-export {generateOfferGroup};
+export {generateOfferGroups};

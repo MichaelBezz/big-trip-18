@@ -1,3 +1,5 @@
+import {getRandomUniqueInteger} from '../utils.js';
+
 const POINT_TYPES = [
   'taxi',
   'bus',
@@ -10,4 +12,11 @@ const POINT_TYPES = [
   'restaurant'
 ];
 
-export {POINT_TYPES};
+const PointId = {
+  MIN: 1,
+  MAX: 5
+};
+
+const generateId = getRandomUniqueInteger(PointId.MIN, PointId.MAX);
+
+export {POINT_TYPES, generateId};

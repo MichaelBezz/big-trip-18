@@ -1,10 +1,6 @@
-import {getRandomInteger, getRandomUniqueInteger, getRandomElement} from '../utils.js';
+import {getRandomInteger, getRandomElement} from '../utils.js';
 import {POINT_TYPES} from './const-mock.js';
-
-const PointId = {
-  MIN: 1,
-  MAX: 5
-};
+import dayjs from 'dayjs';
 
 const PointPrise = {
   MIN: 10,
@@ -12,7 +8,26 @@ const PointPrise = {
   MULTIPLIER: 10
 };
 
-const generateId = getRandomUniqueInteger(PointId.MIN, PointId.MAX);
+const PointDate = {
+  MIN_HOUR: 1,
+  MAX_HOUR: 7,
+  MIN_DAY: 1,
+  MAX_DAY: 7
+};
+
+const createDate = () => {
+  const hoursGap = getRandomInteger(PointDate.MIN_HOUR, PointDate.MAX_HOUR);
+  const daysGap = getRandomInteger(PointDate.MIN_DAY, PointDate.MAX_DAY);
+
+  const getDate = dayjs().add(daysGap, 'day').toDate();
+
+  return ({
+    from: getDate,
+    to: getDate
+  });
+};
+
+console.log(createDate());
 
 const getPrice = () => getRandomInteger(PointPrise.MIN, PointPrise.MAX) * PointPrise.MULTIPLIER;
 
@@ -21,14 +36,18 @@ const getPrice = () => getRandomInteger(PointPrise.MIN, PointPrise.MAX) * PointP
  * @param {number} id
  * @return {Point}
  */
-const generatePoint = (id) => ({
-  id,
-  type: getRandomElement(POINT_TYPES),
-  destination: id,
-  dateFrom: '2019-07-10T22:55:56.845Z',
-  dateTo: '2019-07-11T11:22:13.375Z',
-  basePrice: getPrice(),
-  offers: [id]
-});
+const generatePoint = (id) => {
+  const date = createDate();
+
+  return({
+    id,
+    type: getRandomElement(POINT_TYPES),
+    destination: id,
+    dateFrom: date.from,
+    dateTo: date.to,
+    basePrice: getPrice(),
+    offers: [id]
+  });
+};
 
 export {generatePoint};

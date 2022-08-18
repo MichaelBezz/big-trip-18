@@ -1,6 +1,6 @@
 import {generatePoint} from '../mock/point-mock.js';
 import {generateDestination} from '../mock/destination-mock.js';
-import {generateOfferGroup} from '../mock/offer-mock.js';
+import {generateOfferGroups} from '../mock/offer-mock.js';
 
 /** Получает данные для маршрута */
 export default class RouteModel {
@@ -11,11 +11,11 @@ export default class RouteModel {
   get() {
     const points = Array.from({length: 5}, generatePoint);
     const destinations = Array.from({length: 5}, generateDestination);
-    const offerGroups = Array.from({length: 1}, generateOfferGroup);
+    const offerGroups = generateOfferGroups();
 
-    console.log(...points);
-    console.log(...destinations);
-    console.log(...offerGroups);
+    // console.log(...points);
+    // console.log(...destinations);
+    // console.log(...offerGroups);
 
     return points.map((point) => ({
       ...point,
