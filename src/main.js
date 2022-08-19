@@ -1,10 +1,12 @@
-import FilterView from './view/trip-filter-view.js';
-import TripRoutePresenter from './presenter/trip-route-presentor.js';
+import FilterView from './view/filter-view.js';
+import SortView from './view/sort-view.js';
+import RoutePresenter from './presenter/route-presentor.js';
 
 const filterContainer = document.querySelector('.trip-controls__filters');
 const routeContainer = document.querySelector('.trip-events');
 
 filterContainer.append(new FilterView);
+routeContainer.append(new SortView);
 
-const tripRoutePresenter = new TripRoutePresenter();
-tripRoutePresenter.init(routeContainer);
+const routePresenter = new RoutePresenter();
+routePresenter.init(routeContainer);
