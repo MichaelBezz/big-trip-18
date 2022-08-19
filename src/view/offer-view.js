@@ -15,6 +15,29 @@ export default class OfferView extends BaseView {
   }
 
   /**
+   * Установит значения для input опции
+   * @param {string} name
+   * @param {boolean} isChecked
+   */
+  setOfferData(name, isChecked) {
+    const inputView = this.querySelector('.event__offer-checkbox');
+    const labelView = this.querySelector('.event__offer-checkbox');
+
+    const inputId = `event-offer-${name}-1`;
+    const inputName = `event-offer-${name}`;
+
+    Object.assign(inputView, {
+      id: inputId,
+      name: inputName,
+      checked: isChecked
+    });
+
+    Object.assign(labelView, {htmlFor: inputId});
+
+    return this;
+  }
+
+  /**
    * Установит заголовок
    * @param {string} title
    */
