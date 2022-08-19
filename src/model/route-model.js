@@ -20,7 +20,6 @@ export default class RouteModel {
     }));
   }
 
-  //TODO метод для получения доступных офферов
   /**
    * Получит доступные опции для определенного типа точки
    * @param {OfferGroup} type

@@ -3,9 +3,10 @@ import createFilterTemplate from './filter-template.js';
 
 /** Представление фильтра путешествий */
 export default class FilterView extends BaseView {
+
   /** @override */
   createAdjacentHtml() {
-    return createFilterTemplate(...arguments);
+    return createFilterTemplate();
   }
 }
 

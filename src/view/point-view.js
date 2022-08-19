@@ -22,9 +22,9 @@ export default class PointView extends BaseView {
    * @param {string} isoDate
    */
   setDate(date, isoDate) {
-    const datePoint = this.querySelector('.event__date');
+    const dateView = this.querySelector('.event__date');
 
-    Object.assign(datePoint, {
+    Object.assign(dateView, {
       dateTime: isoDate,
       textContent: date
     });
@@ -37,9 +37,9 @@ export default class PointView extends BaseView {
    * @param {OfferType} type
    */
   setIcon(type) {
-    const iconPoint = this.querySelector('.event__type-icon');
+    const iconView = this.querySelector('.event__type-icon');
 
-    Object.assign(iconPoint, {src: `img/icons/${type}.png`});
+    Object.assign(iconView, {src: `img/icons/${type}.png`});
 
     return this;
   }
@@ -49,9 +49,9 @@ export default class PointView extends BaseView {
    * @param {string} title
    */
   setTitle(title) {
-    const titlePoint = this.querySelector('.event__title');
+    const titleView = this.querySelector('.event__title');
 
-    Object.assign(titlePoint, {textContent: title});
+    Object.assign(titleView, {textContent: title});
 
     return this;
   }
@@ -62,9 +62,9 @@ export default class PointView extends BaseView {
    * @param {string} isoDate
    */
   setStartTime(time, isoDate) {
-    const startTimePoint = this.querySelector('.event__start-time');
+    const startTimeView = this.querySelector('.event__start-time');
 
-    Object.assign(startTimePoint, {
+    Object.assign(startTimeView, {
       dateTime: isoDate,
       textContent: time
     });
@@ -78,9 +78,9 @@ export default class PointView extends BaseView {
    * @param {string} isoDate
    */
   setEndTime(time, isoDate) {
-    const endTimePoint = this.querySelector('.event__end-time');
+    const endTimeView = this.querySelector('.event__end-time');
 
-    Object.assign(endTimePoint, {
+    Object.assign(endTimeView, {
       dateTime: isoDate,
       textContent: time
     });
@@ -93,9 +93,9 @@ export default class PointView extends BaseView {
    * @param {number} price
    */
   setPrice(price) {
-    const pricePoint = this.querySelector('.event__price-value');
+    const priceView = this.querySelector('.event__price-value');
 
-    Object.assign(pricePoint, {textContent: price});
+    Object.assign(priceView, {textContent: price});
 
     return this;
   }
@@ -105,7 +105,9 @@ export default class PointView extends BaseView {
    * @param {...HTMLElement} offerViews
    */
   replaceOffers(...offerViews) {
-    this.querySelector('.event__selected-offers').replaceChildren(...offerViews);
+    const offerListView = this.querySelector('.event__selected-offers');
+
+    offerListView.replaceChildren(...offerViews);
 
     return this;
   }

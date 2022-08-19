@@ -52,4 +52,11 @@ const formatDate = (isoDate) => dayjs(isoDate).format('MMM D');
  */
 const formatTime = (isoDate) => dayjs(isoDate).format('HH:mm');
 
-export {getRandomInteger, getRandomUniqueInteger, getRandomElement, formatDate, formatTime};
+/**
+ * Вернет дату и время в формате 'DD/MM/YY HH:mm'
+ * @param {string} isoDate
+ * @return {string}
+ */
+const formatDateWithTime = (isoDate) => dayjs(isoDate).format('DD/MM/YY HH:mm');
+
+export {getRandomInteger, getRandomUniqueInteger, getRandomElement, formatDate, formatTime, formatDateWithTime};

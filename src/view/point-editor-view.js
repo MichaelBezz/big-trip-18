@@ -15,7 +15,7 @@ export default class PointEditorView extends BaseView {
 
   /** @override */
   createAdjacentHtml() {
-    return createPointEditorTemplate(...arguments);
+    return createPointEditorTemplate();
   }
 
   /**
@@ -29,7 +29,7 @@ export default class PointEditorView extends BaseView {
   }
 
   /**
-   * @returns Откроет редактор точки
+   * @returns Откроет редактор точки (заменив на #linkedView)
    */
   open() {
     this.#linkedView.replaceWith(this);
@@ -40,7 +40,7 @@ export default class PointEditorView extends BaseView {
   }
 
   /**
-   * Закроет редактор точки
+   * Закроет редактор точки (заменив на #linkedView)
    */
   close() {
     this.replaceWith(this.#linkedView);
@@ -55,9 +55,69 @@ export default class PointEditorView extends BaseView {
    * @param {OfferType} type
    */
   setIcon(type) {
-    const iconPoint = this.querySelector('.event__type-icon');
+    const iconView = this.querySelector('.event__type-icon');
 
-    Object.assign(iconPoint, {src: `img/icons/${type}.png`});
+    Object.assign(iconView, {src: `img/icons/${type}.png`});
+
+    return this;
+  }
+
+  /**
+   * Установит тип
+   * @param {OfferType} type
+   */
+  setType(type) {
+    const typeView = this.querySelector('.event__type-output');
+
+    Object.assign(typeView, {textContent: type});
+
+    return this;
+  }
+
+  /**
+   * Установит пункт назначения
+   * @param {string} destination
+   */
+  setDestination(destination) {
+    const destinationView = this.querySelector('.event__input--destination');
+
+    Object.assign(destinationView, {value: destination});
+
+    return this;
+  }
+
+  /**
+   * Установит время начала
+   * @param {string} isoDate
+   */
+  setStartTime(isoDate) {
+    const startTimeView = this.querySelector('[name="event-start-time"]');
+
+    Object.assign(startTimeView, {value: isoDate});
+
+    return this;
+  }
+
+  /**
+   * Установит время окончания
+   * @param {string} isoDate
+   */
+  setEndTime(isoDate) {
+    const endTimeView = this.querySelector('[name="event-end-time"]');
+
+    Object.assign(endTimeView, {value: isoDate});
+
+    return this;
+  }
+
+  /**
+   * Установит цену
+   * @param {number} price
+   */
+  setPrice(price) {
+    const priceView = this.querySelector('.event__input--price');
+
+    Object.assign(priceView, {value: price});
 
     return this;
   }

@@ -1,16 +1,17 @@
 import BaseView from './base-view.js';
-import createOfferTemplate from './offer-template.js';
+import createPointOfferTemplate from './point-offer-template.js';
 
 /** Представление дополнительной опции */
-export default class OfferView extends BaseView {
+export default class PointOfferView extends BaseView {
   constructor() {
     super();
+
     this.classList.add('event__offer');
   }
 
   /** @override */
   createAdjacentHtml() {
-    return createOfferTemplate();
+    return createPointOfferTemplate();
   }
 
   /**
@@ -18,9 +19,9 @@ export default class OfferView extends BaseView {
    * @param {string} title
    */
   setTitle(title) {
-    const titleOffer = this.querySelector('.event__offer-title');
+    const titleView = this.querySelector('.event__offer-title');
 
-    Object.assign(titleOffer, {textContent: title});
+    Object.assign(titleView, {textContent: title});
 
     return this;
   }
@@ -30,12 +31,12 @@ export default class OfferView extends BaseView {
    * @param {number} price
    */
   setPrice(price) {
-    const priceOffer = this.querySelector('.event__offer-price');
+    const priceView = this.querySelector('.event__offer-price');
 
-    Object.assign(priceOffer, {textContent: price});
+    Object.assign(priceView, {textContent: price});
 
     return this;
   }
 }
 
-customElements.define('point-offer', OfferView);
+customElements.define('point-offer', PointOfferView);
