@@ -105,9 +105,9 @@ export default class PointView extends BaseView {
    * @param {...HTMLElement} offerViews
    */
   replaceOffers(...offerViews) {
-    const offerListView = this.querySelector('.event__selected-offers');
+    const selectedOffersView = this.querySelector('.event__selected-offers');
 
-    offerListView.replaceChildren(...offerViews);
+    selectedOffersView.replaceChildren(...offerViews);
 
     return this;
   }

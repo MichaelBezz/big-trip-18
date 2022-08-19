@@ -123,6 +123,18 @@ export default class PointEditorView extends BaseView {
   }
 
   /**
+   * Заменит дополнительные опции
+   * @param {...HTMLElement} offerViews
+   */
+  replaceOffers(...offerViews) {
+    const availableOffersView = this.querySelector('.event__available-offers');
+
+    availableOffersView.replaceChildren(...offerViews);
+
+    return this;
+  }
+
+  /**
    * Обработает событие по нажатию на клавишу Esc
    * @param {KeyboardEvent} event
    */

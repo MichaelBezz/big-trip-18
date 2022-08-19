@@ -2,6 +2,7 @@ import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
 import RouteModel from '../model/route-model.js';
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
+import OfferView from '../view/offer-view.js';
 import PointOfferView from '../view/point-offer-view.js';
 import PointEditorView from '../view/point-editor-view.js';
 
@@ -20,20 +21,9 @@ export default class RoutePresenter {
   init(routeContainer) {
     const points = this.model.get();
 
-    this.view.append(this.pointEditorView);
     this.view.append(...points.map(this.createPointView, this));
 
     routeContainer.append(this.view);
-  }
-
-  /**
-   * Создаст дополнительную опцию
-   * @param {Offer} offer
-   */
-  createOfferView(offer) {
-    return new PointOfferView()
-      .setTitle(offer.title)
-      .setPrice(offer.price);
   }
 
   /**
@@ -52,7 +42,7 @@ export default class RoutePresenter {
       .setStartTime(formatTime(point.dateFrom), point.dateFrom)
       .setEndTime(formatTime(point.dateTo), point.dateTo)
       .setPrice(point.basePrice)
-      .replaceOffers(...point.offers.map(this.createOfferView, this));
+      .replaceOffers(...point.offers.map(this.createSelectedOfferView, this));
 
     pointView.addEventListener('expand', () => {
       this.pointEditorView.close();
@@ -65,6 +55,20 @@ export default class RoutePresenter {
     return pointView;
   }
 
+  /**
+   * Создаст (выбранную) дополнительную опцию
+   * @param {Offer} offer
+   */
+  createSelectedOfferView(offer) {
+    return new PointOfferView()
+      .setTitle(offer.title)
+      .setPrice(offer.price);
+  }
+
+  /**
+   * Создаст форму редактирования точки
+   * @param {AggregatedPoint} point
+   */
   updatePointView(point) {
     return this.pointEditorView
       .setIcon(point.type)
@@ -72,6 +76,17 @@ export default class RoutePresenter {
       .setDestination(point.destination.name)
       .setStartTime(formatDateWithTime(point.dateFrom))
       .setEndTime(formatDateWithTime(point.dateTo))
-      .setPrice(point.basePrice);
+      .setPrice(point.basePrice)
+      .replaceOffers(...point.offers.map(this.createAvailableOfferView, this));
+  }
+
+  /**
+   * Создаст (доступную) дополнительную опцию
+   * @param {Offer} offer
+   */
+  createAvailableOfferView(offer) {
+    return new OfferView()
+      .setTitle(offer.title)
+      .setPrice(offer.price);
   }
 }
