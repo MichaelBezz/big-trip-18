@@ -123,6 +123,18 @@ export default class PointEditorView extends BaseView {
   }
 
   /**
+   * Установит описание
+   * @param {string} description
+   */
+  setDescription(description) {
+    const descriptionView = this.querySelector('.event__destination-description');
+
+    Object.assign(descriptionView, {textContent: description});
+
+    return this;
+  }
+
+  /**
    * Заменит дополнительные опции
    * @param {...HTMLElement} offerViews
    */

@@ -77,6 +77,7 @@ export default class RoutePresenter {
       .setStartTime(formatDateWithTime(point.dateFrom))
       .setEndTime(formatDateWithTime(point.dateTo))
       .setPrice(point.basePrice)
+      .setDescription(point.destination.description)
       .replaceOffers(...point.offers.map(this.createAvailableOfferView, this));
   }
 
