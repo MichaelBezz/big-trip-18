@@ -152,6 +152,7 @@ export default class PointEditorView extends BaseView {
    */
   handleEvent(event) {
     if (event.key === 'Escape') {
+      event.preventDefault();
       this.close();
     }
   }
