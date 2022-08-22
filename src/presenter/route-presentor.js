@@ -8,26 +8,25 @@ import OfferSelectedView from '../view/offer-selected-view.js';
 
 /** Презентор маршрута */
 export default class RoutePresenter {
+  #container = null;
   #model = null;
   #view = null;
   #pointEditorView = null;
 
-  constructor() {
+  constructor(container) {
+    this.#container = container;
     this.#model = new RouteModel();
     this.#view = new RouteView();
     this.#pointEditorView = new PointEditorView();
   }
 
-  /**
-   * Инициализирует RoutePresenter
-   * @param {HTMLElement} routeContainer
-   */
-  init(routeContainer) {
+  /** Инициализирует RoutePresenter */
+  init() {
     const points = this.#model.get();
 
     this.#view.append(...points.map(this.#createPointView, this));
 
-    routeContainer.append(this.#view);
+    this.#container.append(this.#view);
   }
 
   /**
