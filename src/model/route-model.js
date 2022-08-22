@@ -8,13 +8,13 @@ const offerGroups = generateOfferGroups();
 
 /** Модель маршрута */
 export default class RouteModel {
-  /**
-   * Получит доступные опции для определенного типа точки
-   * @param {OfferType} type
-   */
-  getAvailableOffers(type) {
-    return offerGroups.find((group) => group.type === type).offers;
-  }
+  // /**
+  //  * Получит доступные опции для определенного типа точки
+  //  * @param {OfferType} type
+  //  */
+  // getAvailableOffers(type) {
+  //   return offerGroups.find((group) => group.type === type).offers;
+  // }
 
   /**
    * Получит точки маршрута

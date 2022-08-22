@@ -2,9 +2,9 @@ import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
 import RouteModel from '../model/route-model.js';
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
-import OfferView from '../view/offer-view.js';
-import PointOfferView from '../view/point-offer-view.js';
 import PointEditorView from '../view/point-editor-view.js';
+import OfferAvailableView from '../view/offer-available-view.js';
+import OfferSelectedView from '../view/offer-selected-view.js';
 
 /** Презентор маршрута */
 export default class RoutePresenter {
@@ -42,7 +42,7 @@ export default class RoutePresenter {
       .setStartTime(formatTime(point.dateFrom), point.dateFrom)
       .setEndTime(formatTime(point.dateTo), point.dateTo)
       .setPrice(point.basePrice)
-      .replaceOffers(...point.offers.map(this.createSelectedOfferView, this));
+      .replaceOffers(...point.offers.map(this.createOfferSelectedView, this));
 
     pointView.addEventListener('expand', () => {
       this.pointEditorView.close();
@@ -53,16 +53,6 @@ export default class RoutePresenter {
     });
 
     return pointView;
-  }
-
-  /**
-   * Создаст (выбранную) дополнительную опцию
-   * @param {Offer} offer
-   */
-  createSelectedOfferView(offer) {
-    return new PointOfferView()
-      .setTitle(offer.title)
-      .setPrice(offer.price);
   }
 
   /**
@@ -78,15 +68,25 @@ export default class RoutePresenter {
       .setEndTime(formatDateWithTime(point.dateTo))
       .setPrice(point.basePrice)
       .setDescription(point.destination.description)
-      .replaceOffers(...point.offers.map(this.createAvailableOfferView, this));
+      .replaceOffers(...point.offers.map(this.createOfferAvailableView, this));
   }
 
   /**
    * Создаст (доступную) дополнительную опцию
    * @param {Offer} offer
    */
-  createAvailableOfferView(offer) {
-    return new OfferView()
+  createOfferAvailableView(offer) {
+    return new OfferAvailableView()
+      .setTitle(offer.title)
+      .setPrice(offer.price);
+  }
+
+  /**
+   * Создаст (выбранную) дополнительную опцию
+   * @param {Offer} offer
+   */
+  createOfferSelectedView(offer) {
+    return new OfferSelectedView()
       .setTitle(offer.title)
       .setPrice(offer.price);
   }
