@@ -8,5 +8,5 @@ const routeContainer = document.querySelector('.trip-events');
 filterContainer.append(new FilterView);
 routeContainer.append(new SortView);
 
-const routePresenter = new RoutePresenter();
-routePresenter.init(routeContainer);
+const routePresenter = new RoutePresenter(routeContainer);
+routePresenter.init();
