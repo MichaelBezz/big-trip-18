@@ -10,4 +10,4 @@ export default class SortView extends BaseView {
   }
 }
 
-customElements.define('trip-sort', SortView);
+customElements.define('route-sort', SortView);
