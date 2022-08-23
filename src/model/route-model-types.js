@@ -1,7 +1,7 @@
 /**
    * @typedef AggregatedPoint
    * @prop {number} id
-   * @prop {OfferType} type
+   * @prop {PointType} type
    * @prop {Destination} destination
    * @prop {string} date_from
    * @prop {string} date_to

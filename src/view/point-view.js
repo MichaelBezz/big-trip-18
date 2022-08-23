@@ -34,7 +34,7 @@ export default class PointView extends BaseView {
 
   /**
    * Установит иконку
-   * @param {OfferType} type
+   * @param {PointType} type
    */
   setIcon(type) {
     const iconView = this.querySelector('.event__type-icon');

@@ -52,7 +52,7 @@ export default class PointEditorView extends BaseView {
 
   /**
    * Установит иконку
-   * @param {OfferType} type
+   * @param {PointType} type
    */
   setIcon(type) {
     const iconView = this.querySelector('.event__type-icon');
@@ -64,7 +64,7 @@ export default class PointEditorView extends BaseView {
 
   /**
    * Установит тип
-   * @param {OfferType} type
+   * @param {PointType} type
    */
   setType(type) {
     const typeView = this.querySelector('.event__type-output');
