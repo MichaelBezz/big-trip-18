@@ -5,7 +5,7 @@ import createMessageTemplate from './message-template.js';
 export default class MessageView extends BaseView {
 
   /** @override */
-  createAdjacentHtml() {
+  createTemplate() {
     return createMessageTemplate();
   }
 

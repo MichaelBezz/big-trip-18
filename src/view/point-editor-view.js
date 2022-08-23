@@ -14,7 +14,7 @@ export default class PointEditorView extends BaseView {
   }
 
   /** @override */
-  createAdjacentHtml() {
+  createTemplate() {
     return createPointEditorTemplate();
   }
 

@@ -5,7 +5,7 @@ import createSortTemplate from './sort-template.js';
 export default class SortView extends BaseView {
 
   /** @override */
-  createAdjacentHtml() {
+  createTemplate() {
     return createSortTemplate();
   }
 }

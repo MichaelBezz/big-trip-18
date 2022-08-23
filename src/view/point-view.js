@@ -12,7 +12,7 @@ export default class PointView extends BaseView {
   }
 
   /** @override */
-  createAdjacentHtml() {
+  createTemplate() {
     return createPointTemplate();
   }
 

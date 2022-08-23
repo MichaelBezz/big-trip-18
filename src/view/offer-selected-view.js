@@ -10,7 +10,7 @@ export default class OfferSelectedView extends BaseView {
   }
 
   /** @override */
-  createAdjacentHtml() {
+  createTemplate() {
     return createOfferSelectedTemplate();
   }
 
