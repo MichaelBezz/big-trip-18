@@ -19,4 +19,4 @@ export default class RouteView extends BaseView {
   }
 }
 
-customElements.define('trip-route', RouteView);
+customElements.define('route-map', RouteView);
