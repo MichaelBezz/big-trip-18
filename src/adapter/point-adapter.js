@@ -3,7 +3,7 @@ export default class PointAdapter {
    * @param {Point} point
    */
   constructor(point) {
-    this.id = point.id;
+    this.id = Number(point.id);
     this.type = point.type;
     this.destinationId = point.destination;
     this.startDate = point.date_from;
