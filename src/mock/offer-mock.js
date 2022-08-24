@@ -15,8 +15,8 @@ const OfferPrise = {
 };
 
 const OfferQuantity = {
-  MIN: 1,
-  MAX: 3
+  MIN: 4,
+  MAX: 8
 };
 
 const generateTitle = () => getRandomElement(OFFER_TITLES);
