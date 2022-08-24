@@ -49,13 +49,13 @@ const generatePoint = (id) => {
   const dateTo = generateDateTo(dateFrom, randomDate);
 
   return ({
-    id,
-    type: generateType(),
-    destination: id,
-    dateFrom,
-    dateTo,
-    basePrice: generatePrice(),
-    offers: [id]
+    'id': id,
+    'type': generateType(),
+    'destination': id,
+    'date_from': dateFrom,
+    'date_to': dateTo,
+    'base_price': generatePrice(),
+    'offers': [id]
   });
 };
 

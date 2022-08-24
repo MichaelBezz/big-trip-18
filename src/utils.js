@@ -19,24 +19,11 @@ const getRandomElement = (elements) => {
 };
 
 /**
- * Вернет дату в формате 'MMM D'
+ * Вернет дату в определенном формате
  * @param {string} isoDate
+ * @param {string} format
  * @return {string}
  */
-const formatDate = (isoDate) => dayjs(isoDate).format('MMM D');
+const formatDate = (isoDate, format) => dayjs(isoDate).format(format);
 
-/**
- * Вернет время в формате 'HH:mm'
- * @param {string} isoDate
- * @return {string}
- */
-const formatTime = (isoDate) => dayjs(isoDate).format('HH:mm');
-
-/**
- * Вернет дату и время в формате 'DD/MM/YY HH:mm'
- * @param {string} isoDate
- * @return {string}
- */
-const formatDateWithTime = (isoDate) => dayjs(isoDate).format('DD/MM/YY HH:mm');
-
-export {getRandomInteger, getRandomElement, formatDate, formatTime, formatDateWithTime};
+export {getRandomInteger, getRandomElement, formatDate};

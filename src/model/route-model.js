@@ -4,16 +4,13 @@ import {generateOfferGroups} from '../mock/offer-mock.js';
 import PointAdapter from '../adapter/point-adapter.js';
 
 /**
+ * Глубокое клонирование объекта target
  * @template T
  * @param {T} target
- * @returns {T}
+ * @return {T}
  */
 const clone = (target) =>
   JSON.parse(JSON.stringify(target));
-
-const points = generatePoints();
-const destinations = generateDestinations();
-const offerGroups = generateOfferGroups();
 
 /** Модель маршрута */
 export default class RouteModel {
@@ -54,7 +51,7 @@ export default class RouteModel {
    * @param {PointType} type
    * @param {number[]} ids
    */
-  getOffers(type, ids) {
+  getSelectedOffers(type, ids) {
     return this.getAvailableOffers(type).filter((item) => ids.includes(item.id));
   }
 
@@ -71,18 +68,5 @@ export default class RouteModel {
     const destination = this.#destinationCache.find((item) => item.id === id);
 
     return clone(destination);
-  }
-
-
-  /**
-   * Получит точки маршрута
-   * @return {AggregatedPoint[]}
-   */
-  get() {
-    return points.map((point) => ({
-      ...point,
-      destination: destinations.find((destination) => destination.id === point.destination),
-      offers: offerGroups.find((group) => group.type === point.type).offers
-    }));
   }
 }

@@ -1,4 +1,4 @@
-import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
+import {formatDate} from '../utils.js';
 import RouteModel from '../model/route-model.js';
 import RouteView from '../view/route-view.js';
 import SortView from '../view/sort-view.js';
@@ -30,7 +30,7 @@ export default class RoutePresenter {
 
   /** Инициализирует RoutePresenter */
   init() {
-    const points = this.#model.get();
+    const points = this.#model.getPoints();
 
     if (points && points.length) {
       this.#container.append(this.#sortView);
@@ -44,21 +44,31 @@ export default class RoutePresenter {
 
   /**
    * Создаст точку на маршруте
-   * @param {AggregatedPoint} point
+   * @param {AdaptedPoint} point
    */
   #createPointView(point) {
     const pointView = new PointView();
 
-    const title = `${point.type} ${point.destination.name}`;
+    const destination = this.#model.getDestinationById(point.destinationId);
+    const title = `${point.type} ${destination.name}`;
+
+    const date = formatDate(point.startDate, 'MMM D');
+    const isoDate = formatDate(point.startDate, 'YYYY-MM-DD');
+    const startTime = formatDate(point.startDate, 'HH:mm');
+    const isoStartTime = formatDate(point.startDate, 'YYYY-MM-[DD]T[HH]:mm');
+    const endTime = formatDate(point.endDate, 'HH:mm');
+    const isoEndTime = formatDate(point.endDate, 'YYYY-MM-[DD]T[HH]:mm');
+
+    const offers = this.#model.getSelectedOffers(point.type, point.offerIds);
 
     pointView
-      .setDate(formatDate(point.dateFrom), point.dateFrom)
+      .setDate(date, isoDate)
       .setIcon(point.type)
       .setTitle(title)
-      .setStartTime(formatTime(point.dateFrom), point.dateFrom)
-      .setEndTime(formatTime(point.dateTo), point.dateTo)
+      .setStartTime(startTime, isoStartTime)
+      .setEndTime(endTime, isoEndTime)
       .setPrice(point.basePrice)
-      .replaceOffers(...point.offers.map(this.#createOfferSelectedView, this));
+      .replaceOffers(...offers.map(this.#createOfferSelectedView, this));
 
     pointView.addEventListener('expand', () => {
       this.#pointEditorView.close();
@@ -73,18 +83,25 @@ export default class RoutePresenter {
 
   /**
    * Создаст форму редактирования точки
-   * @param {AggregatedPoint} point
+   * @param {AdaptedPoint} point
    */
   #updatePointView(point) {
+    const destination = this.#model.getDestinationById(point.destinationId);
+
+    const isoStartDate = formatDate(point.startDate, 'DD/MM/YY HH:mm');
+    const isoEndDate = formatDate(point.endDate, 'DD/MM/YY HH:mm');
+
+    const offers = this.#model.getAvailableOffers(point.type);
+
     return this.#pointEditorView
       .setIcon(point.type)
       .setType(point.type)
-      .setDestination(point.destination.name)
-      .setStartTime(formatDateWithTime(point.dateFrom))
-      .setEndTime(formatDateWithTime(point.dateTo))
+      .setDestination(destination.name)
+      .setStartTime(isoStartDate)
+      .setEndTime(isoEndDate)
       .setPrice(point.basePrice)
-      .setDescription(point.destination.description)
-      .replaceOffers(...point.offers.map(this.#createOfferAvailableView, this));
+      .setDescription(destination.description)
+      .replaceOffers(...offers.map(this.#createOfferAvailableView, this));
   }
 
   /**
