@@ -1,6 +1,6 @@
 /**
  * @typedef Point
- * @prop {number} id
+ * @prop {string} id
  * @prop {PointType} type
  * @prop {number} destination
  * @prop {string} date_from

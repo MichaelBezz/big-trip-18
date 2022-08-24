@@ -12,26 +12,6 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(result);
 };
 
-/**
- * Получит уникальное случайное число
- * @param {number} min
- * @param {number} max
- */
-const getRandomUniqueInteger = (min, max) => {
-  const previousValues = [];
-
-  return () => {
-    let currentValue = getRandomInteger(min, max);
-
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-
-    previousValues.push(currentValue);
-    return currentValue;
-  };
-};
-
 /** Получит случайный элемент из массива данных */
 const getRandomElement = (elements) => {
   const randomIndex = getRandomInteger(0, elements.length - 1);
@@ -59,4 +39,4 @@ const formatTime = (isoDate) => dayjs(isoDate).format('HH:mm');
  */
 const formatDateWithTime = (isoDate) => dayjs(isoDate).format('DD/MM/YY HH:mm');
 
-export {getRandomInteger, getRandomUniqueInteger, getRandomElement, formatDate, formatTime, formatDateWithTime};
+export {getRandomInteger, getRandomElement, formatDate, formatTime, formatDateWithTime};
