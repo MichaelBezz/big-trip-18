@@ -1,11 +1,11 @@
-import BaseView from './base-view.js';
+import ComponentView from './component-view.js';
 import createMessageTemplate from './message-template.js';
 
 /** Представление сообщения */
-export default class MessageView extends BaseView {
+export default class MessageView extends ComponentView {
 
   /** @override */
-  createTemplate() {
+  createAdjacentHtml() {
     return createMessageTemplate();
   }
 

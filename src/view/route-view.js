@@ -1,7 +1,7 @@
-import BaseView from './base-view.js';
+import ComponentView from './component-view.js';
 
 /** Представление маршрута путешествия */
-export default class RouteView extends BaseView {
+export default class RouteView extends ComponentView {
   constructor() {
     super();
 

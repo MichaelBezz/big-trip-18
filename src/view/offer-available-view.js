@@ -1,8 +1,8 @@
-import BaseView from './base-view.js';
+import ComponentView from './component-view.js';
 import createOfferAvailableTemplate from './offer-available-template.js';
 
 /** Представление (доступной) дополнительной опции в редакторе */
-export default class OfferAvailableView extends BaseView {
+export default class OfferAvailableView extends ComponentView {
   constructor() {
     super();
 
@@ -10,7 +10,7 @@ export default class OfferAvailableView extends BaseView {
   }
 
   /** @override */
-  createTemplate() {
+  createAdjacentHtml() {
     return createOfferAvailableTemplate();
   }
 

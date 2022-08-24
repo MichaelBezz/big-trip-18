@@ -1,8 +1,8 @@
-import BaseView from './base-view.js';
+import ComponentView from './component-view.js';
 import createPointTemplate from './point-template.js';
 
 /** Представление точки на маршруте */
-export default class PointView extends BaseView {
+export default class PointView extends ComponentView {
   constructor() {
     super();
 
@@ -12,7 +12,7 @@ export default class PointView extends BaseView {
   }
 
   /** @override */
-  createTemplate() {
+  createAdjacentHtml() {
     return createPointTemplate();
   }
 
