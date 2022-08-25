@@ -25,9 +25,7 @@ export default class RouteModel {
 
   /** Получит список точек с отформатированными полями */
   getPoints() {
-    const points = this.#points.map((point) => new PointAdapter(point));
-
-    return clone(points);
+    return this.#points.map((point) => new PointAdapter(point));
   }
 
   /**

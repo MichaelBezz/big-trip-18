@@ -22,4 +22,4 @@ export default class MessageView extends ComponentView {
   }
 }
 
-customElements.define('route-message', MessageView);
+customElements.define(String(MessageView), MessageView);

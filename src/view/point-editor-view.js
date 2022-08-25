@@ -1,9 +1,16 @@
-import BaseView from './base-view.js';
-import createPointEditorTemplate from './point-editor-template.js';
+import ComponentView, {html} from './component-view.js';
+import TypeSelectView from './type-select-view.js';
+import DestinationInputView from './destination-input-view.js';
 
 /** Представление формы редактирования точки */
-export default class PointEditorView extends BaseView {
+export default class PointEditorView extends ComponentView {
   #linkedView = null;
+
+  /** @type {TypeSelectView} */
+  typeSelectView = this.querySelector(String(TypeSelectView));
+
+  /** @type {DestinationInputView} */
+  destinationInputView = this.querySelector(String(DestinationInputView));
 
   constructor() {
     super();
@@ -14,8 +21,57 @@ export default class PointEditorView extends BaseView {
   }
 
   /** @override */
-  createTemplate() {
-    return createPointEditorTemplate();
+  createAdjacentHtml() {
+    return html`
+      <form class="event event--edit" action="#" method="post">
+        <header class="event__header">
+          <!-- Представление TypeSelect -->
+          ${TypeSelectView}
+
+          <!-- Представление DestinationInput -->
+          ${DestinationInputView}
+
+          TODO <!-- Представление date-picker -->
+          <div class="event__field-group  event__field-group--time">
+            <label class="visually-hidden" for="event-start-time-1">From</label>
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+            &mdash;
+            <label class="visually-hidden" for="event-end-time-1">To</label>
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+          </div>
+
+          TODO <!-- Представление price-input -->
+          <div class="event__field-group  event__field-group--price">
+            <label class="event__label" for="event-price-1">
+              <span class="visually-hidden">Price</span>
+              &euro;
+            </label>
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
+          </div>
+
+          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__rollup-btn" type="button">
+            <span class="visually-hidden">Open event</span>
+          </button>
+        </header>
+        <section class="event__details">
+
+          TODO <!-- Представление offers-select -->
+          <section class="event__section  event__section--offers">
+            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+            <div class="event__available-offers"></div>
+          </section>
+
+          TODO <!-- Представление destination-details -->
+          <section class="event__section  event__section--destination">
+            <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+            <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
+          </section>
+        </section>
+      </form>
+    `;
   }
 
   /**
@@ -158,4 +214,4 @@ export default class PointEditorView extends BaseView {
   }
 }
 
-customElements.define('point-editor', PointEditorView);
+customElements.define(String(PointEditorView), PointEditorView);

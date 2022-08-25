@@ -10,4 +10,4 @@ export default class FilterView extends ComponentView {
   }
 }
 
-customElements.define('trip-filter', FilterView);
+customElements.define(String(FilterView), FilterView);

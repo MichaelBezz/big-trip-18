@@ -62,4 +62,4 @@ export default class OfferAvailableView extends ComponentView {
   }
 }
 
-customElements.define('offer-available', OfferAvailableView);
+customElements.define(String(OfferAvailableView), OfferAvailableView);

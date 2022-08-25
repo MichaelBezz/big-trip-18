@@ -113,4 +113,4 @@ export default class PointView extends ComponentView {
   }
 }
 
-customElements.define('route-point', PointView);
+customElements.define(String(PointView), PointView);

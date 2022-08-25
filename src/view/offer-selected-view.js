@@ -39,4 +39,4 @@ export default class OfferSelectedView extends ComponentView {
   }
 }
 
-customElements.define('offer-selected', OfferSelectedView);
+customElements.define(String(OfferSelectedView), OfferSelectedView);

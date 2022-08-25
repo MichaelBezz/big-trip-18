@@ -19,4 +19,4 @@ export default class RouteView extends ComponentView {
   }
 }
 
-customElements.define('route-map', RouteView);
+customElements.define(String(RouteView), RouteView);
