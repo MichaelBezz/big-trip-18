@@ -15,17 +15,17 @@ const clone = (target) =>
 /** Модель маршрута */
 export default class RouteModel {
   /** @type {Point[]} */
-  #pointCache = generatePoints();
+  #points = generatePoints();
 
   /** @type {Destination[]} */
-  #destinationCache = generateDestinations();
+  #destinations = generateDestinations();
 
   /** @type {OfferGroup[]} */
-  #offerCache = generateOfferGroups();
+  #offerGroups = generateOfferGroups();
 
   /** Получит список точек с отформатированными полями */
   getPoints() {
-    return this.#pointCache.map((point) => new PointAdapter(point));
+    return this.#points.map((point) => new PointAdapter(point));
   }
 
   /**
@@ -33,9 +33,9 @@ export default class RouteModel {
    * @param {string} id
    */
   getPointById(id) {
-    const point = this.#pointCache.find((item) => item.id === id);
+    const point = this.#points.find((item) => item.id === id);
 
-    return new PointAdapter(point);
+    return clone(new PointAdapter(point));
   }
 
   /**
@@ -43,7 +43,9 @@ export default class RouteModel {
    * @param {PointType} type
    */
   getAvailableOffers(type) {
-    return this.#offerCache.find((group) => group.type === type).offers;
+    const availableOffers = this.#offerGroups.find((group) => group.type === type).offers;
+
+    return clone(availableOffers);
   }
 
   /**
@@ -57,7 +59,7 @@ export default class RouteModel {
 
   /** Получит список пунктов назначения */
   getDestination() {
-    return clone(this.#destinationCache);
+    return clone(this.#destinations);
   }
 
   /**
@@ -65,7 +67,7 @@ export default class RouteModel {
    * @param {number} id
    */
   getDestinationById(id) {
-    const destination = this.#destinationCache.find((item) => item.id === id);
+    const destination = this.#destinations.find((item) => item.id === id);
 
     return clone(destination);
   }
