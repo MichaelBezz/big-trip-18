@@ -1,4 +1,4 @@
-import {formatDate} from '../utils.js';
+import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
 import RouteModel from '../model/route-model.js';
 import RouteView from '../view/route-view.js';
 import SortView from '../view/sort-view.js';
@@ -52,21 +52,18 @@ export default class RoutePresenter {
     const destination = this.#model.getDestinationById(point.destinationId);
     const title = `${point.type} ${destination.name}`;
 
-    const date = formatDate(point.startDate, 'MMM D');
-    const isoDate = formatDate(point.startDate, 'YYYY-MM-DD');
-    const startTime = formatDate(point.startDate, 'HH:mm');
-    const isoStartTime = formatDate(point.startDate, 'YYYY-MM-[DD]T[HH]:mm');
-    const endTime = formatDate(point.endDate, 'HH:mm');
-    const isoEndTime = formatDate(point.endDate, 'YYYY-MM-[DD]T[HH]:mm');
+    const date = formatDate(point.startDate);
+    const startTime = formatTime(point.startDate);
+    const endTime = formatTime(point.endDate);
 
     const offers = this.#model.getSelectedOffers(point.type, point.offerIds);
 
     pointView
-      .setDate(date, isoDate)
+      .setDate(date, point.startDate)
       .setIcon(point.type)
       .setTitle(title)
-      .setStartTime(startTime, isoStartTime)
-      .setEndTime(endTime, isoEndTime)
+      .setStartTime(startTime, point.startDate)
+      .setEndTime(endTime, point.endDate)
       .setPrice(point.basePrice)
       .replaceOffers(...offers.map(this.#createOfferSelectedView, this));
 
@@ -88,8 +85,8 @@ export default class RoutePresenter {
   #updatePointView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
-    const isoStartDate = formatDate(point.startDate, 'DD/MM/YY HH:mm');
-    const isoEndDate = formatDate(point.endDate, 'DD/MM/YY HH:mm');
+    const startDate = formatDateWithTime(point.startDate);
+    const endDate = formatDateWithTime(point.endDate);
 
     const offers = this.#model.getAvailableOffers(point.type);
 
@@ -97,8 +94,8 @@ export default class RoutePresenter {
       .setIcon(point.type)
       .setType(point.type)
       .setDestination(destination.name)
-      .setStartTime(isoStartDate)
-      .setEndTime(isoEndDate)
+      .setStartTime(startDate)
+      .setEndTime(endDate)
       .setPrice(point.basePrice)
       .setDescription(destination.description)
       .replaceOffers(...offers.map(this.#createOfferAvailableView, this));
