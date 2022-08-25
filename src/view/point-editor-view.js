@@ -6,14 +6,14 @@ import DestinationInputView from './destination-input-view.js';
 export default class PointEditorView extends ComponentView {
   #linkedView = null;
 
-  /** @type {TypeSelectView} */
-  typeSelectView = this.querySelector(String(TypeSelectView));
-
-  /** @type {DestinationInputView} */
-  destinationInputView = this.querySelector(String(DestinationInputView));
-
   constructor() {
     super();
+
+    /** @type {TypeSelectView} */
+    this.typeSelectView = this.querySelector(String(TypeSelectView));
+
+    /** @type {DestinationInputView} */
+    this.destinationInputView = this.querySelector(String(DestinationInputView));
 
     this.querySelector('.event__rollup-btn').addEventListener('click', () => {
       this.close();
@@ -25,10 +25,7 @@ export default class PointEditorView extends ComponentView {
     return html`
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
-          <!-- Представление TypeSelect -->
           ${TypeSelectView}
-
-          <!-- Представление DestinationInput -->
           ${DestinationInputView}
 
           TODO <!-- Представление date-picker -->

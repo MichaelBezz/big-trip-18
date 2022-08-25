@@ -1,4 +1,5 @@
 import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
+import {POINT_TYPES} from '../mock/const-mock.js';
 import RouteModel from '../model/route-model.js';
 import RouteView from '../view/route-view.js';
 import SortView from '../view/sort-view.js';
@@ -16,7 +17,7 @@ export default class RoutePresenter {
 
   #messegeView = null;
   #sortView = null;
-  #pointEditorView = null;
+  #editorView = null;
 
   constructor(container) {
     this.#container = container;
@@ -25,7 +26,7 @@ export default class RoutePresenter {
 
     this.#messegeView = new MessageView;
     this.#sortView = new SortView;
-    this.#pointEditorView = new PointEditorView();
+    this.#editorView = new PointEditorView();
   }
 
   /** Инициализирует RoutePresenter */
@@ -68,9 +69,9 @@ export default class RoutePresenter {
       .replaceOffers(...offers.map(this.#createOfferSelectedView, this));
 
     pointView.addEventListener('expand', () => {
-      this.#pointEditorView.close();
+      this.#editorView.close();
       this.#updatePointView(point);
-      this.#pointEditorView
+      this.#editorView
         .link(pointView)
         .open();
     });
@@ -90,7 +91,18 @@ export default class RoutePresenter {
 
     const offers = this.#model.getAvailableOffers(point.type);
 
-    return this.#pointEditorView
+    const typeSelectStates = POINT_TYPES.map((type) => {
+      const label = type;
+      const value = type;
+      const isChecked = type === point.type;
+
+      return [label, value, isChecked];
+    });
+
+    this.#editorView.typeSelectView
+      .setOptions(typeSelectStates);
+
+    return this.#editorView
       .setIcon(point.type)
       .setType(point.type)
       .setDestination(destination.name)

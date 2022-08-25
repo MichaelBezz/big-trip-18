@@ -55,4 +55,3 @@ export const html = (strings, ...values) => values.reduce((result, value, index)
 
   return result + value + strings[index + 1];
 }, strings[0]);
-
