@@ -1,10 +1,10 @@
 export default class ComponentView extends HTMLElement {
-  constructor(...rest) {
+  constructor() {
     super();
 
     this.insertAdjacentHTML(
       this.adjacentHtmlPosition,
-      this.createAdjacentHtml(...rest)
+      this.createAdjacentHtml(...arguments)
     );
   }
 
@@ -24,22 +24,26 @@ export default class ComponentView extends HTMLElement {
     return data.join('');
   }
 
+  /** Получит префикс тега */
   static get tagNamePrefix() {
     return 'trip';
   }
 
+  /** Получит имя тега */
   static get tagName() {
     const hyphenCaseName = this.name.replace(/[A-Z]/g, '-$&').toLowerCase();
 
     return this.tagNamePrefix + hyphenCaseName.replace(/-view$/, '');
   }
 
+  /** Вернет имя тега */
   static toString() {
     return this.tagName;
   }
 }
 
 /**
+ * Теговый шаблон html
  * @param {TemplateStringsArray} strings
  * @param {...*} values
  * @return {string}
