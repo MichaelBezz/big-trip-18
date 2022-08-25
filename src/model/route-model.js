@@ -25,7 +25,9 @@ export default class RouteModel {
 
   /** Получит список точек с отформатированными полями */
   getPoints() {
-    return this.#points.map((point) => new PointAdapter(point));
+    const points = this.#points.map((point) => new PointAdapter(point));
+
+    return clone(points);
   }
 
   /**
@@ -33,9 +35,9 @@ export default class RouteModel {
    * @param {string} id
    */
   getPointById(id) {
-    const point = this.#points.find((item) => item.id === id);
+    const point = new PointAdapter(this.#points.find((item) => item.id === id));
 
-    return clone(new PointAdapter(point));
+    return clone(point);
   }
 
   /**
@@ -54,7 +56,9 @@ export default class RouteModel {
    * @param {number[]} ids
    */
   getSelectedOffers(type, ids) {
-    return this.getAvailableOffers(type).filter((item) => ids.includes(item.id));
+    const selectedOffers = this.getAvailableOffers(type).filter((item) => ids.includes(item.id));
+
+    return clone(selectedOffers);
   }
 
   /** Получит список пунктов назначения */
