@@ -15,13 +15,25 @@ const clone = (target) =>
 /** Модель маршрута */
 export default class RouteModel {
   /** @type {Point[]} */
-  #points = generatePoints();
+  #points = null;
 
   /** @type {Destination[]} */
-  #destinations = generateDestinations();
+  #destinations = null;
 
   /** @type {OfferGroup[]} */
-  #offerGroups = generateOfferGroups();
+  #offerGroups = null;
+
+  async ready() {
+    if (this.points) {
+      return;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    this.#points = generatePoints();
+    this.#destinations = generateDestinations();
+    this.#offerGroups = generateOfferGroups();
+  }
 
   /** Получит список точек с отформатированными полями */
   getPoints() {

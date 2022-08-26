@@ -28,7 +28,9 @@ export default class RoutePresenter {
   }
 
   /** Инициализирует RoutePresenter */
-  init() {
+  async init() {
+    await this.#model.ready();
+
     const points = this.#model.getPoints();
 
     if (points && points.length) {
