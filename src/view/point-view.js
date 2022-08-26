@@ -1,9 +1,13 @@
 import ComponentView, {html} from './component-view.js';
+import OfferListView from './offer-list-view.js';
 
 /** Представление точки на маршруте */
 export default class PointView extends ComponentView {
   constructor() {
     super();
+
+    /** @type {OfferListView} */
+    this.offerListView = this.querySelector(String(OfferListView));
 
     this.querySelector('.event__rollup-btn').addEventListener('click', () => {
       this.dispatchEvent(new CustomEvent(':expand'));
@@ -30,9 +34,7 @@ export default class PointView extends ComponentView {
           &euro;&nbsp;<span class="event__price-value"></span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-        <div class="event__selected-offers">
-          <!-- PointOfferView -->
-        </div>
+        ${OfferListView}
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
@@ -114,17 +116,6 @@ export default class PointView extends ComponentView {
    */
   setPrice(price) {
     this.querySelector('.event__price-value').textContent = price;
-
-    return this;
-  }
-
-  /**
-   * Заменит дополнительные опции
-   * @param {...HTMLElement} offerViews
-   */
-  replaceOffers(...offerViews) {
-    this.querySelector('.event__selected-offers')
-      .replaceChildren(...offerViews);
 
     return this;
   }

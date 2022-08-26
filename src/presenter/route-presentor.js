@@ -5,7 +5,6 @@ import RouteView from '../view/route-view.js';
 import SortView from '../view/sort-view.js';
 import PointView from '../view/point-view.js';
 import PointEditorView from '../view/point-editor-view.js';
-import PointOfferView from '../view/point-offer-view.js';
 import MessageView from '../view/message-view.js';
 
 /** Презентор маршрута */
@@ -50,22 +49,29 @@ export default class RoutePresenter {
     const pointView = new PointView();
 
     const destination = this.#model.getDestinationById(point.destinationId);
-    const title = `${point.type} ${destination.name}`;
+    const compositeTitle = `${point.type} ${destination.name}`;
 
     const date = formatDate(point.startDate);
     const startTime = formatTime(point.startDate);
     const endTime = formatTime(point.endDate);
 
     const offers = this.#model.getSelectedOffers(point.type, point.offerIds);
+    const offerStates = offers.map((offer) => {
+      const {title, price} = offer;
+
+      return [title, price];
+    });
+
+    pointView.offerListView
+      .setOffers(offerStates);
 
     pointView
       .setDate(point.startDate, date)
       .setIcon(point.type)
-      .setTitle(title)
+      .setTitle(compositeTitle)
       .setStartTime(point.startDate, startTime)
       .setEndTime(point.endDate, endTime)
-      .setPrice(point.basePrice)
-      .replaceOffers(...offers.map(this.#createOfferSelectedView, this));
+      .setPrice(point.basePrice);
 
     pointView.addEventListener(':expand', () => {
       this.#editorView.close();
@@ -76,16 +82,6 @@ export default class RoutePresenter {
     });
 
     return pointView;
-  }
-
-  /**
-   * Создаст (выбранную) дополнительную опцию
-   * @param {Offer} offer
-   */
-  #createOfferSelectedView(offer) {
-    return new PointOfferView()
-      .setTitle(offer.title)
-      .setPrice(offer.price);
   }
 
   /**
