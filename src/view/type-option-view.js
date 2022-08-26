@@ -17,7 +17,7 @@ export default class TypeOptionView extends ComponentView {
   createAdjacentHtml(label, value, isChecked) {
     return html`
       <input
-        id="event-type-${value}-1"
+        id="event-type-${value}"
         class="event__type-input  visually-hidden"
         type="radio"
         name="event-type"
@@ -26,7 +26,7 @@ export default class TypeOptionView extends ComponentView {
       >
       <label
         class="event__type-label  event__type-label--${value}"
-        for="event-type-${value}-1"
+        for="event-type-${value}"
       >
         ${label}
       </label>

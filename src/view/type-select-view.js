@@ -59,6 +59,7 @@ export default class TypeSelectView extends ComponentView {
   }
 
   /**
+   * Обработает событие на инпутах меню
    * @param {Event & {target: HTMLInputElement}} event
    */
   onChange(event) {

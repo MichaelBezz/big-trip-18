@@ -60,7 +60,7 @@ export default class RouteModel {
   }
 
   /** Получит список пунктов назначения */
-  getDestination() {
+  getDestinations() {
     return clone(this.#destinations);
   }
 

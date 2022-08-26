@@ -1,5 +1,4 @@
-import ComponentView from './component-view.js';
-import createPointTemplate from './point-template.js';
+import ComponentView, {html} from './component-view.js';
 
 /** Представление точки на маршруте */
 export default class PointView extends ComponentView {
@@ -7,13 +6,38 @@ export default class PointView extends ComponentView {
     super();
 
     this.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('expand'));
+      this.dispatchEvent(new CustomEvent(':expand'));
     });
   }
 
   /** @override */
   createAdjacentHtml() {
-    return createPointTemplate();
+    return html`
+      <div class="event">
+        <time class="event__date" datetime=""></time>
+        <div class="event__type">
+          <img class="event__type-icon" width="42" height="42" src="" alt="Event type icon">
+        </div>
+        <h3 class="event__title"></h3>
+        <div class="event__schedule">
+          <p class="event__time">
+            <time class="event__start-time" datetime=""></time>
+            &mdash;
+            <time class="event__end-time" datetime=""></time>
+          </p>
+        </div>
+        <p class="event__price">
+          &euro;&nbsp;<span class="event__price-value"></span>
+        </p>
+        <h4 class="visually-hidden">Offers:</h4>
+        <div class="event__selected-offers">
+          <!-- PointOfferView -->
+        </div>
+        <button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>
+      </div>
+    `;
   }
 
   /**
@@ -21,10 +45,10 @@ export default class PointView extends ComponentView {
    * @param {string} date
    * @param {string} isoDate
    */
-  setDate(date, isoDate) {
-    const dateView = this.querySelector('.event__date');
+  setDate(isoDate, date) {
+    const view = this.querySelector('.event__date');
 
-    Object.assign(dateView, {
+    Object.assign(view, {
       dateTime: isoDate,
       textContent: date
     });
@@ -37,9 +61,7 @@ export default class PointView extends ComponentView {
    * @param {PointType} type
    */
   setIcon(type) {
-    const iconView = this.querySelector('.event__type-icon');
-
-    Object.assign(iconView, {src: `img/icons/${type}.png`});
+    this.querySelector('.event__type-icon').src = `img/icons/${type}.png`;
 
     return this;
   }
@@ -49,22 +71,20 @@ export default class PointView extends ComponentView {
    * @param {string} title
    */
   setTitle(title) {
-    const titleView = this.querySelector('.event__title');
-
-    Object.assign(titleView, {textContent: title});
+    this.querySelector('.event__title').textContent = title;
 
     return this;
   }
 
   /**
    * Установит время начала
-   * @param {string} time
    * @param {string} isoDate
+   * @param {string} time
    */
-  setStartTime(time, isoDate) {
-    const startTimeView = this.querySelector('.event__start-time');
+  setStartTime(isoDate, time) {
+    const view = this.querySelector('.event__start-time');
 
-    Object.assign(startTimeView, {
+    Object.assign(view, {
       dateTime: isoDate,
       textContent: time
     });
@@ -74,13 +94,13 @@ export default class PointView extends ComponentView {
 
   /**
    * Установит время окончания
-   * @param {string} time
    * @param {string} isoDate
+   * @param {string} time
    */
-  setEndTime(time, isoDate) {
-    const endTimeView = this.querySelector('.event__end-time');
+  setEndTime(isoDate, time) {
+    const view = this.querySelector('.event__end-time');
 
-    Object.assign(endTimeView, {
+    Object.assign(view, {
       dateTime: isoDate,
       textContent: time
     });
@@ -93,9 +113,7 @@ export default class PointView extends ComponentView {
    * @param {number} price
    */
   setPrice(price) {
-    const priceView = this.querySelector('.event__price-value');
-
-    Object.assign(priceView, {textContent: price});
+    this.querySelector('.event__price-value').textContent = price;
 
     return this;
   }
@@ -105,9 +123,8 @@ export default class PointView extends ComponentView {
    * @param {...HTMLElement} offerViews
    */
   replaceOffers(...offerViews) {
-    const selectedOffersView = this.querySelector('.event__selected-offers');
-
-    selectedOffersView.replaceChildren(...offerViews);
+    this.querySelector('.event__selected-offers')
+      .replaceChildren(...offerViews);
 
     return this;
   }

@@ -5,8 +5,7 @@ import RouteView from '../view/route-view.js';
 import SortView from '../view/sort-view.js';
 import PointView from '../view/point-view.js';
 import PointEditorView from '../view/point-editor-view.js';
-import OfferAvailableView from '../view/offer-available-view.js';
-import OfferSelectedView from '../view/offer-selected-view.js';
+import PointOfferView from '../view/point-offer-view.js';
 import MessageView from '../view/message-view.js';
 
 /** Презентор маршрута */
@@ -60,15 +59,15 @@ export default class RoutePresenter {
     const offers = this.#model.getSelectedOffers(point.type, point.offerIds);
 
     pointView
-      .setDate(date, point.startDate)
+      .setDate(point.startDate, date)
       .setIcon(point.type)
       .setTitle(title)
-      .setStartTime(startTime, point.startDate)
-      .setEndTime(endTime, point.endDate)
+      .setStartTime(point.startDate, startTime)
+      .setEndTime(point.endDate, endTime)
       .setPrice(point.basePrice)
       .replaceOffers(...offers.map(this.#createOfferSelectedView, this));
 
-    pointView.addEventListener('expand', () => {
+    pointView.addEventListener(':expand', () => {
       this.#editorView.close();
       this.#updatePointView(point);
       this.#editorView
@@ -80,56 +79,89 @@ export default class RoutePresenter {
   }
 
   /**
+   * Создаст (выбранную) дополнительную опцию
+   * @param {Offer} offer
+   */
+  #createOfferSelectedView(offer) {
+    return new PointOfferView()
+      .setTitle(offer.title)
+      .setPrice(offer.price);
+  }
+
+  /**
    * Создаст форму редактирования точки
    * @param {AdaptedPoint} point
    */
   #updatePointView(point) {
-    const destination = this.#model.getDestinationById(point.destinationId);
-
-    const startDate = formatDateWithTime(point.startDate);
-    const endDate = formatDateWithTime(point.endDate);
-
-    const offers = this.#model.getAvailableOffers(point.type);
-
-    const typeSelectStates = POINT_TYPES.map((type) => {
-      const label = type;
-      const value = type;
-      const isChecked = type === point.type;
+    // TypeSelectView
+    const typeSelectStates = POINT_TYPES.map((item) => {
+      const label = item;
+      const value = item;
+      const isChecked = item === point.type;
 
       return [label, value, isChecked];
     });
 
     this.#editorView.typeSelectView
-      .setOptions(typeSelectStates);
+      .setOptions(typeSelectStates)
+      .select(point.type);
 
-    return this.#editorView
-      .setIcon(point.type)
-      .setType(point.type)
-      .setDestination(destination.name)
+    // DestinationInputView
+    const destination = this.#model.getDestinationById(point.destinationId);
+
+    const destinationNames = this.#model
+      .getDestinations()
+      .map((item) => item.name);
+
+    const uniqueDestinationNames = Array.from(new Set(destinationNames));
+
+    const destinationInputStates = uniqueDestinationNames.map((name) => {
+      const text = '';
+      const value = name;
+
+      return [text, value];
+    });
+
+    this.#editorView.destinationInputView
+      .setLabel(point.type)
+      .setValue(destination.name)
+      .setOptions(destinationInputStates);
+
+    // DatePickerView
+    const startDate = formatDateWithTime(point.startDate);
+    const endDate = formatDateWithTime(point.endDate);
+
+    this.#editorView.datePickerView
       .setStartTime(startDate)
-      .setEndTime(endDate)
-      .setPrice(point.basePrice)
+      .setEndTime(endDate);
+
+    // PriceInputView
+    this.#editorView.priceInputView
+      .setPrice(point.basePrice);
+
+    // OfferSelectView
+    const availableOffers = this.#model.getAvailableOffers(point.type);
+
+    const offerSelectStates = availableOffers.map((offer) => {
+      const {id, title, price} = offer;
+
+      const isChecked = point.offerIds.includes(id);
+
+      return [id, title, price, isChecked];
+    });
+
+    this.#editorView.offerSelectView
+      .setOptions(offerSelectStates);
+
+    // DestinationDetailsView
+    const destinationPictureStates = destination.pictures.map((picture) => {
+      const {src, description} = picture;
+
+      return [src, description];
+    });
+
+    this.#editorView.destinationDetailsView
       .setDescription(destination.description)
-      .replaceOffers(...offers.map(this.#createOfferAvailableView, this));
-  }
-
-  /**
-   * Создаст (доступную) дополнительную опцию
-   * @param {Offer} offer
-   */
-  #createOfferAvailableView(offer) {
-    return new OfferAvailableView()
-      .setTitle(offer.title)
-      .setPrice(offer.price);
-  }
-
-  /**
-   * Создаст (выбранную) дополнительную опцию
-   * @param {Offer} offer
-   */
-  #createOfferSelectedView(offer) {
-    return new OfferSelectedView()
-      .setTitle(offer.title)
-      .setPrice(offer.price);
+      .setPictures(destinationPictureStates);
   }
 }
