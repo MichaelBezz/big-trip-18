@@ -39,4 +39,10 @@ const formatTime = (isoDate) => dayjs(isoDate).format('HH:mm');
   */
 const formatDateWithTime = (isoDate) => dayjs(isoDate).format('DD/MM/YY HH:mm');
 
-export {getRandomInteger, getRandomElement, formatDate, formatTime, formatDateWithTime};
+/**
+ * Вернет число в формате для стран 'en'
+ * @param {number} number
+ */
+const formatNumber = (number) => Intl.NumberFormat('en').format(number);
+
+export {getRandomInteger, getRandomElement, formatDate, formatTime, formatDateWithTime, formatNumber};

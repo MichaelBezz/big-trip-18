@@ -2,7 +2,7 @@
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
 import Message from '../enum/message.js';
-import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
+import {formatDate, formatTime, formatDateWithTime, formatNumber} from '../utils.js';
 
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
@@ -135,7 +135,7 @@ export default class RoutePresenter {
 
     // PriceInputView
     this.#pointEditorView.priceInputView
-      .setPrice(point.basePrice);
+      .setPrice(formatNumber(point.basePrice));
 
     // OfferSelectView
     const availableOffers = this.#model.getAvailableOffers(point.type);
