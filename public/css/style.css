@@ -834,17 +834,9 @@ main {
 
 /* custom elements */
 
-/* PointView */
-.trip-events__item {
-  display: block;
-}
-
-/* PointOfferView */
-.event__offer {
-  display: block;
-}
-
-/* OfferSelectView */
-.event__section--offers {
+.trip-events, /* RouteView */
+.trip-events__item, /* PointView */
+.event__offer, /* OfferItemView */
+.event__section--offers { /* OfferSelectView */
   display: block;
 }
