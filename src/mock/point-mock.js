@@ -1,6 +1,6 @@
-import {getRandomInteger, getRandomElement} from '../utils.js';
-import {POINT_TYPES} from './const-mock.js';
 import dayjs from 'dayjs';
+import Type from '../enum/type.js';
+import {getRandomInteger, getRandomElement} from '../utils.js';
 
 const PointPrise = {
   MIN: 10,
@@ -15,7 +15,7 @@ const PointDate = {
   DAY_GAP: 14
 };
 
-const generateType = () => getRandomElement(POINT_TYPES);
+const generateType = () => getRandomElement(Object.values(Type));
 
 const generatePrice = () => getRandomInteger(PointPrise.MIN, PointPrise.MAX) * PointPrise.MULTIPLIER;
 
@@ -62,7 +62,7 @@ const generatePoint = (id) => {
 /**
  * Сгенерирует список событий на маршруте
  * @param {number} length
- * @returns {Point[]}
+ * @return {Point[]}
  */
 const generatePoints = (length = 10) =>
   Array.from({length}, (_item, index) => generatePoint(index + 1));

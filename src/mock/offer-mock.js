@@ -1,5 +1,5 @@
+import Type from '../enum/type.js';
 import {getRandomInteger, getRandomElement} from '../utils.js';
-import {POINT_TYPES} from './const-mock.js';
 
 const OFFER_TITLES = [
   'Order Uber',
@@ -35,9 +35,7 @@ const generateOffer = (id) => ({
 
 /**
  * Сгенерирует список дополнительных опций
- * @param {number} min
- * @param {number} max
- * @returns {Offer[]}
+ * @return {Offer[]}
  */
 const generateOffers = () => {
   const offerQuantity = getRandomInteger(OfferQuantity.MIN, OfferQuantity.MAX);
@@ -47,10 +45,10 @@ const generateOffers = () => {
 
 /**
  * Сгенерирует группы дополнительных опций
- * @return {OfferGroup}
+ * @return {OfferGroup[]}
  */
 const generateOfferGroups = () =>
-  POINT_TYPES.map((type) => ({
+  Object.values(Type).map((type) => ({
     type,
     offers: generateOffers()
   }));

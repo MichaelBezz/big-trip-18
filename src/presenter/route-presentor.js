@@ -1,6 +1,9 @@
 /** @typedef {import('../model/route-model').default} RouteModel */
+import Type from '../enum/type.js';
+import TypeLabel from '../enum/type-label.js';
+import Message from '../enum/message.js';
 import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
-import {POINT_TYPES} from '../mock/const-mock.js';
+
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
 import PointEditorView from '../view/point-editor-view.js';
@@ -27,7 +30,7 @@ export default class RoutePresenter {
       const points = this.#model.getPoints();
 
       if (!points && points.length) {
-        this.#view.showMessage('Click New Event to create your first point');
+        this.#view.showMessage(Message.EVERTHING);
 
         return;
       }
@@ -87,10 +90,12 @@ export default class RoutePresenter {
    */
   #updatePointView(point) {
     // TypeSelectView
-    const typeSelectStates = POINT_TYPES.map((item) => {
-      const label = item;
-      const value = item;
-      const isChecked = item === point.type;
+    const typeSelectStates = Object.values(Type).map((type) => {
+      const keyType = Type.findKey(type);
+
+      const label = TypeLabel[keyType];
+      const value = type;
+      const isChecked = type === point.type;
 
       return [label, value, isChecked];
     });

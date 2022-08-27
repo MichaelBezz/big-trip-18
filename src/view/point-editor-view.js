@@ -70,9 +70,7 @@ export default class PointEditorView extends ComponentView {
     return this;
   }
 
-  /**
-   * @returns Откроет редактор точки (заменив на #linkedView)
-   */
+  /** Откроет редактор точки (заменив на #linkedView) */
   open() {
     this.#linkedView.replaceWith(this);
 
@@ -81,9 +79,7 @@ export default class PointEditorView extends ComponentView {
     return this;
   }
 
-  /**
-   * Закроет редактор точки (заменив на #linkedView)
-   */
+  /** Закроет редактор точки (заменив на #linkedView) */
   close() {
     this.replaceWith(this.#linkedView);
 
