@@ -14,24 +14,24 @@ const clone = (target) =>
 
 /** Модель маршрута */
 export default class RouteModel {
-  /** @type {Point[]} */
   #points = null;
-
-  /** @type {Destination[]} */
   #destinations = null;
-
-  /** @type {OfferGroup[]} */
   #offerGroups = null;
 
   async ready() {
-    if (this.points) {
+    if (this.#points) {
       return;
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    /** @type {Point[]} */
     this.#points = generatePoints();
+
+    /** @type {Destination[]} */
     this.#destinations = generateDestinations();
+
+    /** @type {OfferGroup[]} */
     this.#offerGroups = generateOfferGroups();
   }
 

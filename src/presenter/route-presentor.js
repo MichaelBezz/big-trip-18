@@ -2,29 +2,24 @@ import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
 import {POINT_TYPES} from '../mock/const-mock.js';
 import RouteModel from '../model/route-model.js';
 import RouteView from '../view/route-view.js';
-import SortView from '../view/sort-view.js';
 import PointView from '../view/point-view.js';
 import PointEditorView from '../view/point-editor-view.js';
-import MessageView from '../view/message-view.js';
 
 /** Презентор маршрута */
 export default class RoutePresenter {
-  #container = null;
   #model = null;
   #view = null;
+  #pointEditorView = null;
 
-  #messegeView = null;
-  #sortView = null;
-  #editorView = null;
-
-  constructor(container) {
-    this.#container = container;
+  constructor() {
+    /** @type {RouteModel} */
     this.#model = new RouteModel();
-    this.#view = new RouteView();
 
-    this.#messegeView = new MessageView;
-    this.#sortView = new SortView;
-    this.#editorView = new PointEditorView();
+    /** @type {RouteView} */
+    this.#view = document.querySelector(String(RouteView));
+
+    /** @type {PointEditorView} */
+    this.#pointEditorView = new PointEditorView();
   }
 
   /** Инициализирует RoutePresenter */
@@ -33,14 +28,15 @@ export default class RoutePresenter {
 
     const points = this.#model.getPoints();
 
-    if (points && points.length) {
-      this.#container.append(this.#sortView);
-      this.#view.append(...points.map(this.#createPointView, this));
-    } else {
-      this.#view.append(this.#messegeView);
+    if (!points && points.length) {
+      this.#view.showMessage('Click New Event to create your first point');
+
+      return;
     }
 
-    this.#container.append(this.#view);
+    this.#view
+      .hideMessage()
+      .setPoints(...points.map(this.#createPointView, this));
   }
 
   /**
@@ -76,9 +72,9 @@ export default class RoutePresenter {
       .setPrice(point.basePrice);
 
     pointView.addEventListener(':expand', () => {
-      this.#editorView.close();
+      this.#pointEditorView.close();
       this.#updatePointView(point);
-      this.#editorView
+      this.#pointEditorView
         .link(pointView)
         .open();
     });
@@ -100,7 +96,7 @@ export default class RoutePresenter {
       return [label, value, isChecked];
     });
 
-    this.#editorView.typeSelectView
+    this.#pointEditorView.typeSelectView
       .setOptions(typeSelectStates)
       .select(point.type);
 
@@ -120,7 +116,7 @@ export default class RoutePresenter {
       return [text, value];
     });
 
-    this.#editorView.destinationInputView
+    this.#pointEditorView.destinationInputView
       .setLabel(point.type)
       .setValue(destination.name)
       .setOptions(destinationInputStates);
@@ -129,12 +125,12 @@ export default class RoutePresenter {
     const startDate = formatDateWithTime(point.startDate);
     const endDate = formatDateWithTime(point.endDate);
 
-    this.#editorView.datePickerView
+    this.#pointEditorView.datePickerView
       .setStartTime(startDate)
       .setEndTime(endDate);
 
     // PriceInputView
-    this.#editorView.priceInputView
+    this.#pointEditorView.priceInputView
       .setPrice(point.basePrice);
 
     // OfferSelectView
@@ -148,7 +144,7 @@ export default class RoutePresenter {
       return [id, title, price, isChecked];
     });
 
-    this.#editorView.offerSelectView
+    this.#pointEditorView.offerSelectView
       .setOptions(offerSelectStates);
 
     // DestinationDetailsView
@@ -158,7 +154,7 @@ export default class RoutePresenter {
       return [src, description];
     });
 
-    this.#editorView.destinationDetailsView
+    this.#pointEditorView.destinationDetailsView
       .setDescription(destination.description)
       .setPictures(destinationPictureStates);
   }
