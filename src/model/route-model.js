@@ -13,7 +13,7 @@ const clone = (target) =>
   JSON.parse(JSON.stringify(target));
 
 /** Модель маршрута */
-export default class RouteModel {
+export default class RouteModel extends EventTarget {
   #points = null;
   #destinations = null;
   #offerGroups = null;
@@ -84,5 +84,19 @@ export default class RouteModel {
     const destination = this.#destinations.find((item) => item.id === id);
 
     return clone(destination);
+  }
+
+  /**
+   * Обновит точки
+   * @param {number} id
+   * @param {*} data
+   */
+  async updatePoints(id, data) {
+    /*
+      1. Отправить данные в хранилише
+      2. Сообщить, что точка обновлена
+    */
+
+    this.dispatchEvent(new CustomEvent(':update-point', {detail: id}));
   }
 }
