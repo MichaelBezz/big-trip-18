@@ -1,6 +1,6 @@
+/** @typedef {import('../model/route-model').default} RouteModel */
 import {formatDate, formatTime, formatDateWithTime} from '../utils.js';
 import {POINT_TYPES} from '../mock/const-mock.js';
-import RouteModel from '../model/route-model.js';
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
 import PointEditorView from '../view/point-editor-view.js';
@@ -11,32 +11,31 @@ export default class RoutePresenter {
   #view = null;
   #pointEditorView = null;
 
-  constructor() {
-    /** @type {RouteModel} */
-    this.#model = new RouteModel();
+  /**
+   * @param {RouteModel} model
+   */
+  constructor(model) {
+    this.#model = model;
 
     /** @type {RouteView} */
     this.#view = document.querySelector(String(RouteView));
 
     /** @type {PointEditorView} */
     this.#pointEditorView = new PointEditorView();
-  }
 
-  /** Инициализирует RoutePresenter */
-  async init() {
-    await this.#model.ready();
+    this.#model.ready().then(() => {
+      const points = this.#model.getPoints();
 
-    const points = this.#model.getPoints();
+      if (!points && points.length) {
+        this.#view.showMessage('Click New Event to create your first point');
 
-    if (!points && points.length) {
-      this.#view.showMessage('Click New Event to create your first point');
+        return;
+      }
 
-      return;
-    }
-
-    this.#view
-      .hideMessage()
-      .setPoints(...points.map(this.#createPointView, this));
+      this.#view
+        .hideMessage()
+        .setPoints(...points.map(this.#createPointView, this));
+    });
   }
 
   /**
@@ -54,14 +53,14 @@ export default class RoutePresenter {
     const endTime = formatTime(point.endDate);
 
     const offers = this.#model.getSelectedOffers(point.type, point.offerIds);
-    const offerStates = offers.map((offer) => {
+    const selectedOfferStates = offers.map((offer) => {
       const {title, price} = offer;
 
       return [title, price];
     });
 
     pointView.offerListView
-      .setOffers(offerStates);
+      .setOffers(selectedOfferStates);
 
     pointView
       .setDate(point.startDate, date)
@@ -136,7 +135,7 @@ export default class RoutePresenter {
     // OfferSelectView
     const availableOffers = this.#model.getAvailableOffers(point.type);
 
-    const offerSelectStates = availableOffers.map((offer) => {
+    const availableOfferStates = availableOffers.map((offer) => {
       const {id, title, price} = offer;
 
       const isChecked = point.offerIds.includes(id);
@@ -145,7 +144,7 @@ export default class RoutePresenter {
     });
 
     this.#pointEditorView.offerSelectView
-      .setOptions(offerSelectStates);
+      .setOptions(availableOfferStates);
 
     // DestinationDetailsView
     const destinationPictureStates = destination.pictures.map((picture) => {
