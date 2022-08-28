@@ -56,7 +56,13 @@ export default class EditorPresenter {
 
     this.#view.typeSelectView
       .setOptions(typeSelectStates)
-      .select(point.type);
+      .select(point.type)
+      .addEventListener(':change', (event) => {
+        const keyType = Type.findKey(event.detail);
+
+        this.#view.destinationInputView
+          .setLabel(TypeLabel[keyType]);
+      });
 
     return this;
   }
