@@ -3,7 +3,7 @@ export default class ComponentView extends HTMLElement {
     super();
 
     this.insertAdjacentHTML(
-      this.adjacentHtmlPosition,
+      this.position,
       this.createAdjacentHtml(...arguments)
     );
   }
@@ -12,7 +12,7 @@ export default class ComponentView extends HTMLElement {
    * Задаст позицию дополнительной html-разметки
    * @type {InsertPosition}
    */
-  get adjacentHtmlPosition() {
+  get position() {
     return 'beforeend';
   }
 
