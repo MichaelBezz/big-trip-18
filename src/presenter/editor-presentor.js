@@ -49,9 +49,7 @@ export default class EditorPresenter {
    */
   setTypeSelectView(point) {
     const typeSelectStates = Object.values(Type).map((type) => {
-      const keyType = Type.findKey(type);
-
-      const label = TypeLabel[keyType];
+      const label = TypeLabel[Type.findKey(type)];
       const value = type;
       const isChecked = type === point.type;
 
@@ -62,10 +60,8 @@ export default class EditorPresenter {
       .setOptions(typeSelectStates)
       .select(point.type)
       .addEventListener(':change', (event) => {
-        const keyType = Type.findKey(event.detail);
-
         this.#view.destinationInputView
-          .setLabel(TypeLabel[keyType]);
+          .setLabel(TypeLabel[Type.findKey(event.detail)]);
       });
 
     return this;
