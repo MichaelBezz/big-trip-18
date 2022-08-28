@@ -1,4 +1,5 @@
 /** @typedef {import('../model/route-model').default} RouteModel */
+
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
 import Message from '../enum/message.js';
@@ -12,19 +13,19 @@ import PointEditorView from '../view/point-editor-view.js';
 export default class RoutePresenter {
   #model = null;
   #view = null;
-  #pointEditorView = null;
 
   /**
    * @param {RouteModel} model
    */
   constructor(model) {
+    /** @type {RouteModel} */
     this.#model = model;
 
     /** @type {RouteView} */
     this.#view = document.querySelector(String(RouteView));
 
     /** @type {PointEditorView} */
-    this.#pointEditorView = new PointEditorView();
+    this.pointEditorView = new PointEditorView();
 
     this.#model.ready().then(() => {
       const points = this.#model.getPoints();
@@ -37,7 +38,7 @@ export default class RoutePresenter {
 
       this.#view
         .hideMessage()
-        .setPoints(...points.map(this.#createPointView, this));
+        .setPoints(...points.map(this.createPointView, this));
     });
   }
 
@@ -45,15 +46,11 @@ export default class RoutePresenter {
    * Создаст точку на маршруте
    * @param {AdaptedPoint} point
    */
-  #createPointView(point) {
+  createPointView(point) {
     const pointView = new PointView();
 
     const destination = this.#model.getDestinationById(point.destinationId);
     const compositeTitle = `${point.type} ${destination.name}`;
-
-    const date = formatDate(point.startDate);
-    const startTime = formatTime(point.startDate);
-    const endTime = formatTime(point.endDate);
 
     const offers = this.#model.getSelectedOffers(point.type, point.offerIds);
     const selectedOfferStates = offers.map((offer) => {
@@ -66,17 +63,17 @@ export default class RoutePresenter {
       .setOffers(selectedOfferStates);
 
     pointView
-      .setDate(point.startDate, date)
+      .setDate(point.startDate, formatDate(point.startDate))
       .setIcon(point.type)
       .setTitle(compositeTitle)
-      .setStartTime(point.startDate, startTime)
-      .setEndTime(point.endDate, endTime)
+      .setStartTime(point.startDate, formatTime(point.startDate))
+      .setEndTime(point.endDate, formatTime(point.endDate))
       .setPrice(point.basePrice);
 
     pointView.addEventListener(':expand', () => {
-      this.#pointEditorView.close();
-      this.#updatePointView(point);
-      this.#pointEditorView
+      this.pointEditorView.close();
+      this.updatePointView(point);
+      this.pointEditorView
         .link(pointView)
         .open();
     });
@@ -88,7 +85,7 @@ export default class RoutePresenter {
    * Создаст форму редактирования точки
    * @param {AdaptedPoint} point
    */
-  #updatePointView(point) {
+  updatePointView(point) {
     // TypeSelectView
     const typeSelectStates = Object.values(Type).map((type) => {
       const keyType = Type.findKey(type);
@@ -100,7 +97,7 @@ export default class RoutePresenter {
       return [label, value, isChecked];
     });
 
-    this.#pointEditorView.typeSelectView
+    this.pointEditorView.typeSelectView
       .setOptions(typeSelectStates)
       .select(point.type);
 
@@ -120,21 +117,18 @@ export default class RoutePresenter {
       return [text, value];
     });
 
-    this.#pointEditorView.destinationInputView
+    this.pointEditorView.destinationInputView
       .setLabel(point.type)
       .setValue(destination.name)
       .setOptions(destinationInputStates);
 
     // DatePickerView
-    const startDate = formatDateWithTime(point.startDate);
-    const endDate = formatDateWithTime(point.endDate);
-
-    this.#pointEditorView.datePickerView
-      .setStartTime(startDate)
-      .setEndTime(endDate);
+    this.pointEditorView.datePickerView
+      .setStartTime(formatDateWithTime(point.startDate))
+      .setEndTime(formatDateWithTime(point.endDate));
 
     // PriceInputView
-    this.#pointEditorView.priceInputView
+    this.pointEditorView.priceInputView
       .setPrice(formatNumber(point.basePrice));
 
     // OfferSelectView
@@ -148,7 +142,7 @@ export default class RoutePresenter {
       return [id, title, price, isChecked];
     });
 
-    this.#pointEditorView.offerSelectView
+    this.pointEditorView.offerSelectView
       .setOptions(availableOfferStates);
 
     // DestinationDetailsView
@@ -158,7 +152,7 @@ export default class RoutePresenter {
       return [src, description];
     });
 
-    this.#pointEditorView.destinationDetailsView
+    this.pointEditorView.destinationDetailsView
       .setDescription(destination.description)
       .setPictures(destinationPictureStates);
   }
