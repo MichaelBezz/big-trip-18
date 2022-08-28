@@ -1,3 +1,5 @@
+/** @typedef {import('../model/route-model').default} RouteModel */
+
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
 import {formatDateWithTime, formatNumber} from '../utils.js';
@@ -41,9 +43,11 @@ export default class EditorPresenter {
       .open();
   }
 
-  /** Установит меню с типами */
+  /**
+   * Установит меню с типами
+   * @param {AdaptedPoint} point
+   */
   setTypeSelectView(point) {
-    /** @type {[string, PointType, boolean][]} */
     const typeSelectStates = Object.values(Type).map((type) => {
       const keyType = Type.findKey(type);
 
@@ -67,7 +71,10 @@ export default class EditorPresenter {
     return this;
   }
 
-  /** Установит пункт назначения */
+  /**
+   * Установит пункт назначения
+   * @param {AdaptedPoint} point
+   */
   setDestinationInputView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
@@ -92,7 +99,10 @@ export default class EditorPresenter {
     return this;
   }
 
-  /** Установит дату и время */
+  /**
+   * Установит дату и время
+   * @param {AdaptedPoint} point
+   */
   setDatePickerView(point) {
     this.#view.datePickerView
       .setStartTime(formatDateWithTime(point.startDate))
@@ -101,7 +111,10 @@ export default class EditorPresenter {
     return this;
   }
 
-  /** Установит цену */
+  /**
+   * Установит цену
+   * @param {AdaptedPoint} point
+   */
   setPriceInputView(point) {
     this.#view.priceInputView
       .setPrice(formatNumber(point.basePrice));
@@ -109,7 +122,10 @@ export default class EditorPresenter {
     return this;
   }
 
-  /** Установит список (доступных) опций */
+  /**
+   * Установит список (доступных) опций
+   * @param {AdaptedPoint} point
+   */
   setOfferSelectView(point) {
     const availableOffers = this.#model.getAvailableOffers(point.type);
 
@@ -127,7 +143,10 @@ export default class EditorPresenter {
     return this;
   }
 
-  /** Установит описание пункта назначения */
+  /**
+   * Установит описание пункта назначения
+   * @param {AdaptedPoint} point
+   */
   setDestinationDetailsView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
