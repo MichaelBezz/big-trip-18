@@ -8,7 +8,7 @@ export default class PointAdapter {
     this.destinationId = point.destination;
     this.startDate = point.date_from;
     this.endDate = point.date_to;
-    this.basePrice = point.base_price;
+    this.basePrice = Number(point.base_price);
     this.offerIds = point.offers;
   }
 
