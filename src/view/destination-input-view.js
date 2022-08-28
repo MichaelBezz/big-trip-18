@@ -1,5 +1,6 @@
 import ComponentView, {html} from './component-view.js';
 
+/** Представление пункта назначения */
 export default class DestinationInputView extends ComponentView {
   constructor() {
     super(...arguments);

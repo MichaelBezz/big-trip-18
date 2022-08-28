@@ -1,5 +1,6 @@
 import ComponentView, {html} from './component-view.js';
 
+/** Представление описания пункта назначения */
 export default class DestinationDetailsView extends ComponentView {
   constructor() {
     super(...arguments);

@@ -1,5 +1,6 @@
 import ComponentView, {html} from './component-view.js';
 
+/** Представление цены */
 export default class PriceInputView extends ComponentView {
   constructor() {
     super(...arguments);

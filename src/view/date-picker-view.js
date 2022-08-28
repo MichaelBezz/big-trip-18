@@ -1,5 +1,6 @@
 import ComponentView, {html} from './component-view.js';
 
+/** Представление даты и времени */
 export default class DatePickerView extends ComponentView {
   constructor() {
     super(...arguments);
