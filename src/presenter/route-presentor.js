@@ -1,3 +1,4 @@
+/** @typedef {import('../adapter/point-adapter').default} PointAdapter */
 /** @typedef {import('../model/route-model').default} RouteModel */
 
 import Message from '../enum/message.js';
@@ -15,12 +16,13 @@ export default class RoutePresenter {
    * @param {RouteModel} model
    */
   constructor(model) {
+    /** @type {RouteModel} */
     this.#model = model;
 
     /** @type {RouteView} */
     this.#view = document.querySelector(String(RouteView));
 
-    /** @type {AdaptedPoint[]} */
+    /** @type {PointAdapter[]} */
     this.points = this.#model.getPoints();
 
     if (!this.points && this.points.length) {
@@ -36,7 +38,7 @@ export default class RoutePresenter {
 
   /**
    * Создаст точку на маршруте
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   createPointView(point) {
     const pointView = new PointView(point.id);
