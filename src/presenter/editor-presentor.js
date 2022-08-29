@@ -1,4 +1,5 @@
 /** @typedef {import('../model/route-model').default} RouteModel */
+/** @typedef {import('../view/point-view').default} PointView */
 
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
@@ -15,63 +16,54 @@ export default class EditorPresenter {
    * @param {RouteModel} model
    */
   constructor(model) {
-    /** @type {RouteModel} */
     this.#model = model;
 
     /** @type {PointEditorView} */
     this.#view = new PointEditorView();
+
+    document.addEventListener('point-edit', this.onPointEdit.bind(this));
+    this.#view.addEventListener('type-change', this.onTypeChange.bind(this), true);
   }
 
   /**
-   * Инициализирует EditorPresenter
+   * Обновит точку
    * @param {AdaptedPoint} point
-   * @param {HTMLElement} pointView
    */
-  init(point, pointView) {
-    this.#view.close();
-
-    this
-      .setTypeSelectView(point)
-      .setDestinationInputView(point)
-      .setDatePickerView(point)
-      .setPriceInputView(point)
-      .setOfferSelectView(point)
-      .setDestinationDetailsView(point);
-
-    this.#view
-      .link(pointView)
-      .open();
+  updatePointView(point) {this
+    .updateTypeSelectView(point)
+    .updateDestinationInputView(point)
+    .updateDatePickerView(point)
+    .updatePriceInputView(point)
+    .updateOfferSelectView(point)
+    .updateDestinationDetailsView(point);
   }
 
   /**
-   * Установит меню с типами
+   * Обновит меню с типами
    * @param {AdaptedPoint} point
    */
-  setTypeSelectView(point) {
+  updateTypeSelectView(point) {
+    /** @type {[string, PointType, boolean][]} */
     const typeSelectStates = Object.values(Type).map((type) => {
       const label = TypeLabel[Type.findKey(type)];
       const value = type;
-      const isChecked = type === point.type;
+      const isChecked = (type === point.type);
 
       return [label, value, isChecked];
     });
 
     this.#view.typeSelectView
       .setOptions(typeSelectStates)
-      .select(point.type)
-      .addEventListener(':change', (event) => {
-        this.#view.destinationInputView
-          .setLabel(TypeLabel[Type.findKey(event.detail)]);
-      });
+      .select(point.type);
 
     return this;
   }
 
   /**
-   * Установит пункт назначения
+   * Обновит пункт назначения
    * @param {AdaptedPoint} point
    */
-  setDestinationInputView(point) {
+  updateDestinationInputView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
     const destinationNames = this.#model
@@ -80,12 +72,8 @@ export default class EditorPresenter {
 
     const uniqueDestinationNames = Array.from(new Set(destinationNames));
 
-    const destinationInputStates = uniqueDestinationNames.map((name) => {
-      const text = '';
-      const value = name;
-
-      return [text, value];
-    });
+    /** @type {[string, string][]} */
+    const destinationInputStates = uniqueDestinationNames.map((name) => ['', name]);
 
     this.#view.destinationInputView
       .setLabel(point.type)
@@ -96,10 +84,10 @@ export default class EditorPresenter {
   }
 
   /**
-   * Установит дату и время
+   * Обновит дату и время
    * @param {AdaptedPoint} point
    */
-  setDatePickerView(point) {
+  updateDatePickerView(point) {
     this.#view.datePickerView
       .setStartTime(formatDateWithTime(point.startDate))
       .setEndTime(formatDateWithTime(point.endDate));
@@ -108,10 +96,10 @@ export default class EditorPresenter {
   }
 
   /**
-   * Установит цену
+   * Обновит цену
    * @param {AdaptedPoint} point
    */
-  setPriceInputView(point) {
+  updatePriceInputView(point) {
     this.#view.priceInputView
       .setPrice(formatNumber(point.basePrice));
 
@@ -119,43 +107,76 @@ export default class EditorPresenter {
   }
 
   /**
-   * Установит список (доступных) опций
+   * Обновит список (доступных) опций
    * @param {AdaptedPoint} point
    */
-  setOfferSelectView(point) {
-    const availableOffers = this.#model.getAvailableOffers(point.type);
-
-    const availableOfferStates = availableOffers.map((offer) => {
-      const {id, title, price} = offer;
-
-      const isChecked = point.offerIds.includes(id);
-
-      return [id, title, price, isChecked];
-    });
-
+  updateOfferSelectView(point) {
     this.#view.offerSelectView
-      .setOptions(availableOfferStates);
+      .setOptions(this.updateAvailableOfferStates(point.type, point.offerIds));
 
     return this;
   }
 
   /**
-   * Установит описание пункта назначения
+   * Получит состояния (доступных) опций
+   * @param {PointType} type
+   * @param {Offer[]} offerIds
+   * @return {[number, string, number, boolean][]}
+   */
+  updateAvailableOfferStates(type, offerIds = []) {
+    const availableOffers = this.#model.getAvailableOffers(type);
+
+    return availableOffers.map((offer) => {
+      const {id, title, price} = offer;
+      const isChecked = offerIds.includes(id);
+
+      return [id, title, price, isChecked];
+    });
+  }
+
+  /**
+   * Обновит описание пункта назначения
    * @param {AdaptedPoint} point
    */
-  setDestinationDetailsView(point) {
+  updateDestinationDetailsView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
-    const destinationPictureStates = destination.pictures.map((picture) => {
-      const {src, description} = picture;
-
-      return [src, description];
-    });
+    /** @type {[string, string][]} */
+    const destinationPictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
 
     this.#view.destinationDetailsView
       .setDescription(destination.description)
       .setPictures(destinationPictureStates);
 
     return this;
+  }
+
+  /**
+   * Обработает событие на PointView > point-edit
+   * @param {CustomEvent & {target: PointView, detail: number}} event
+   */
+  onPointEdit(event) {
+    const point = this.#model.getPointById(event.detail);
+
+    this.#view.close();
+    this.updatePointView(point);
+    this.#view
+      .link(event.target)
+      .open();
+  }
+
+  /**
+   * Обрабатывает событие TypeSelectView > type-change
+   * @param {CustomEvent & {detail: PointType}} event
+   */
+  onTypeChange(event) {
+    const typeLabel = TypeLabel[Type.findKey(event.detail)];
+    const availableOfferStates = this.updateAvailableOfferStates(event.detail);
+
+    this.#view.destinationInputView
+      .setLabel(typeLabel);
+
+    this.#view.offerSelectView
+      .setOptions(availableOfferStates);
   }
 }

@@ -43,23 +43,26 @@ export default class TypeSelectView extends ComponentView {
 
   /**
    * Выберет пункт меню и установит иконку
-   * @param {PointType} type
+   * @param {PointType | string} type
    */
   select(type) {
     this.querySelector('img').src = `img/icons/${type}.png`;
+
+    /** @type {HTMLInputElement} */
     this.querySelector(`[value="${type}"]`).checked = true;
 
     return this.switchFlag(false);
   }
 
   switchFlag(flag = true) {
+    /** @type {HTMLInputElement} */
     this.querySelector('.event__type-toggle').checked = flag;
 
     return this;
   }
 
   /**
-   * Обработает событие на инпутах меню
+   * Обработает событие change
    * @param {Event & {target: HTMLInputElement}} event
    */
   onChange(event) {
@@ -67,7 +70,7 @@ export default class TypeSelectView extends ComponentView {
 
     if (type === 'checkbox') {
       this.dispatchEvent(
-        new CustomEvent(':expand', {
+        new CustomEvent('type-expand', {
           detail: checked
         })
       );
@@ -77,7 +80,7 @@ export default class TypeSelectView extends ComponentView {
 
     if (type === 'radio') {
       this.select(value).dispatchEvent(
-        new CustomEvent(':change', {
+        new CustomEvent('type-change', {
           detail: value
         })
       );

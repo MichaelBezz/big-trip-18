@@ -37,17 +37,15 @@ export default class RouteModel extends EventTarget {
 
   /** Получит список точек с отформатированными полями */
   getPoints() {
-    return this.#points.map((point) => new PointAdapter(point));
+    return this.#points.map((point) => new PointAdapter(clone(point)));
   }
 
   /**
    * Получит точку маршрута по id с отформатированными полями
-   * @param {string} id
+   * @param {number} id
    */
   getPointById(id) {
-    const point = new PointAdapter(this.#points.find((item) => item.id === id));
-
-    return clone(point);
+    return this.getPoints().find((item) => item.id === id);
   }
 
   /**
@@ -86,17 +84,17 @@ export default class RouteModel extends EventTarget {
     return clone(destination);
   }
 
-  /**
-   * Обновит точки
-   * @param {number} id
-   * @param {*} data
-   */
-  async updatePoints(id, data) {
-    /*
-      1. Отправить данные в хранилише
-      2. Сообщить, что точка обновлена
-    */
+  // /**
+  //  * Обновит точки
+  //  * @param {number} id
+  //  * @param {*} data
+  //  */
+  // async updatePoints(id, data) {
+  //   /*
+  //     1. Отправить данные в хранилише
+  //     2. Сообщить, что точка обновлена
+  //   */
 
-    this.dispatchEvent(new CustomEvent(':update-point', {detail: id}));
-  }
+  //   this.dispatchEvent(new CustomEvent('update-point', {detail: id}));
+  // }
 }

@@ -3,15 +3,20 @@ import OfferListView from './offer-list-view.js';
 
 /** Представление точки на маршруте */
 export default class PointView extends ComponentView {
-  constructor() {
+  #id = null;
+
+  /**
+   * @param {number} id
+   */
+  constructor(id) {
     super();
+
+    this.#id = id;
 
     /** @type {OfferListView} */
     this.offerListView = this.querySelector(String(OfferListView));
 
-    this.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent(':expand'));
-    });
+    this.addEventListener('click', this.onClick);
   }
 
   /** @override */
@@ -63,6 +68,7 @@ export default class PointView extends ComponentView {
    * @param {PointType} type
    */
   setIcon(type) {
+    /** @type {HTMLImageElement} */
     this.querySelector('.event__type-icon').src = `img/icons/${type}.png`;
 
     return this;
@@ -118,6 +124,23 @@ export default class PointView extends ComponentView {
     this.querySelector('.event__price-value').textContent = price;
 
     return this;
+  }
+
+  /**
+   * Обработает событие click
+   * @param {Event & {target: HTMLButtonElement}} event
+   */
+  onClick(event) {
+    if (!event.target.closest('.event__rollup-btn')) {
+      return;
+    }
+
+    this.dispatchEvent(
+      new CustomEvent('point-edit', {
+        detail: this.#id,
+        bubbles: true
+      })
+    );
   }
 }
 
