@@ -1,7 +1,7 @@
 /**
  * @typedef Point
- * @prop {number} id
- * @prop {OfferType} type
+ * @prop {string} id
+ * @prop {PointType} type
  * @prop {number} destination
  * @prop {string} date_from
  * @prop {string} date_to
@@ -11,10 +11,14 @@
 
 /**
  * @typedef LocalPoint
- * @prop {OfferType} type
+ * @prop {PointType} type
  * @prop {number} destination
  * @prop {string} date_from
  * @prop {string} date_to
  * @prop {number} base_price
  * @prop {number[]} offers
+ */
+
+/**
+ * @typedef {'taxi' | 'bus' | 'train' | 'ship' | 'drive' | 'flight' | 'check-in' | 'sightseeing' | 'restaurant'} PointType
  */

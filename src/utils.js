@@ -12,26 +12,6 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(result);
 };
 
-/**
- * Получит уникальное случайное число
- * @param {number} min
- * @param {number} max
- */
-const getRandomUniqueInteger = (min, max) => {
-  const previousValues = [];
-
-  return () => {
-    let currentValue = getRandomInteger(min, max);
-
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-
-    previousValues.push(currentValue);
-    return currentValue;
-  };
-};
-
 /** Получит случайный элемент из массива данных */
 const getRandomElement = (elements) => {
   const randomIndex = getRandomInteger(0, elements.length - 1);
@@ -46,17 +26,23 @@ const getRandomElement = (elements) => {
 const formatDate = (isoDate) => dayjs(isoDate).format('MMM D');
 
 /**
- * Вернет время в формате 'HH:mm'
- * @param {string} isoDate
- * @return {string}
- */
+  * Вернет время в формате 'HH:mm'
+  * @param {string} isoDate
+  * @return {string}
+  */
 const formatTime = (isoDate) => dayjs(isoDate).format('HH:mm');
 
 /**
- * Вернет дату и время в формате 'DD/MM/YY HH:mm'
- * @param {string} isoDate
- * @return {string}
- */
+  * Вернет дату и время в формате 'DD/MM/YY HH:mm'
+  * @param {string} isoDate
+  * @return {string}
+  */
 const formatDateWithTime = (isoDate) => dayjs(isoDate).format('DD/MM/YY HH:mm');
 
-export {getRandomInteger, getRandomUniqueInteger, getRandomElement, formatDate, formatTime, formatDateWithTime};
+/**
+ * Вернет число в формате для стран 'en'
+ * @param {number} number
+ */
+const formatNumber = (number) => Intl.NumberFormat('en').format(number);
+
+export {getRandomInteger, getRandomElement, formatDate, formatTime, formatDateWithTime, formatNumber};

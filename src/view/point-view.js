@@ -1,19 +1,50 @@
-import BaseView from './base-view.js';
-import createPointTemplate from './point-template.js';
+import ComponentView, {html} from './component-view.js';
+import OfferListView from './offer-list-view.js';
 
 /** Представление точки на маршруте */
-export default class PointView extends BaseView {
-  constructor() {
+export default class PointView extends ComponentView {
+  #id = null;
+
+  /**
+   * @param {number} id
+   */
+  constructor(id) {
     super();
 
-    this.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('expand'));
-    });
+    this.#id = id;
+
+    /** @type {OfferListView} */
+    this.offerListView = this.querySelector(String(OfferListView));
+
+    this.addEventListener('click', this.onClick);
   }
 
   /** @override */
   createAdjacentHtml() {
-    return createPointTemplate();
+    return html`
+      <div class="event">
+        <time class="event__date" datetime=""></time>
+        <div class="event__type">
+          <img class="event__type-icon" width="42" height="42" src="" alt="Event type icon">
+        </div>
+        <h3 class="event__title"></h3>
+        <div class="event__schedule">
+          <p class="event__time">
+            <time class="event__start-time" datetime=""></time>
+            &mdash;
+            <time class="event__end-time" datetime=""></time>
+          </p>
+        </div>
+        <p class="event__price">
+          &euro;&nbsp;<span class="event__price-value"></span>
+        </p>
+        <h4 class="visually-hidden">Offers:</h4>
+        ${OfferListView}
+        <button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>
+      </div>
+    `;
   }
 
   /**
@@ -21,10 +52,10 @@ export default class PointView extends BaseView {
    * @param {string} date
    * @param {string} isoDate
    */
-  setDate(date, isoDate) {
-    const dateView = this.querySelector('.event__date');
+  setDate(isoDate, date) {
+    const view = this.querySelector('.event__date');
 
-    Object.assign(dateView, {
+    Object.assign(view, {
       dateTime: isoDate,
       textContent: date
     });
@@ -34,12 +65,11 @@ export default class PointView extends BaseView {
 
   /**
    * Установит иконку
-   * @param {OfferType} type
+   * @param {PointType} type
    */
   setIcon(type) {
-    const iconView = this.querySelector('.event__type-icon');
-
-    Object.assign(iconView, {src: `img/icons/${type}.png`});
+    /** @type {HTMLImageElement} */
+    this.querySelector('.event__type-icon').src = `img/icons/${type}.png`;
 
     return this;
   }
@@ -49,22 +79,20 @@ export default class PointView extends BaseView {
    * @param {string} title
    */
   setTitle(title) {
-    const titleView = this.querySelector('.event__title');
-
-    Object.assign(titleView, {textContent: title});
+    this.querySelector('.event__title').textContent = title;
 
     return this;
   }
 
   /**
    * Установит время начала
-   * @param {string} time
    * @param {string} isoDate
+   * @param {string} time
    */
-  setStartTime(time, isoDate) {
-    const startTimeView = this.querySelector('.event__start-time');
+  setStartTime(isoDate, time) {
+    const view = this.querySelector('.event__start-time');
 
-    Object.assign(startTimeView, {
+    Object.assign(view, {
       dateTime: isoDate,
       textContent: time
     });
@@ -74,13 +102,13 @@ export default class PointView extends BaseView {
 
   /**
    * Установит время окончания
-   * @param {string} time
    * @param {string} isoDate
+   * @param {string} time
    */
-  setEndTime(time, isoDate) {
-    const endTimeView = this.querySelector('.event__end-time');
+  setEndTime(isoDate, time) {
+    const view = this.querySelector('.event__end-time');
 
-    Object.assign(endTimeView, {
+    Object.assign(view, {
       dateTime: isoDate,
       textContent: time
     });
@@ -93,24 +121,27 @@ export default class PointView extends BaseView {
    * @param {number} price
    */
   setPrice(price) {
-    const priceView = this.querySelector('.event__price-value');
-
-    Object.assign(priceView, {textContent: price});
+    this.querySelector('.event__price-value').textContent = price;
 
     return this;
   }
 
   /**
-   * Заменит дополнительные опции
-   * @param {...HTMLElement} offerViews
+   * Обработает событие click
+   * @param {Event & {target: HTMLButtonElement}} event
    */
-  replaceOffers(...offerViews) {
-    const selectedOffersView = this.querySelector('.event__selected-offers');
+  onClick(event) {
+    if (!event.target.closest('.event__rollup-btn')) {
+      return;
+    }
 
-    selectedOffersView.replaceChildren(...offerViews);
-
-    return this;
+    this.dispatchEvent(
+      new CustomEvent('point-edit', {
+        detail: this.#id,
+        bubbles: true
+      })
+    );
   }
 }
 
-customElements.define('route-point', PointView);
+customElements.define(String(PointView), PointView);

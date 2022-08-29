@@ -1,12 +1,13 @@
-import BaseView from './base-view.js';
-import createMessageTemplate from './message-template.js';
+import ComponentView, {html} from './component-view.js';
 
 /** Представление сообщения */
-export default class MessageView extends BaseView {
+export default class MessageView extends ComponentView {
 
   /** @override */
   createAdjacentHtml() {
-    return createMessageTemplate();
+    return html`
+      <p class="trip-events__msg">Click New Event to create your first point</p>
+    `;
   }
 
   /**
@@ -14,12 +15,10 @@ export default class MessageView extends BaseView {
    * @param {string} message
    */
   setMessage(message) {
-    const messageView = this.querySelector('.trip-events__msg');
-
-    Object.assign(messageView, {textContent: message});
+    this.querySelector('.trip-events__msg').textContent = message;
 
     return this;
   }
 }
 
-customElements.define('route-message', MessageView);
+customElements.define(String(MessageView), MessageView);

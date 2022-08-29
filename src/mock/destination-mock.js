@@ -30,8 +30,6 @@ const generatePictureDescription = () => getRandomElement(POINT_PICTURE_DESCRIPT
 
 /**
  * Сгенерирует список с картинками
- * @param {number} min
- * @param {number} max
  * @return {Picture[]}
  */
 const generatePictures = () => {
@@ -60,7 +58,7 @@ const generateDestination = (id) => ({
 /**
  * Сгенерирует список пунктов назначения
  * @param {number} length
- * @returns {Destination[]}
+ * @return {Destination[]}
  */
 const generateDestinations = (length = 10) =>
   Array.from({length}, (_item, index) => generateDestination(index + 1));

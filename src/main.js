@@ -1,10 +1,11 @@
-import FilterView from './view/filter-view.js';
+import RouteModel from './model/route-model.js';
 import RoutePresenter from './presenter/route-presentor.js';
+import EditorPresenter from './presenter/editor-presentor.js';
+import './view/filter-view.js';
 
-const filterContainer = document.querySelector('.trip-controls__filters');
-const routeContainer = document.querySelector('.trip-events');
+const routModel = new RouteModel();
 
-filterContainer.append(new FilterView);
-
-const routePresenter = new RoutePresenter(routeContainer);
-routePresenter.init();
+routModel.ready().then(() => {
+  new RoutePresenter(routModel);
+  new EditorPresenter(routModel);
+});
