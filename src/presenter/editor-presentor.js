@@ -122,7 +122,7 @@ export default class EditorPresenter {
   /**
    * Получит состояния (доступных) опций
    * @param {PointType} type
-   * @param {Offer[]} offerIds
+   * @param {number[]} offerIds
    * @return {[number, string, number, boolean][]}
    */
   updateAvailableOfferStates(type, offerIds = []) {

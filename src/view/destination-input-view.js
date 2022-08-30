@@ -41,7 +41,8 @@ export default class DestinationInputView extends ComponentView {
    * @param {string} destination
    */
   setValue(destination) {
-    this.querySelector('.event__input--destination').value = destination;
+    /** @type {HTMLInputElement} */
+    (this.querySelector('.event__input--destination')).value = destination;
 
     return this;
   }

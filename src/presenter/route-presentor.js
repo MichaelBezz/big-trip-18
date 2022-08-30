@@ -2,7 +2,7 @@
 /** @typedef {import('../model/route-model').default} RouteModel */
 
 import Message from '../enum/message.js';
-import {formatDate, formatTime} from '../utils.js';
+import {formatDate, formatTime, formatNumber} from '../utils.js';
 
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
@@ -55,7 +55,7 @@ export default class RoutePresenter {
       .setTitle(`${point.type} ${destination.name}`)
       .setStartTime(point.startDate, formatTime(point.startDate))
       .setEndTime(point.endDate, formatTime(point.endDate))
-      .setPrice(point.basePrice);
+      .setPrice(formatNumber(point.basePrice));
 
     pointView.offerListView
       .setOffers(selectedOfferStates);
