@@ -6,8 +6,6 @@ export default class FilterOptionView extends ComponentView {
     super(...arguments);
 
     this.classList.add('trip-filters__filter');
-
-    // this.inputView = this.querySelector('.trip-filters__filter-input');
   }
 
   /**

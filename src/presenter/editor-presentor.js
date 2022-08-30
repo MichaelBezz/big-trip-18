@@ -45,13 +45,12 @@ export default class EditorPresenter {
    * @param {PointAdapter} point
    */
   updateTypeSelectView(point) {
-    /** @type {[string, PointType, boolean][]} */
+    /** @type {[string, PointType][]} */
     const typeSelectStates = Object.values(Type).map((type) => {
       const label = TypeLabel[Type.findKey(type)];
       const value = type;
-      const isChecked = (type === point.type);
 
-      return [label, value, isChecked];
+      return [label, value];
     });
 
     this.#view.typeSelectView

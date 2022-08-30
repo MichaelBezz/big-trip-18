@@ -30,7 +30,7 @@ export default class TypeSelectView extends ComponentView {
 
   /**
    * Установит пункты меню
-   * @param {[string, PointType, boolean][]} states
+   * @param {[string, PointType][]} states
    */
   setOptions(states) {
     const views = states.map((state) => new TypeOptionView(...state));

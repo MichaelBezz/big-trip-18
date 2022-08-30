@@ -12,9 +12,8 @@ export default class TypeOptionView extends ComponentView {
    * @override
    * @param {String} label
    * @param {PointType} value
-   * @param {boolean} isChecked
    */
-  createAdjacentHtml(label, value, isChecked) {
+  createAdjacentHtml(label, value) {
     return html`
       <input
         id="event-type-${value}"
@@ -22,7 +21,6 @@ export default class TypeOptionView extends ComponentView {
         type="radio"
         name="event-type"
         value="${value}"
-        ${isChecked ? 'checked' : ''}
       >
       <label
         class="event__type-label  event__type-label--${value}"
