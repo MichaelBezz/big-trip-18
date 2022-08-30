@@ -1,5 +1,6 @@
 import ComponentView, {html} from './component-view.js';
 import SortView from './sort-view.js';
+import './route-view.css';
 
 /** Представление маршрута путешествия */
 export default class RouteView extends ComponentView {

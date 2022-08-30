@@ -1,4 +1,5 @@
 import ComponentView, {html} from './component-view.js';
+import './offer-item-view.css';
 
 /** Представление (выбранной) дополнительной опции */
 export default class OfferItemView extends ComponentView {

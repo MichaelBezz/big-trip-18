@@ -1,5 +1,6 @@
 import ComponentView, {html} from './component-view.js';
 import OfferOptionView from './offer-option-view.js';
+import './offer-select-view.css';
 
 /** Представление списка (доступных) опций в редакторе */
 export default class OfferSelectView extends ComponentView {
