@@ -1,6 +1,6 @@
 import ComponentView, {html} from './component-view.js';
 import TypeSelectView from './type-select-view.js';
-import DestinationInputView from './destination-input-view.js';
+import DestinationSelectView from './destination-select-view.js';
 import DatePickerView from './date-picker-view.js';
 import PriceInputView from './price-input-view.js';
 import OfferSelectView from './offer-select-view.js';
@@ -16,8 +16,8 @@ export default class PointEditorView extends ComponentView {
     /** @type {TypeSelectView} */
     this.typeSelectView = this.querySelector(String(TypeSelectView));
 
-    /** @type {DestinationInputView} */
-    this.destinationInputView = this.querySelector(String(DestinationInputView));
+    /** @type {DestinationSelectView} */
+    this.destinationInputView = this.querySelector(String(DestinationSelectView));
 
     /** @type {DatePickerView} */
     this.datePickerView = this.querySelector(String(DatePickerView));
@@ -42,7 +42,7 @@ export default class PointEditorView extends ComponentView {
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           ${TypeSelectView}
-          ${DestinationInputView}
+          ${DestinationSelectView}
           ${DatePickerView}
           ${PriceInputView}
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
