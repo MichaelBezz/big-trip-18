@@ -3,11 +3,11 @@
 /** @typedef {import('../view/point-view').default} PointView */
 /** @typedef {import('../view/destination-select-view').default} DestinationSelectView */
 
+import PointEditorView from '../view/point-editor-view.js';
+
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
 import {formatDateWithTime, formatNumber} from '../utils.js';
-
-import PointEditorView from '../view/point-editor-view.js';
 
 /** Презентор формы редактирования */
 export default class EditorPresenter {

@@ -1,11 +1,11 @@
 /** @typedef {import('../adapter/point-adapter').default} PointAdapter */
 /** @typedef {import('../model/route-model').default} RouteModel */
 
-import Message from '../enum/message.js';
-import {formatDate, formatTime, formatNumber} from '../utils.js';
-
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
+
+import Message from '../enum/message.js';
+import {formatDate, formatTime, formatNumber} from '../utils.js';
 
 /** Презентор маршрута */
 export default class RoutePresenter {

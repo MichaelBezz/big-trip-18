@@ -1,11 +1,11 @@
 /** @typedef {import('../model/route-model').default} RouteModel */
 /** @typedef {import('../adapter/point-adapter').default} PointAdapter */
 
+import FilterSelectView from '../view/filter-select-view.js';
+
 import Filter from '../enum/filter.js';
 import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
-
-import FilterSelectView from '../view/filter-select-view.js';
 
 /** Презентор фильтра */
 export default class FilterPresenter {
