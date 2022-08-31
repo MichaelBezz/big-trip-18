@@ -35,7 +35,7 @@ export default class EditorPresenter {
    */
   updatePointView(point) {this
     .updateTypeSelectView(point)
-    .updateDestinationInputView(point)
+    .updateDestinationSelectView(point)
     .updateDatePickerView(point)
     .updatePriceInputView(point)
     .updateOfferSelectView(point)
@@ -66,7 +66,7 @@ export default class EditorPresenter {
    * Обновит пункт назначения
    * @param {PointAdapter} point
    */
-  updateDestinationInputView(point) {
+  updateDestinationSelectView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
     const destinationNames = this.#model
@@ -78,7 +78,7 @@ export default class EditorPresenter {
     /** @type {[string, string][]} */
     const destinationInputStates = uniqueDestinationNames.map((name) => ['', name]);
 
-    this.#view.destinationInputView
+    this.#view.destinationSelectView
       .setLabel(point.type)
       .setValue(destination.name)
       .setOptions(destinationInputStates);
@@ -182,7 +182,7 @@ export default class EditorPresenter {
     const typeLabel = TypeLabel[Type.findKey(event.detail)];
     const availableOfferStates = this.updateAvailableOfferStates(event.detail);
 
-    this.#view.destinationInputView
+    this.#view.destinationSelectView
       .setLabel(typeLabel);
 
     this.#view.offerSelectView

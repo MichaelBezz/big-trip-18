@@ -17,7 +17,7 @@ export default class PointEditorView extends ComponentView {
     this.typeSelectView = this.querySelector(String(TypeSelectView));
 
     /** @type {DestinationSelectView} */
-    this.destinationInputView = this.querySelector(String(DestinationSelectView));
+    this.destinationSelectView = this.querySelector(String(DestinationSelectView));
 
     /** @type {DatePickerView} */
     this.datePickerView = this.querySelector(String(DatePickerView));
