@@ -26,7 +26,8 @@ export default class PriceInputView extends ComponentView {
    * @param {number} price
    */
   setPrice(price) {
-    this.querySelector('.event__input--price').value = price;
+    /** @type {HTMLInputElement} */
+    (this.querySelector('.event__input--price')).value = String(price);
 
     return this;
   }

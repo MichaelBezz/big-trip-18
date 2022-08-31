@@ -1,16 +1,26 @@
 import ComponentView, {html} from './component-view.js';
-import SortView from './sort-view.js';
+import SortSelectView from './sort-select-view.js';
+import './route-view.css';
+
+import Sort from '../enum/sort.js';
+import SortLabel from '../enum/sort-label.js';
+import SortDisabled from '../enum/sort-disabled.js';
 
 /** Представление маршрута путешествия */
 export default class RouteView extends ComponentView {
   constructor() {
     super();
 
-    this.classList.add('trip-events');
+    /** @type {SortSelectView}*/
+    this.sortSelectView = new SortSelectView();
 
-    this.sortView = new SortView();
+    /** @type {HTMLDivElement} */
     this.routeMapView = this.querySelector('.trip-events__list');
+
+    /** @type {HTMLParagraphElement} */
     this.messageView = this.querySelector('.trip-events__msg');
+
+    this.classList.add('trip-events');
   }
 
   /** @override */
@@ -26,7 +36,9 @@ export default class RouteView extends ComponentView {
 
   /** Заменит сообщение на сортировку */
   hideMessage() {
-    this.messageView.replaceWith(this.sortView);
+    this.sortSelectView.setSortOptions(this.createSortStates());
+    this.sortSelectView.select(Sort.DAY);
+    this.messageView.replaceWith(this.sortSelectView);
 
     return this;
   }
@@ -38,9 +50,17 @@ export default class RouteView extends ComponentView {
   showMessage(message) {
     this.messageView.textContent = message;
 
-    this.sortView.replaceWith(this.messageView);
+    this.sortSelectView.replaceWith(this.messageView);
 
     return this;
+  }
+
+  /**
+   * Вернет состояния для сортировки
+   * @return {[string, string, boolean][]}
+   */
+  createSortStates() {
+    return Object.keys(Sort).map((key) => [SortLabel[key], Sort[key], SortDisabled[key]]);
   }
 
   /**

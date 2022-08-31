@@ -1,5 +1,7 @@
+/** @typedef {import('../adapter/point-adapter').default} PointAdapter */
 /** @typedef {import('../model/route-model').default} RouteModel */
 /** @typedef {import('../view/point-view').default} PointView */
+/** @typedef {import('../view/destination-select-view').default} DestinationSelectView */
 
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
@@ -16,6 +18,7 @@ export default class EditorPresenter {
    * @param {RouteModel} model
    */
   constructor(model) {
+    /** @type {RouteModel} */
     this.#model = model;
 
     /** @type {PointEditorView} */
@@ -23,11 +26,12 @@ export default class EditorPresenter {
 
     document.addEventListener('point-edit', this.onPointEdit.bind(this));
     this.#view.addEventListener('type-change', this.onTypeChange.bind(this), true);
+    this.#view.addEventListener('destination-change', this.onDestinationChange.bind(this), true);
   }
 
   /**
    * Обновит точку
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   updatePointView(point) {this
     .updateTypeSelectView(point)
@@ -40,16 +44,15 @@ export default class EditorPresenter {
 
   /**
    * Обновит меню с типами
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   updateTypeSelectView(point) {
-    /** @type {[string, PointType, boolean][]} */
+    /** @type {[string, PointType][]} */
     const typeSelectStates = Object.values(Type).map((type) => {
       const label = TypeLabel[Type.findKey(type)];
       const value = type;
-      const isChecked = (type === point.type);
 
-      return [label, value, isChecked];
+      return [label, value];
     });
 
     this.#view.typeSelectView
@@ -61,7 +64,7 @@ export default class EditorPresenter {
 
   /**
    * Обновит пункт назначения
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   updateDestinationInputView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
@@ -85,7 +88,7 @@ export default class EditorPresenter {
 
   /**
    * Обновит дату и время
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   updateDatePickerView(point) {
     this.#view.datePickerView
@@ -97,7 +100,7 @@ export default class EditorPresenter {
 
   /**
    * Обновит цену
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   updatePriceInputView(point) {
     this.#view.priceInputView
@@ -108,7 +111,7 @@ export default class EditorPresenter {
 
   /**
    * Обновит список (доступных) опций
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   updateOfferSelectView(point) {
     this.#view.offerSelectView
@@ -118,9 +121,9 @@ export default class EditorPresenter {
   }
 
   /**
-   * Получит состояния (доступных) опций
+   * Обновит состояния (доступных) опций
    * @param {PointType} type
-   * @param {Offer[]} offerIds
+   * @param {number[]} offerIds
    * @return {[number, string, number, boolean][]}
    */
   updateAvailableOfferStates(type, offerIds = []) {
@@ -136,19 +139,25 @@ export default class EditorPresenter {
 
   /**
    * Обновит описание пункта назначения
-   * @param {AdaptedPoint} point
+   * @param {PointAdapter} point
    */
   updateDestinationDetailsView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
-    /** @type {[string, string][]} */
-    const destinationPictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
-
     this.#view.destinationDetailsView
       .setDescription(destination.description)
-      .setPictures(destinationPictureStates);
+      .setPictures(this.updateDestinationPictureStates(destination));
 
     return this;
+  }
+
+  /**
+   * Обновит состояние изображений пункта назначения
+   * @param {Destination} destination
+   * @return {[string, string][]}
+   */
+  updateDestinationPictureStates(destination) {
+    return destination.pictures.map((picture) => [picture.src, picture.description]);
   }
 
   /**
@@ -178,5 +187,20 @@ export default class EditorPresenter {
 
     this.#view.offerSelectView
       .setOptions(availableOfferStates);
+  }
+
+  /**
+   * Обработает событие DestinationSelectView > destination-change
+   * @param {CustomEvent & {target: DestinationSelectView}} event
+   */
+  onDestinationChange(event) {
+    const destinations = this.#model.getDestinations();
+    const destinationValue = event.target.getValue();
+
+    const destination = destinations.find((item) => item.name === destinationValue);
+
+    this.#view.destinationDetailsView
+      .setDescription(destination.description)
+      .setPictures(this.updateDestinationPictureStates(destination));
   }
 }

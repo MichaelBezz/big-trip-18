@@ -26,7 +26,8 @@ export default class DatePickerView extends ComponentView {
    * @param {string} isoDate
    */
   setStartTime(isoDate) {
-    this.querySelector('[name="event-start-time"]').value = isoDate;
+    /** @type {HTMLInputElement} */
+    (this.querySelector('[name="event-start-time"]')).value = isoDate;
 
     return this;
   }
@@ -36,7 +37,8 @@ export default class DatePickerView extends ComponentView {
    * @param {string} isoDate
    */
   setEndTime(isoDate) {
-    this.querySelector('[name="event-end-time"]').value = isoDate;
+    /** @type {HTMLInputElement} */
+    (this.querySelector('[name="event-end-time"]')).value = isoDate;
 
     return this;
   }

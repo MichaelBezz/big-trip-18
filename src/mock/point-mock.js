@@ -49,7 +49,7 @@ const generatePoint = (id) => {
   const dateTo = generateDateTo(dateFrom, randomDate);
 
   return ({
-    'id': id,
+    'id': String(id),
     'type': generateType(),
     'destination': id,
     'date_from': dateFrom,

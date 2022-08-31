@@ -69,7 +69,7 @@ export default class PointView extends ComponentView {
    */
   setIcon(type) {
     /** @type {HTMLImageElement} */
-    this.querySelector('.event__type-icon').src = `img/icons/${type}.png`;
+    (this.querySelector('.event__type-icon')).src = `img/icons/${type}.png`;
 
     return this;
   }
@@ -121,7 +121,7 @@ export default class PointView extends ComponentView {
    * @param {number} price
    */
   setPrice(price) {
-    this.querySelector('.event__price-value').textContent = price;
+    this.querySelector('.event__price-value').textContent = String(price);
 
     return this;
   }

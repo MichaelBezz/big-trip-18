@@ -30,7 +30,7 @@ export default class TypeSelectView extends ComponentView {
 
   /**
    * Установит пункты меню
-   * @param {[string, PointType, boolean][]} states
+   * @param {[string, PointType][]} states
    */
   setOptions(states) {
     const views = states.map((state) => new TypeOptionView(...state));
@@ -49,14 +49,14 @@ export default class TypeSelectView extends ComponentView {
     this.querySelector('img').src = `img/icons/${type}.png`;
 
     /** @type {HTMLInputElement} */
-    this.querySelector(`[value="${type}"]`).checked = true;
+    (this.querySelector(`[value="${type}"]`)).checked = true;
 
     return this.switchFlag(false);
   }
 
   switchFlag(flag = true) {
     /** @type {HTMLInputElement} */
-    this.querySelector('.event__type-toggle').checked = flag;
+    (this.querySelector('.event__type-toggle')).checked = flag;
 
     return this;
   }
