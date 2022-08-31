@@ -35,11 +35,12 @@ export default class SortSelectView extends ComponentView {
    * @param {[string, string, boolean][]} states
    */
   setSortOptions(states) {
-    const views = states.map((state) =>
-      Object.assign(new SortOptionView(...state), {
-        className: `trip-sort__item  trip-sort__item--${state[1]}`
-      })
-    );
+    const views = states.map((state) => {
+      const [label, value, isDisabled] = state;
+      const className = `trip-sort__item  trip-sort__item--${value}`;
+
+      return Object.assign(new SortOptionView(label, value, isDisabled), {className});
+    });
 
     this.formView.append(...views);
 
