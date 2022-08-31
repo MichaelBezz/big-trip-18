@@ -33,91 +33,63 @@ export default class EditorPresenter {
    * Обновит точку
    * @param {PointAdapter} point
    */
-  updatePointView(point) {this
-    .updateTypeSelectView(point)
-    .updateDestinationSelectView(point)
-    .updateDatePickerView(point)
-    .updatePriceInputView(point)
-    .updateOfferSelectView(point)
-    .updateDestinationDetailsView(point);
-  }
-
-  /**
-   * Обновит меню с типами
-   * @param {PointAdapter} point
-   */
-  updateTypeSelectView(point) {
-    /** @type {[string, PointType][]} */
-    const typeSelectStates = Object.values(Type).map((type) => {
-      const label = TypeLabel[Type.findKey(type)];
-      const value = type;
-
-      return [label, value];
-    });
-
-    this.#view.typeSelectView
-      .setOptions(typeSelectStates)
-      .select(point.type);
-
-    return this;
-  }
-
-  /**
-   * Обновит пункт назначения
-   * @param {PointAdapter} point
-   */
-  updateDestinationSelectView(point) {
+  updatePointView(point) {
     const destination = this.#model.getDestinationById(point.destinationId);
 
-    const destinationNames = this.#model
-      .getDestinations()
-      .map((item) => item.name);
+    /** TypeSelectView */
+    this.#view.typeSelectView
+      .setOptions(this.updateTypeSelectStates())
+      .select(point.type);
 
-    const uniqueDestinationNames = Array.from(new Set(destinationNames));
-
-    /** @type {[string, string][]} */
-    const destinationInputStates = uniqueDestinationNames.map((name) => ['', name]);
-
+    /** DestinationSelectView */
     this.#view.destinationSelectView
       .setLabel(point.type)
       .setValue(destination.name)
-      .setOptions(destinationInputStates);
+      .setOptions(this.updateDestinationSelectStates());
 
-    return this;
-  }
-
-  /**
-   * Обновит дату и время
-   * @param {PointAdapter} point
-   */
-  updateDatePickerView(point) {
+    /** DatePickerView */
     this.#view.datePickerView
       .setStartTime(formatDateWithTime(point.startDate))
       .setEndTime(formatDateWithTime(point.endDate));
 
-    return this;
-  }
-
-  /**
-   * Обновит цену
-   * @param {PointAdapter} point
-   */
-  updatePriceInputView(point) {
+    /** PriceInputView */
     this.#view.priceInputView
       .setPrice(formatNumber(point.basePrice));
 
-    return this;
-  }
-
-  /**
-   * Обновит список (доступных) опций
-   * @param {PointAdapter} point
-   */
-  updateOfferSelectView(point) {
+    /** OfferSelectView */
     this.#view.offerSelectView
       .setOptions(this.updateAvailableOfferStates(point.type, point.offerIds));
 
-    return this;
+    /** DestinationDetailsView */
+    this.#view.destinationDetailsView
+      .setDescription(destination.description)
+      .setPictures(this.updateDestinationPictureStates(destination.pictures));
+  }
+
+  /**
+   * Обновит состояния меню с типами
+   * @return {[string, PointType][]}
+   */
+  updateTypeSelectStates() {
+    return Object.values(Type).map((type) => {
+      const label = TypeLabel[Type.findKey(type)];
+
+      return [label, type];
+    });
+  }
+
+  /**
+   * Обновит состояния меню c пунктами назначения
+   * @return {[string, string][]}
+   */
+  updateDestinationSelectStates() {
+    const destinationNames = this.#model
+      .getDestinations()
+      .map((destination) => destination.name);
+
+    const uniqueDestinationNames = Array.from(new Set(destinationNames));
+
+    return uniqueDestinationNames.map((name) => ['', name]);
   }
 
   /**
@@ -138,26 +110,12 @@ export default class EditorPresenter {
   }
 
   /**
-   * Обновит описание пункта назначения
-   * @param {PointAdapter} point
-   */
-  updateDestinationDetailsView(point) {
-    const destination = this.#model.getDestinationById(point.destinationId);
-
-    this.#view.destinationDetailsView
-      .setDescription(destination.description)
-      .setPictures(this.updateDestinationPictureStates(destination));
-
-    return this;
-  }
-
-  /**
    * Обновит состояние изображений пункта назначения
-   * @param {Destination} destination
+   * @param {Picture[]} pictures
    * @return {[string, string][]}
    */
-  updateDestinationPictureStates(destination) {
-    return destination.pictures.map((picture) => [picture.src, picture.description]);
+  updateDestinationPictureStates(pictures) {
+    return pictures.map((picture) => [picture.src, picture.description]);
   }
 
   /**
@@ -195,12 +153,12 @@ export default class EditorPresenter {
    */
   onDestinationChange(event) {
     const destinations = this.#model.getDestinations();
-    const destinationValue = event.target.getValue();
+    const destinationSelectValue = event.target.getValue();
 
-    const destination = destinations.find((item) => item.name === destinationValue);
+    const destination = destinations.find((item) => item.name === destinationSelectValue);
 
     this.#view.destinationDetailsView
       .setDescription(destination.description)
-      .setPictures(this.updateDestinationPictureStates(destination));
+      .setPictures(this.updateDestinationPictureStates(destination.pictures));
   }
 }
