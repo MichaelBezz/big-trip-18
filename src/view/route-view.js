@@ -1,10 +1,8 @@
+/** @typedef {import('./point-view').default} PointView */
+
 import ComponentView, {html} from './component-view.js';
 import SortSelectView from './sort-select-view.js';
 import './route-view.css';
-
-import Sort from '../enum/sort.js';
-import SortLabel from '../enum/sort-label.js';
-import SortDisabled from '../enum/sort-disabled.js';
 
 /** Представление маршрута путешествия */
 export default class RouteView extends ComponentView {
@@ -36,8 +34,6 @@ export default class RouteView extends ComponentView {
 
   /** Заменит сообщение на сортировку */
   hideMessage() {
-    this.sortSelectView.setSortOptions(this.createSortStates());
-    this.sortSelectView.select(Sort.DAY);
     this.messageView.replaceWith(this.sortSelectView);
 
     return this;
@@ -56,16 +52,8 @@ export default class RouteView extends ComponentView {
   }
 
   /**
-   * Вернет состояния для сортировки
-   * @return {[string, string, boolean][]}
-   */
-  createSortStates() {
-    return Object.keys(Sort).map((key) => [SortLabel[key], Sort[key], SortDisabled[key]]);
-  }
-
-  /**
    * Установит точки
-   * @param  {HTMLElement[]} views
+   * @param {PointView[]} views
    */
   setPoints(...views) {
     views.forEach((view) => view.classList.add('trip-events__item'));
