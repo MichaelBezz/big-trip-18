@@ -47,7 +47,7 @@ export default class DestinationSelectView extends ComponentView {
 
   /**
    * Установит тип точки
-   * @param {PointType} type
+   * @param {string} type
    */
   setLabel(type) {
     this.labelView.textContent = type;
@@ -104,10 +104,6 @@ export default class DestinationSelectView extends ComponentView {
 
   onChange() {
     this.moveValueToPlaceholder();
-
-    this.dispatchEvent(
-      new CustomEvent('destination-change')
-    );
   }
 
   /**

@@ -30,7 +30,7 @@ export default class TypeSelectView extends ComponentView {
 
   /**
    * Установит пункты меню
-   * @param {[string, PointType][]} states
+   * @param {[string, string][]} states
    */
   setOptions(states) {
     const views = states.map((state) => new TypeOptionView(...state));
@@ -41,20 +41,24 @@ export default class TypeSelectView extends ComponentView {
     return this;
   }
 
-  /**
-   * Выберет пункт меню и установит иконку
-   * @param {PointType | string} type
-   */
-  select(type) {
-    this.querySelector('img').src = `img/icons/${type}.png`;
-
-    /** @type {HTMLInputElement} */
-    (this.querySelector(`[value="${type}"]`)).checked = true;
-
-    return this.switchFlag(false);
+  getValue() {
+    return /** @type {HTMLInputElement} */ (this.querySelector('[type="radio"]:checked')).value;
   }
 
-  switchFlag(flag = true) {
+  /**
+   * Выберет пункт меню и установит иконку
+   * @param {string} value
+   */
+  setValue(value) {
+    this.querySelector('img').src = `img/icons/${value}.png`;
+
+    /** @type {HTMLInputElement} */
+    (this.querySelector(`[value="${value}"]`)).checked = true;
+
+    return this;
+  }
+
+  collapse(flag = true) {
     /** @type {HTMLInputElement} */
     (this.querySelector('.event__type-toggle')).checked = flag;
 
@@ -66,24 +70,16 @@ export default class TypeSelectView extends ComponentView {
    * @param {Event & {target: HTMLInputElement}} event
    */
   onChange(event) {
-    const {type, value, checked} = event.target;
+    const {type, value} = event.target;
 
     if (type === 'checkbox') {
-      this.dispatchEvent(
-        new CustomEvent('type-expand', {
-          detail: checked
-        })
-      );
+      event.stopPropagation();
 
       return;
     }
 
     if (type === 'radio') {
-      this.select(value).dispatchEvent(
-        new CustomEvent('type-change', {
-          detail: value
-        })
-      );
+      this.setValue(value).collapse(false);
     }
   }
 }
