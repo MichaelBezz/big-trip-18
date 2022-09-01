@@ -12,23 +12,24 @@ import {formatDate, formatTime, formatNumber} from '../utils.js';
 
 /** Презентор маршрута */
 export default class RoutePresenter {
+  /** @type {RouteModel} */
   #model = null;
+
+  /** @type {RouteView} */
   #view = null;
+
+  /** @type {PointAdapter[]} */
+  #points = null;
 
   /**
    * @param {RouteModel} model
    */
   constructor(model) {
-    /** @type {RouteModel} */
     this.#model = model;
-
-    /** @type {RouteView} */
     this.#view = document.querySelector(String(RouteView));
+    this.#points = this.#model.getPoints();
 
-    /** @type {PointAdapter[]} */
-    this.points = this.#model.getPoints();
-
-    if (!this.points && this.points.length) {
+    if (!this.#points && this.#points.length) {
       this.#view.showMessage(Message.EVERTHING);
 
       return;
@@ -36,7 +37,7 @@ export default class RoutePresenter {
 
     this.#view
       .hideMessage()
-      .setPoints(...this.points.map(this.createPointView, this));
+      .setPoints(...this.#points.map(this.createPointView, this));
 
     this.#view.sortSelectView
       .setSortOptions(this.createSortStates())

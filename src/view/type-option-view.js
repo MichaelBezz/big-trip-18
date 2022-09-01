@@ -11,7 +11,7 @@ export default class TypeOptionView extends ComponentView {
   /**
    * @override
    * @param {String} label
-   * @param {PointType} value
+   * @param {string} value
    */
   createAdjacentHtml(label, value) {
     return html`

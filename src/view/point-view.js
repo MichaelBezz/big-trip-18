@@ -65,7 +65,7 @@ export default class PointView extends ComponentView {
 
   /**
    * Установит иконку
-   * @param {PointType} type
+   * @param {string} type
    */
   setIcon(type) {
     /** @type {HTMLImageElement} */
