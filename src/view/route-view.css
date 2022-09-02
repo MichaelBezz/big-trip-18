@@ -1,9 +1,4 @@
 /* RouteView */
-.trip-events {
-  display: block;
-}
-
-/* PointView */
-.trip-events__item {
+.trip-events:not([hidden]) {
   display: block;
 }
