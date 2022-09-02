@@ -3,12 +3,21 @@ import ComponentView, {html} from './component-view.js';
 /** Представление пункта сортировки */
 export default class SortOptionView extends ComponentView {
   /**
+   * @param {string} label
+   * @param {string} value
+   */
+  constructor(label, value) {
+    super(label, value);
+
+    this.classList.add('trip-sort__item',`trip-sort__item--${value}`);
+  }
+
+  /**
    * @override
    * @param {string} label
    * @param {string} value
-   * @param {boolean} isDisabled
    */
-  createAdjacentHtml(label, value, isDisabled) {
+  createAdjacentHtml(label, value) {
     return html`
       <input
         id="sort-${value}"
@@ -16,7 +25,6 @@ export default class SortOptionView extends ComponentView {
         type="radio"
         name="trip-sort"
         value="sort-${value}"
-        ${isDisabled ? 'disabled' : ''}
       >
       <label class="trip-sort__btn" for="sort-${value}">
         ${label}

@@ -3,12 +3,6 @@ import SortOptionView from './sort-option-view.js';
 
 /** Представление списка сортировки */
 export default class SortSelectView extends ComponentView {
-  constructor() {
-    super();
-
-    /** @type {HTMLFormElement} */
-    this.formView = this.querySelector('form.trip-sort');
-  }
 
   /** @override */
   createAdjacentHtml() {
@@ -17,6 +11,18 @@ export default class SortSelectView extends ComponentView {
         <!-- SortOptionView -->
       </form>
     `;
+  }
+
+  /**
+   * Установит пункты сортировки
+   * @param {[string, string, ][]} states
+   */
+  setOptions(states) {
+    const views = states.map((state) => new SortOptionView(...state));
+
+    this.querySelector('form.trip-sort').append(...views);
+
+    return this;
   }
 
   /**
@@ -31,18 +37,15 @@ export default class SortSelectView extends ComponentView {
   }
 
   /**
-   * Установит пункты сортировки
-   * @param {[string, string, boolean][]} states
+   * Установит флаг disabled
+   * @param {boolean[]} flags
    */
-  setSortOptions(states) {
-    const views = states.map((state) => {
-      const [label, value, isDisabled] = state;
-      const className = `trip-sort__item  trip-sort__item--${value}`;
+  setOptionsDisabled(flags) {
+    const views = this.querySelectorAll('input');
 
-      return Object.assign(new SortOptionView(label, value, isDisabled), {className});
+    flags.forEach((flag, index) => {
+      views[index].disabled = flag;
     });
-
-    this.formView.append(...views);
 
     return this;
   }
