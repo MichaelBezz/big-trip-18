@@ -19,7 +19,7 @@ export default class DestinationSelectView extends ComponentView {
     this.addEventListener('focus', this.onFocus, true);
     this.addEventListener('change', this.onChange);
     this.addEventListener('keydown', this.onKeydown);
-    this.addEventListener('blur', this.onBlure);
+    this.addEventListener('blur', this.onBlur);
   }
 
   /** @override */
@@ -87,7 +87,7 @@ export default class DestinationSelectView extends ComponentView {
   }
 
   /**
-   * Установит пункты назначениея в datalist
+   * Установит пункты назначения в datalist
    * @param {[string, string][]} states
    */
   setOptions(states) {
@@ -115,7 +115,7 @@ export default class DestinationSelectView extends ComponentView {
     }
   }
 
-  onBlure() {
+  onBlur() {
     this.movePlaceholderToValue();
   }
 }

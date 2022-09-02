@@ -35,7 +35,7 @@ export default class EditorPresenter {
   }
 
   buildTypeSelectView() {
-    /** @type {[string, string][]} */
+    /** @type {[label: string, value: string][]} */
     const optionStates = Object.values(Type).map((type) => {
       const key = Type.findKey(type);
       const label = TypeLabel[key];
@@ -52,7 +52,7 @@ export default class EditorPresenter {
       .getDestinations()
       .map((destination) => destination.name);
 
-    /** @type {[string, string][]} */
+    /** @type {[label: string, value: string][]} */
     const optionStates = [...new Set(destinationNames)].map((name) => ['', name]);
 
     this.#view.destinationSelectView
@@ -85,7 +85,7 @@ export default class EditorPresenter {
     const selectedType = this.#view.typeSelectView.getValue();
     const availableOffers = this.#model.getAvailableOffers(selectedType);
 
-    /** @type {[number, string, number, boolean][]} */
+    /** @type {[id: number, title: string, price: number, isChecked: boolean][]} */
     const optionStates = availableOffers.map((offer) => {
       const {id, title, price} = offer;
       const isChecked = this.#point.offerIds.includes(id);
@@ -101,7 +101,7 @@ export default class EditorPresenter {
     const selectedDestinationName = this.#view.destinationSelectView.getValue();
     const destination = this.#model.getDestinations().find((item) => item.name === selectedDestinationName);
 
-    /** @type {[string, string][]} */
+    /** @type {[src: string, alt: string][]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
 
     this.#view.destinationDetailsView

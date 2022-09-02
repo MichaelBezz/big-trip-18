@@ -30,7 +30,7 @@ export default class RoutePresenter {
     this.#points = this.#model.getPoints();
 
     if (!this.#points && this.#points.length) {
-      this.#view.showMessage(Message.EVERTHING);
+      this.#view.showMessage(Message.EVERYTHING);
 
       return;
     }
@@ -40,7 +40,8 @@ export default class RoutePresenter {
       .setPoints(...this.#points.map(this.createPointView, this));
 
     this.#view.sortSelectView
-      .setSortOptions(this.createSortStates())
+      .setOptions(this.createSortStates())
+      .setOptionsDisabled(Object.values(SortDisabled))
       .select(Sort.DAY);
   }
 
@@ -50,7 +51,12 @@ export default class RoutePresenter {
    */
   createPointView(point) {
     const pointView = new PointView(point.id);
+
     const destination = this.#model.getDestinationById(point.destinationId);
+    const selectedOffers = this.#model.getSelectedOffers(point.type, point.offerIds);
+
+    /** @type {[string, number][]} */
+    const selectedOfferStates = selectedOffers.map((offer) => [offer.title, offer.price]);
 
     pointView
       .setDate(point.startDate, formatDate(point.startDate))
@@ -61,27 +67,16 @@ export default class RoutePresenter {
       .setPrice(formatNumber(point.basePrice));
 
     pointView.offerListView
-      .setOffers(this.createSelectedOfferStates(point));
+      .setOffers(selectedOfferStates);
 
     return pointView;
   }
 
   /**
-   * Создаст состояния для (выбранных) опций
-   * @param {PointAdapter} point
-   * @return {[string, number][]}
-   */
-  createSelectedOfferStates(point) {
-    const selectedOffers = this.#model.getSelectedOffers(point.type, point.offerIds);
-
-    return selectedOffers.map((offer) => [offer.title, offer.price]);
-  }
-
-  /**
    * Создаст состояния для сортировки
-   * @return {[string, string, boolean][]}
+   * @return {[label: string, value: string][]}
    */
   createSortStates() {
-    return Object.keys(Sort).map((key) => [SortLabel[key], Sort[key], SortDisabled[key]]);
+    return Object.keys(Sort).map((key) => [SortLabel[key], Sort[key]]);
   }
 }

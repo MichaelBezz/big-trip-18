@@ -1,7 +1,7 @@
 import RouteModel from './model/route-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
-import RoutePresenter from './presenter/route-presentor.js';
-import EditorPresenter from './presenter/editor-presentor.js';
+import RoutePresenter from './presenter/route-presenter.js';
+import EditorPresenter from './presenter/editor-presenter.js';
 
 const routModel = new RouteModel();
 
