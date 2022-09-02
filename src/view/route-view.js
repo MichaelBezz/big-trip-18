@@ -33,7 +33,7 @@ export default class RouteView extends ComponentView {
   }
 
   /** Заменит сообщение на сортировку */
-  hideMessage() {
+  hidePlaceholder() {
     this.messageView.replaceWith(this.sortSelectView);
 
     return this;
@@ -43,7 +43,7 @@ export default class RouteView extends ComponentView {
    * Покажет сообщение и уберет сортировку
    * @param {string} message
    */
-  showMessage(message) {
+  showPlaceholder(message) {
     this.messageView.textContent = message;
 
     this.sortSelectView.replaceWith(this.messageView);

@@ -4,7 +4,7 @@
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
 
-import Message from '../enum/message.js';
+import FilterPlaceholder from '../enum/filter-placeholder.js';
 import Sort from '../enum/sort.js';
 import SortLabel from '../enum/sort-label.js';
 import SortDisabled from '../enum/sort-disabled.js';
@@ -30,13 +30,13 @@ export default class RoutePresenter {
     this.#points = this.#model.getPoints();
 
     if (!this.#points && this.#points.length) {
-      this.#view.showMessage(Message.EVERYTHING);
+      this.#view.showPlaceholder(FilterPlaceholder.EVERYTHING);
 
       return;
     }
 
     this.#view
-      .hideMessage()
+      .hidePlaceholder()
       .setPoints(...this.#points.map(this.createPointView, this));
 
     this.#view.sortSelectView

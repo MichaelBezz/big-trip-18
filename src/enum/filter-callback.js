@@ -2,7 +2,7 @@
 
 import Enum from './enum.js';
 
-export default class FilterPredicate extends Enum {
+export default class FilterCallback extends Enum {
   static EVERYTHING = () => true;
 
   /**
