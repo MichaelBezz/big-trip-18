@@ -1,8 +1,8 @@
 import ComponentView, {html} from './component-view.js';
-import './offer-item-view.css';
+import './point-offer-view.css';
 
 /** Представление (выбранной) дополнительной опции */
-export default class OfferItemView extends ComponentView {
+export default class PointOfferView extends ComponentView {
   constructor() {
     super(...arguments);
 
@@ -23,4 +23,4 @@ export default class OfferItemView extends ComponentView {
   }
 }
 
-customElements.define(String(OfferItemView), OfferItemView);
+customElements.define(String(PointOfferView), PointOfferView);

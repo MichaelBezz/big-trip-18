@@ -64,9 +64,7 @@ export default class RoutePresenter {
       .setTitle(`${point.type} ${destination.name}`)
       .setStartTime(point.startDate, formatTime(point.startDate))
       .setEndTime(point.endDate, formatTime(point.endDate))
-      .setPrice(formatNumber(point.basePrice));
-
-    pointView.offerListView
+      .setPrice(formatNumber(point.basePrice))
       .setOffers(selectedOfferStates);
 
     return pointView;

@@ -24,7 +24,7 @@ export default class SortOptionView extends ComponentView {
         class="trip-sort__input  visually-hidden"
         type="radio"
         name="trip-sort"
-        value="sort-${value}"
+        value="${value}"
       >
       <label class="trip-sort__btn" for="sort-${value}">
         ${label}
