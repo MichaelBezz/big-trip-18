@@ -16,7 +16,7 @@ export default class RouteView extends ComponentView {
     this.routeMapView = this.querySelector('.trip-events__list');
 
     /** @type {HTMLParagraphElement} */
-    this.messageView = this.querySelector('.trip-events__msg');
+    this.placeholderView = this.querySelector('.trip-events__msg');
 
     this.classList.add('trip-events');
   }
@@ -34,7 +34,7 @@ export default class RouteView extends ComponentView {
 
   /** Заменит сообщение на сортировку */
   hidePlaceholder() {
-    this.messageView.replaceWith(this.sortSelectView);
+    this.placeholderView.replaceWith(this.sortSelectView);
 
     return this;
   }
@@ -44,9 +44,9 @@ export default class RouteView extends ComponentView {
    * @param {string} message
    */
   showPlaceholder(message) {
-    this.messageView.textContent = message;
+    this.placeholderView.textContent = message;
 
-    this.sortSelectView.replaceWith(this.messageView);
+    this.sortSelectView.replaceWith(this.placeholderView);
 
     return this;
   }
