@@ -56,8 +56,6 @@ export default class RouteView extends ComponentView {
    * @param {PointView[]} views
    */
   setPoints(...views) {
-    views.forEach((view) => view.classList.add('trip-events__item'));
-
     this.routeMapView.replaceChildren(...views);
 
     return this;

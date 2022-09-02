@@ -33,7 +33,7 @@ export default class DestinationDetailsView extends ComponentView {
 
   /**
    * Установит картинки
-   * @param {[string, string][]} states
+   * @param {[src: string, alt: string][]} states
    */
   setPictures(states) {
     const views = states.map(([src, alt]) =>

@@ -21,8 +21,8 @@ export default class OfferSelectView extends ComponentView {
   }
 
   /**
-   * Устиановит доступные опции
-   * @param {[number, string, number, boolean][]} states
+   * Установит доступные опции
+   * @param {[id: number, title: string, price: number, isChecked: boolean][]} states
    */
   setOptions(states) {
     const views = states.map((state) => new OfferOptionView(...state));

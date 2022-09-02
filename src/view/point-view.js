@@ -16,6 +16,7 @@ export default class PointView extends ComponentView {
     /** @type {OfferListView} */
     this.offerListView = this.querySelector(String(OfferListView));
 
+    this.classList.add('trip-events__item');
     this.addEventListener('click', this.onClick);
   }
 
