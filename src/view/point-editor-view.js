@@ -31,9 +31,7 @@ export default class PointEditorView extends ComponentView {
     /** @type {DestinationDetailsView} */
     this.destinationDetailsView = this.querySelector(String(DestinationDetailsView));
 
-    this.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      this.close();
-    });
+    this.addEventListener('click', this.onClick);
   }
 
   /** @override */
@@ -74,7 +72,7 @@ export default class PointEditorView extends ComponentView {
   open() {
     this.#linkedView.replaceWith(this);
 
-    document.addEventListener('keydown', this);
+    document.addEventListener('keydown', this.onDocumentKeydown);
 
     return this;
   }
@@ -83,20 +81,35 @@ export default class PointEditorView extends ComponentView {
   close() {
     this.replaceWith(this.#linkedView);
 
-    document.removeEventListener('keydown', this);
+    document.removeEventListener('keydown', this.onDocumentKeydown);
 
     return this;
   }
 
   /**
-   * Обработает событие по нажатию на клавишу Esc
-   * @param {KeyboardEvent} event
+   * @param {MouseEvent & {target: Element}} event
    */
-  handleEvent(event) {
-    if (event.key === 'Escape') {
-      event.preventDefault();
+  onClick(event) {
+    if (event.target.closest('.event__rollup-btn')) {
       this.close();
     }
+  }
+
+  /**
+   * @this {Document}
+   * @param {KeyboardEvent} event
+   */
+  onDocumentKeydown(event) {
+    // NOTE Событие без key при выборе опции в TypeSelectView
+    if (!event.key?.startsWith('Esc')) {
+      return;
+    }
+
+    event.preventDefault();
+
+    /** @type {PointEditorView} */
+    const editorView = document.querySelector(String(PointEditorView));
+    editorView.close();
   }
 }
 
