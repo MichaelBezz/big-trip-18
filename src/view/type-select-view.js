@@ -1,8 +1,8 @@
-import ComponentView, {html} from './component-view.js';
+import RadioGroupView, {html} from './radio-group-view.js';
 import TypeOptionView from './type-option-view.js';
 
 /** Представление меню типов */
-export default class TypeSelectView extends ComponentView {
+export default class TypeSelectView extends RadioGroupView {
   constructor() {
     super(...arguments);
 
@@ -30,19 +30,14 @@ export default class TypeSelectView extends ComponentView {
 
   /**
    * Установит пункты меню
-   * @param {[string, string][]} states
+   * @param {[label: string, value: string][]} states
    */
   setOptions(states) {
     const views = states.map((state) => new TypeOptionView(...state));
 
-    this.querySelectorAll('legend ~ *').forEach((view) => view.remove());
     this.querySelector('legend').after(...views);
 
     return this;
-  }
-
-  getValue() {
-    return /** @type {HTMLInputElement} */ (this.querySelector('[type="radio"]:checked')).value;
   }
 
   /**
@@ -50,10 +45,9 @@ export default class TypeSelectView extends ComponentView {
    * @param {string} value
    */
   setValue(value) {
-    this.querySelector('img').src = `img/icons/${value}.png`;
+    super.setValue(value);
 
-    /** @type {HTMLInputElement} */
-    (this.querySelector(`[value="${value}"]`)).checked = true;
+    this.querySelector('img').src = `img/icons/${value}.png`;
 
     return this;
   }

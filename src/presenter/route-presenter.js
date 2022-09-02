@@ -42,7 +42,7 @@ export default class RoutePresenter {
     this.#view.sortSelectView
       .setOptions(this.createSortStates())
       .setOptionsDisabled(Object.values(SortDisabled))
-      .select(Sort.DAY);
+      .setValue(Sort.DAY);
   }
 
   /**

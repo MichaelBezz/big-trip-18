@@ -1,8 +1,8 @@
-import ComponentView, {html} from './component-view.js';
+import RadioGroupView, {html} from './radio-group-view.js';
 import SortOptionView from './sort-option-view.js';
 
 /** Представление списка сортировки */
-export default class SortSelectView extends ComponentView {
+export default class SortSelectView extends RadioGroupView {
 
   /** @override */
   createAdjacentHtml() {
@@ -15,37 +15,12 @@ export default class SortSelectView extends ComponentView {
 
   /**
    * Установит пункты сортировки
-   * @param {[string, string, ][]} states
+   * @param {[label: string, value: string][]} states
    */
   setOptions(states) {
     const views = states.map((state) => new SortOptionView(...state));
 
-    this.querySelector('form.trip-sort').append(...views);
-
-    return this;
-  }
-
-  /**
-   * Выберет сортировку
-   * @param {string} sortType
-   */
-  select(sortType) {
-    /** @type {HTMLInputElement} */
-    (this.querySelector(`[value="sort-${sortType}"]`)).checked = true;
-
-    return this;
-  }
-
-  /**
-   * Установит флаг disabled
-   * @param {boolean[]} flags
-   */
-  setOptionsDisabled(flags) {
-    const views = this.querySelectorAll('input');
-
-    flags.forEach((flag, index) => {
-      views[index].disabled = flag;
-    });
+    this.querySelector('.trip-sort').append(...views);
 
     return this;
   }

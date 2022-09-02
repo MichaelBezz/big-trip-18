@@ -37,7 +37,7 @@ export default class FilterPresenter {
       .setOptionsDisabled(
         Object.keys(Filter).map((key) => !this.#points.filter(FilterPredicate[key]).length)
       )
-      .select(Filter.EVERYTHING);
+      .setValue(Filter.EVERYTHING);
 
     this.#container.append(this.#view);
   }
