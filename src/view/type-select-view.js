@@ -4,7 +4,7 @@ import TypeOptionView from './type-option-view.js';
 /** Представление меню типов */
 export default class TypeSelectView extends RadioGroupView {
   constructor() {
-    super(...arguments);
+    super();
 
     this.classList.add('event__type-wrapper');
 
@@ -30,7 +30,7 @@ export default class TypeSelectView extends RadioGroupView {
 
   /**
    * Установит пункты меню
-   * @param {[label: string, value: string][]} states
+   * @param {TypeOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new TypeOptionView(...state));
@@ -52,6 +52,10 @@ export default class TypeSelectView extends RadioGroupView {
     return this;
   }
 
+  /**
+   * Закроет меню типов
+   * @param {boolean} flag
+   */
   collapse(flag = true) {
     /** @type {HTMLInputElement} */
     (this.querySelector('.event__type-toggle')).checked = flag;
@@ -60,7 +64,6 @@ export default class TypeSelectView extends RadioGroupView {
   }
 
   /**
-   * Обработает событие change
    * @param {Event & {target: HTMLInputElement}} event
    */
   onChange(event) {

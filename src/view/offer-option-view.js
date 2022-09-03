@@ -1,21 +1,25 @@
+/** @typedef {[id: number, title: string, price: number, isChecked: boolean]} OfferOptionState */
+
 import ComponentView, {html} from './component-view.js';
 
 /** Представление (доступной) дополнительной опции в редакторе */
 export default class OfferOptionView extends ComponentView {
-  constructor() {
-    super(...arguments);
+  /**
+   * @param  {OfferOptionState} state
+   */
+  constructor(...state) {
+    super(...state);
 
     this.classList.add('event__offer-selector');
   }
 
   /**
    * @override
-   * @param {number} id
-   * @param {string} title
-   * @param {number} price
-   * @param {boolean} isChecked
+   * @param {OfferOptionState} state
    */
-  createAdjacentHtml(id, title, price, isChecked) {
+  createAdjacentHtml(...state) {
+    const [id, title, price, isChecked] = state;
+
     return html`
       <input
         class="event__offer-checkbox  visually-hidden"

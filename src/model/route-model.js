@@ -102,7 +102,7 @@ export default class RouteModel extends EventTarget {
   //  */
   // async updatePoints(id, data) {
   //   /*
-  //     1. Отправить данные в хранилише
+  //     1. Отправить данные в хранилище
   //     2. Сообщить, что точка обновлена
   //   */
 

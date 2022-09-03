@@ -55,7 +55,7 @@ export default class RoutePresenter {
     const destination = this.#model.getDestinationById(point.destinationId);
     const selectedOffers = this.#model.getSelectedOffers(point.type, point.offerIds);
 
-    /** @type {[string, number][]} */
+    /** @type {PointOfferState[]} */
     const selectedOfferStates = selectedOffers.map((offer) => [offer.title, offer.price]);
 
     pointView
@@ -72,7 +72,7 @@ export default class RoutePresenter {
 
   /**
    * Создаст состояния для сортировки
-   * @return {[label: string, value: string][]}
+   * @return {SortOptionState[]}
    */
   createSortStates() {
     return Object.keys(Sort).map((key) => [SortLabel[key], Sort[key]]);

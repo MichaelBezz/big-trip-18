@@ -129,7 +129,7 @@ export default class PointView extends ComponentView {
 
   /**
    * Установит (выбранные) дополнительные опции
-   * @param {[string, number][]} states
+   * @param {PointOfferState[]} states
    */
   setOffers(states) {
     const views = states.map((state) => new PointOfferView(...state));
@@ -140,7 +140,6 @@ export default class PointView extends ComponentView {
   }
 
   /**
-   * Обработает событие click
    * @param {Event & {target: HTMLButtonElement}} event
    */
   onClick(event) {

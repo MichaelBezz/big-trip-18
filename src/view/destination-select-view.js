@@ -1,9 +1,11 @@
+/** @typedef {[text: string, value: string]} DestinationOptionState */
+
 import ComponentView, {html} from './component-view.js';
 
 /** Представление пункта назначения */
 export default class DestinationSelectView extends ComponentView {
   constructor() {
-    super(...arguments);
+    super();
 
     /** @type {HTMLLabelElement} */
     this.labelView = this.querySelector('label.event__label');
@@ -88,7 +90,7 @@ export default class DestinationSelectView extends ComponentView {
 
   /**
    * Установит пункты назначения в datalist
-   * @param {[string, string][]} states
+   * @param {DestinationOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new Option(...state));

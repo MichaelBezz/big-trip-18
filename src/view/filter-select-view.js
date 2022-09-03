@@ -3,7 +3,6 @@ import FilterOptionView from './filter-option-view.js';
 
 /** Представление списка фильтров */
 export default class FilterSelectView extends RadioGroupView {
-
   /** @override */
   createAdjacentHtml() {
     return html`
@@ -16,7 +15,7 @@ export default class FilterSelectView extends RadioGroupView {
 
   /**
    * Установит фильтры
-   * @param {[label: string, value: string][]} states
+   * @param {FilterOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new FilterOptionView(...state));

@@ -3,7 +3,6 @@ import SortOptionView from './sort-option-view.js';
 
 /** Представление списка сортировки */
 export default class SortSelectView extends RadioGroupView {
-
   /** @override */
   createAdjacentHtml() {
     return html`
@@ -15,7 +14,7 @@ export default class SortSelectView extends RadioGroupView {
 
   /**
    * Установит пункты сортировки
-   * @param {[label: string, value: string][]} states
+   * @param {SortOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new SortOptionView(...state));

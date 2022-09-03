@@ -3,14 +3,12 @@ import ComponentView, {html} from './component-view.js';
 /** Представление даты и времени */
 export default class DatePickerView extends ComponentView {
   constructor() {
-    super(...arguments);
+    super();
 
     this.classList.add('event__field-group', 'event__field-group--time');
   }
 
-  /**
-   * @override
-   */
+  /** @override */
   createAdjacentHtml() {
     return html`
       <label class="visually-hidden" for="event-start-time-1">From</label>

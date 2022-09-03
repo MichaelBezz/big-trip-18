@@ -5,7 +5,7 @@ import './offer-select-view.css';
 /** Представление списка (доступных) опций в редакторе */
 export default class OfferSelectView extends ComponentView {
   constructor() {
-    super(...arguments);
+    super();
 
     this.classList.add('event__section', 'event__section--offers');
   }
@@ -22,7 +22,7 @@ export default class OfferSelectView extends ComponentView {
 
   /**
    * Установит доступные опции
-   * @param {[id: number, title: string, price: number, isChecked: boolean][]} states
+   * @param {OfferOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new OfferOptionView(...state));
