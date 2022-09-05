@@ -41,7 +41,7 @@ export default class Store {
   }
 
   /**
-   * Получить список Item
+   * Получит список Item
    * @return {Promise<Item[]>}
    */
   list() {
@@ -51,7 +51,7 @@ export default class Store {
   }
 
   /**
-   * Добавить Item
+   * Добавит Item
    * @param {Item} item
    * @return {Promise<Item>}
    */
@@ -63,7 +63,7 @@ export default class Store {
   }
 
   /**
-   * Обновить Item
+   * Обновит Item
    * @param {ItemId} id
    * @param {Item} item
    * @return {Promise<Item>}
