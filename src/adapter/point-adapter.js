@@ -1,8 +1,12 @@
-export default class PointAdapter {
+import Adapter from './adapter.js';
+
+export default class PointAdapter extends Adapter {
   /**
    * @param {Point} point
    */
   constructor(point) {
+    super();
+
     this.id = Number(point.id);
     this.type = point.type;
     this.destinationId = point.destination;
@@ -13,6 +17,7 @@ export default class PointAdapter {
   }
 
   /**
+   * @override
    * @return {Point}
    */
   toJSON() {
