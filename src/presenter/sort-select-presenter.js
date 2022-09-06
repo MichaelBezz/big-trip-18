@@ -9,7 +9,7 @@ import SortLabel from '../enum/sort-label.js';
 import SortDisabled from '../enum/sort-disabled.js';
 
 /** Презентор сортировки */
-export default class SortPresenter {
+export default class SortSelectPresenter {
   /** @type {RouteModel} */
   #model = null;
 

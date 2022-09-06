@@ -9,7 +9,7 @@ import TypeLabel from '../enum/type-label.js';
 import {formatDateWithTime, formatNumber} from '../utils.js';
 
 /** Презентор формы редактирования */
-export default class EditorPresenter {
+export default class PointEditorPresenter {
   /** @type {RouteModel} */
   #model = null;
 

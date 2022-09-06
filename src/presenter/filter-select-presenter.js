@@ -8,7 +8,7 @@ import FilterLabel from '../enum/filter-label.js';
 import FilterCallback from '../enum/filter-callback.js';
 
 /** Презентор фильтра */
-export default class FilterPresenter {
+export default class FilterSelectPresenter {
   /** @type {RouteModel} */
   #model = null;
 
