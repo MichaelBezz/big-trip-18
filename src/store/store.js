@@ -3,6 +3,7 @@ import StoreError from './store-error.js';
 /** @typedef {string | number} ItemId*/
 
 /**
+ * Generic Store
  * Интерфейс для работы с сервером
  * @template Item
  */
