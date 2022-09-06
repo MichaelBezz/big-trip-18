@@ -20,7 +20,7 @@ export default class ApplicationModel extends Model {
     await Promise.all([
       this.points.ready(),
       this.destinations.ready(),
-      this.offerGroups.ready(),
+      this.offerGroups.ready()
     ]);
   }
 }

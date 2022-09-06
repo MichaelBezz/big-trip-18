@@ -1,7 +1,7 @@
 /** @typedef {import('./adapter').default} Adapter */
 /** @typedef {import('./point-adapter').default} PointAdapter */
-/** @typedef {import('./offer-group-adapter').default} OfferGroupAdapter */
 /** @typedef {import('./destination-adapter').default} DestinationAdapter */
+/** @typedef {import('./offer-group-adapter').default} OfferGroupAdapter */
 
 /**
  * @typedef Point
@@ -29,19 +29,6 @@
  */
 
 /**
- * @typedef Offer
- * @prop {number} id
- * @prop {string} title
- * @prop {number} price
- */
-
-/**
- * @typedef OfferGroup
- * @prop {PointType} type
- * @prop {Offer[]} offers
- */
-
-/**
  * @typedef Destination
  * @prop {number} id
  * @prop {string} name
@@ -53,4 +40,17 @@
  * @typedef Picture
  * @prop {string} src
  * @prop {string} description
+ */
+
+/**
+ * @typedef Offer
+ * @prop {number} id
+ * @prop {string} title
+ * @prop {number} price
+ */
+
+/**
+ * @typedef OfferGroup
+ * @prop {PointType} type
+ * @prop {Offer[]} offers
  */
