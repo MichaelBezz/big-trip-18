@@ -1,7 +1,7 @@
 import ComponentView, {html} from './component-view.js';
 
 /** Представление placeholder */
-export default class FilterPlaceholderView extends ComponentView {
+export default class PlaceholderView extends ComponentView {
 
   /** @override */
   createAdjacentHtml() {
@@ -21,4 +21,4 @@ export default class FilterPlaceholderView extends ComponentView {
   }
 }
 
-customElements.define(String(FilterPlaceholderView), FilterPlaceholderView);
+customElements.define(String(PlaceholderView), PlaceholderView);

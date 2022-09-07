@@ -33,20 +33,17 @@ export default class DatePickerView extends ComponentView {
   /**
    * Установит Datepicker
    * @param {HTMLInputElement} view
-   * @param {string} defaultDate
+   * @param {string} isoDate
    */
-  setDatepicker(view, defaultDate) {
+  setDatepicker(view, isoDate) {
     this.#datepicker = flatpickr(
       view,
       {
-        defaultDate,
-        dateFormat: 'd/m/y H:i',
-        enableTime: true,
-        // eslint-disable-next-line camelcase
-        time_24hr: true,
-        locale: {
-          firstDayOfWeek: 1 // start week on Monday
-        }
+        'defaultDate': isoDate,
+        'dateFormat': 'd/m/y H:i',
+        'enableTime': true,
+        'time_24hr': true,
+        'locale': {firstDayOfWeek: 1}
       }
     );
   }
