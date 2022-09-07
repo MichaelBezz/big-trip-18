@@ -1,44 +1,42 @@
-/** @typedef {import('../model/route-model').default} RouteModel */
-/** @typedef {import('../adapter/point-adapter').default} PointAdapter */
-
-import FilterSelectView from '../view/filter-select-view.js';
+import Presenter from './presenter.js';
 
 import Filter from '../enum/filter.js';
 import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
 
-/** Презентор фильтра */
-export default class FilterSelectPresenter {
-  /** @type {RouteModel} */
-  #model = null;
-
-  /** @type {FilterSelectView} */
-  #view = null;
-
-  /** @type {PointAdapter[]} */
-  #points = null;
-
-  /** @type {HTMLElement} */
-  #container = null;
-
+/**
+ * Презентор фильтра
+ * @template {ApplicationModel} Model
+ * @template {FilterSelectView} View
+ * @extends Presenter<Model,View>
+ */
+export default class FilterSelectPresenter extends Presenter {
   /**
-   * @param {RouteModel} model
+   * @param {[model: Model, view: View]} init
    */
-  constructor(model) {
-    this.#model = model;
-    this.#view = new FilterSelectView();
-    this.#points = this.#model.getPoints();
-    this.#container = document.querySelector('.trip-controls__filters');
+  constructor(...init) {
+    super(...init);
 
-    this.#view
-      .setOptions(
-        Object.keys(Filter).map((key) => [FilterLabel[key], Filter[key]])
-      )
-      .setOptionsDisabled(
-        Object.keys(Filter).map((key) => !this.#points.filter(FilterPredicate[key]).length)
-      )
+    this.buildFilterSelectView();
+
+    this.view.addEventListener('filter-change', this.onFilterChange.bind(this));
+  }
+
+  buildFilterSelectView() {
+    /** @type {FilterOptionState[]} */
+    const optionStates = Object.keys(Filter).map((key) => [FilterLabel[key], Filter[key]]);
+    const optionsDisabled = Object.keys(Filter).map((key) => !this.model.points.list().filter(FilterPredicate[key]).length);
+
+    this.view
+      .setOptions(optionStates)
+      .setOptionsDisabled(optionsDisabled)
       .setValue(Filter.EVERYTHING);
+  }
 
-    this.#container.append(this.#view);
+  onFilterChange() {
+    const checkedFilter = Filter.findKey(this.view.getValue());
+    const filterPredicate = FilterPredicate[checkedFilter];
+
+    this.model.points.setFilter(filterPredicate);
   }
 }

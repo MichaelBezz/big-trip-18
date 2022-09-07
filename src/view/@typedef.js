@@ -1,3 +1,4 @@
+/** @typedef {import('./filter-select-view').default} FilterSelectView */
 /** @typedef {import('./point-list-view').default} PointListView */
 
 /** @typedef {import('./filter-option-view').FilterOptionState} FilterOptionState */

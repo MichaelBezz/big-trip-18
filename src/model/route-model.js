@@ -2,6 +2,7 @@ import {generatePoints} from '../mock/point-mock.js';
 import {generateDestinations} from '../mock/destination-mock.js';
 import {generateOfferGroups} from '../mock/offer-mock.js';
 
+// TODO удалить или переработать
 import PointAdapter from '../adapter/point-adapter.js';
 
 /**
