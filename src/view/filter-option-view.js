@@ -1,6 +1,6 @@
-/** @typedef {[label: string, value: string]} FilterOptionState */
-
 import ComponentView, {html} from './component-view.js';
+
+/** @typedef {[label: string, value: string]} FilterOptionState */
 
 /** Представление фильтра */
 export default class FilterOptionView extends ComponentView {

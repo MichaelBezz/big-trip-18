@@ -1,7 +1,7 @@
-/** @typedef {[title: string, price: number]} PointOfferState */
-
 import ComponentView, {html} from './component-view.js';
 import './point-offer-view.css';
+
+/** @typedef {[title: string, price: number]} PointOfferState */
 
 /** Представление (выбранной) дополнительной опции */
 export default class PointOfferView extends ComponentView {

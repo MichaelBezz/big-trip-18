@@ -1,6 +1,6 @@
-/** @typedef {[label: string, value: string]} TypeOptionState */
-
 import ComponentView, {html} from './component-view.js';
+
+/** @typedef {[label: string, value: string]} TypeOptionState */
 
 /** Представление типа точки */
 export default class TypeOptionView extends ComponentView {

@@ -1,6 +1,6 @@
-/** @typedef {[text: string, value: string]} DestinationOptionState */
-
 import ComponentView, {html} from './component-view.js';
+
+/** @typedef {[text: string, value: string]} DestinationOptionState */
 
 /** Представление пункта назначения */
 export default class DestinationSelectView extends ComponentView {

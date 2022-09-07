@@ -1,6 +1,6 @@
-/** @typedef {[label: string, value: string]} SortOptionState */
-
 import ComponentView, {html} from './component-view.js';
+
+/** @typedef {[label: string, value: string]} SortOptionState */
 
 /** Представление пункта сортировки */
 export default class SortOptionView extends ComponentView {

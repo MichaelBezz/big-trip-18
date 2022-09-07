@@ -1,6 +1,5 @@
 import ComponentView, {html} from './component-view.js';
 import SortSelectView from './sort-select-view.js';
-import './route-view.css';
 
 // TODO Удалить или переработать файл
 

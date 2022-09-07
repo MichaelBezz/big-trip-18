@@ -1,6 +1,6 @@
-/** @typedef {[id: number, title: string, price: number, isChecked: boolean]} OfferOptionState */
-
 import ComponentView, {html} from './component-view.js';
+
+/** @typedef {[id: number, title: string, price: number, isChecked: boolean]} OfferOptionState */
 
 /** Представление (доступной) дополнительной опции в редакторе */
 export default class OfferOptionView extends ComponentView {
