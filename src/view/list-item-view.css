@@ -1,4 +1,4 @@
-/* PointView */
+/* ListItemView */
 .trip-events__item:not([hidden]) {
   display: block;
 }

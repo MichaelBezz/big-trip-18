@@ -31,6 +31,7 @@ export default class PointEditorView extends ComponentView {
     /** @type {DestinationDetailsView} */
     this.destinationDetailsView = this.querySelector(String(DestinationDetailsView));
 
+    this.classList.add('trip-events__item');
     this.addEventListener('click', this.onClick);
   }
 

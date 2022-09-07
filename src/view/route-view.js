@@ -1,8 +1,10 @@
-/** @typedef {import('./point-view').default} PointView */
-
 import ComponentView, {html} from './component-view.js';
 import SortSelectView from './sort-select-view.js';
 import './route-view.css';
+
+// TODO Удалить или переработать файл
+
+/** @typedef {import('./point-view').default} PointView */
 
 /** Представление маршрута путешествия */
 export default class RouteView extends ComponentView {
@@ -47,16 +49,6 @@ export default class RouteView extends ComponentView {
     this.placeholderView.textContent = message;
 
     this.sortSelectView.replaceWith(this.placeholderView);
-
-    return this;
-  }
-
-  /**
-   * Установит точки
-   * @param {PointView[]} views
-   */
-  setPoints(...views) {
-    this.routeMapView.replaceChildren(...views);
 
     return this;
   }
