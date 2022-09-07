@@ -1,37 +1,31 @@
-/** @typedef {import('../adapter/point-adapter').default} PointAdapter */
-/** @typedef {import('../model/route-model').default} RouteModel */
-/** @typedef {import('../view/point-view').default} PointView */
-
-import PointEditorView from '../view/point-editor-view.js';
+import Presenter from './presenter.js';
 
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
 import {formatDateWithTime, formatNumber} from '../utils.js';
 
-/** Презентор формы редактирования */
-export default class PointEditorPresenter {
-  /** @type {RouteModel} */
-  #model = null;
-
-  /** @type {PointEditorView} */
-  #view = null;
-
+/**
+ * Презентор формы редактирования
+ * @template {ApplicationModel} Model
+ * @template {PointEditorView} View
+ * @extends Presenter<Model,View>
+ */
+export default class PointEditorPresenter extends Presenter {
   /** @type {PointAdapter}*/
-  #point = null;
+  #point;
 
   /**
-   * @param {RouteModel} model
+   * @param {[model: Model, view: View]} init
    */
-  constructor(model) {
-    this.#model = model;
-    this.#view = new PointEditorView();
+  constructor(...init) {
+    super(...init);
 
     this.buildTypeSelectView();
     this.buildDestinationSelectView();
 
     document.addEventListener('point-edit', this.onPointEdit.bind(this));
-    this.#view.typeSelectView.addEventListener('change', this.onTypeSelectChange.bind(this));
-    this.#view.destinationSelectView.addEventListener('change', this.onDestinationSelectChange.bind(this));
+    this.view.typeSelectView.addEventListener('change', this.onTypeSelectChange.bind(this));
+    this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectChange.bind(this));
   }
 
   buildTypeSelectView() {
@@ -43,47 +37,47 @@ export default class PointEditorPresenter {
       return [label, type];
     });
 
-    this.#view.typeSelectView
+    this.view.typeSelectView
       .setOptions(optionStates);
   }
 
   buildDestinationSelectView() {
-    const destinationNames = this.#model
-      .getDestinations()
+    const destinationNames = this.model.destinations
+      .listAll()
       .map((destination) => destination.name);
 
     /** @type {DestinationOptionState[]} */
     const optionStates = [...new Set(destinationNames)].map((name) => ['', name]);
 
-    this.#view.destinationSelectView
+    this.view.destinationSelectView
       .setOptions(optionStates);
   }
 
   updateTypeSelectView() {
-    this.#view.typeSelectView.setValue(this.#point.type);
+    this.view.typeSelectView.setValue(this.#point.type);
   }
 
   updateDestinationSelectView() {
-    const destination = this.#model.getDestinationById(this.#point.destinationId);
+    const destination = this.model.destinations.findById(this.#point.destinationId);
 
-    this.#view.destinationSelectView
+    this.view.destinationSelectView
       .setLabel(this.#point.type)
       .setValue(destination.name);
   }
 
   updateDatePickerView() {
-    this.#view.datePickerView
+    this.view.datePickerView
       .setStartTime(formatDateWithTime(this.#point.startDate))
       .setEndTime(formatDateWithTime(this.#point.endDate));
   }
 
   updatePriceInputView() {
-    this.#view.priceInputView.setPrice(formatNumber(this.#point.basePrice));
+    this.view.priceInputView.setPrice(formatNumber(this.#point.basePrice));
   }
 
   updateOfferSelectView() {
-    const selectedType = this.#view.typeSelectView.getValue();
-    const availableOffers = this.#model.getAvailableOffers(selectedType);
+    const selectedType = this.view.typeSelectView.getValue();
+    const availableOffers = this.model.offerGroups.findById(selectedType).items;
 
     /** @type {OfferOptionState[]} */
     const optionStates = availableOffers.map((offer) => {
@@ -93,27 +87,27 @@ export default class PointEditorPresenter {
       return [id, title, price, isChecked];
     });
 
-    this.#view.offerSelectView
+    this.view.offerSelectView
       .setOptions(optionStates);
   }
 
   updateDestinationDetailsView() {
-    const selectedDestinationName = this.#view.destinationSelectView.getValue();
-    const destination = this.#model.getDestinations().find((item) => item.name === selectedDestinationName);
+    const selectedDestinationName = this.view.destinationSelectView.getValue();
+    const destination = this.model.destinations.findBy('name', selectedDestinationName);
 
     /** @type {DestinationPictureState[]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
 
-    this.#view.destinationDetailsView
+    this.view.destinationDetailsView
       .setDescription(destination.description)
       .setPictures(pictureStates);
   }
 
   onTypeSelectChange() {
-    const value = this.#view.typeSelectView.getValue();
+    const value = this.view.typeSelectView.getValue();
     const key = Type.findKey(value);
 
-    this.#view.destinationSelectView.setLabel(TypeLabel[key]);
+    this.view.destinationSelectView.setLabel(TypeLabel[key]);
     this.updateOfferSelectView();
   }
 
@@ -125,9 +119,9 @@ export default class PointEditorPresenter {
    * @param {CustomEvent & {target: PointView, detail: number}} event
    */
   onPointEdit(event) {
-    this.#point = this.#model.getPointById(event.detail);
+    this.#point = this.model.points.findById(event.detail);
 
-    this.#view.close();
+    this.view.close();
 
     this.updateTypeSelectView();
     this.updateDestinationSelectView();
@@ -136,7 +130,7 @@ export default class PointEditorPresenter {
     this.updateOfferSelectView();
     this.updateDestinationDetailsView();
 
-    this.#view
+    this.view
       .link(event.target)
       .open();
   }

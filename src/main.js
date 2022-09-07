@@ -11,11 +11,12 @@ import DataTableModel from './model/data-table-model.js';
 import FilterSelectView from './view/filter-select-view.js';
 import SortSelectView from './view/sort-select-view.js';
 import PointListView from './view/point-list-view.js';
+import PointEditorView from './view/point-editor-view.js';
 
 import FilterSelectPresenter from './presenter/filter-select-presenter.js';
 import SortSelectPresenter from './presenter/sort-select-presenter.js';
 import PointListPresenter from './presenter/point-list-presenter.js';
-// import PointEditorPresenter from './presenter/point-editor-presenter.js';
+import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
 const POINTS_URL = `${BASE_URL}/points`;
@@ -47,8 +48,12 @@ const sortSelectView = new SortSelectView();
 /** @type {PointListView} */
 const pointListView = document.querySelector(String(PointListView));
 
+/** @type {PointEditorView} */
+const pointEditorView = new PointEditorView();
+
 applicationModel.ready().then(() => {
   new FilterSelectPresenter(applicationModel, filterSelectView);
   new SortSelectPresenter(applicationModel, sortSelectView);
   new PointListPresenter(applicationModel, pointListView);
+  new PointEditorPresenter(applicationModel, pointEditorView);
 });
