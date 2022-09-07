@@ -1,7 +1,7 @@
 import ComponentView, {html} from './component-view.js';
 import SortSelectView from './sort-select-view.js';
 
-// TODO Удалить или переработать файл
+// TODO удалить или переработать
 
 /** @typedef {import('./point-view').default} PointView */
 

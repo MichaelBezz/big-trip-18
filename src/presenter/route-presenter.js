@@ -1,6 +1,8 @@
 /** @typedef {import('../adapter/point-adapter').default} PointAdapter */
 /** @typedef {import('../model/route-model').default} RouteModel */
 
+// TODO удалить или переработать
+
 import RouteView from '../view/route-view.js';
 import PointView from '../view/point-view.js';
 

@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 
+// TODO удалить или переработать
+
 import Type from '../enum/type.js';
 import {getRandomInteger, getRandomElement} from '../utils.js';
 

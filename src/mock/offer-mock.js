@@ -1,6 +1,8 @@
 import Type from '../enum/type.js';
 import {getRandomInteger, getRandomElement} from '../utils.js';
 
+// TODO удалить или переработать
+
 const OFFER_TITLES = [
   'Order Uber',
   'Add luggage',
