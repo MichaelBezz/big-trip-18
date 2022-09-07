@@ -1,6 +1,6 @@
-/** @typedef {(item: PointAdapter) => boolean} PointPredicate */
-
 import Enum from './enum.js';
+
+/** @typedef {(item: PointAdapter) => boolean} PointPredicate */
 
 export default class FilterPredicate extends Enum {
   /** @type {PointPredicate} */

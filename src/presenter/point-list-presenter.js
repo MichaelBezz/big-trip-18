@@ -14,12 +14,12 @@ export default class PointListPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
+    this.updateView();
+
     this.model.points.addEventListener(
       ['add', 'update', 'remove', 'filter', 'sort'],
       this.updateView.bind(this)
     );
-
-    this.updateView();
   }
 
   updateView() {

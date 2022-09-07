@@ -19,18 +19,37 @@ export default class FilterSelectPresenter extends Presenter {
 
     this.buildFilterSelectView();
 
-    this.view.addEventListener('filter-change', this.onFilterChange.bind(this));
+    this.model.points.addEventListener(
+      ['add', 'update', 'remove', 'sort'],
+      this.updateFilterSelectView.bind(this)
+    );
+
+    this.view.addEventListener(
+      'filter-change',
+      this.onFilterChange.bind(this)
+    );
   }
 
   buildFilterSelectView() {
     /** @type {FilterOptionState[]} */
     const optionStates = Object.keys(Filter).map((key) => [FilterLabel[key], Filter[key]]);
-    const optionsDisabled = Object.keys(Filter).map((key) => !this.model.points.list().filter(FilterPredicate[key]).length);
 
     this.view
       .setOptions(optionStates)
-      .setOptionsDisabled(optionsDisabled)
       .setValue(Filter.EVERYTHING);
+
+    this.disableFilterOptions();
+  }
+
+  updateFilterSelectView() {
+    this.disableFilterOptions();
+  }
+
+  disableFilterOptions() {
+    const points = this.model.points.list();
+    const isDisabled = Object.keys(Filter).map((key) => !points.filter(FilterPredicate[key]).length);
+
+    this.view.setOptionsDisabled(isDisabled);
   }
 
   onFilterChange() {
