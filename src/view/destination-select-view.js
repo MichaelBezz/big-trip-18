@@ -21,7 +21,7 @@ export default class DestinationSelectView extends ComponentView {
     this.addEventListener('focus', this.onFocus, true);
     this.addEventListener('change', this.onChange);
     this.addEventListener('keydown', this.onKeydown);
-    this.addEventListener('blur', this.onBlur);
+    this.addEventListener('blur', this.onBlur, true);
   }
 
   /** @override */
