@@ -5,7 +5,7 @@ import FilterSelectView from '../view/filter-select-view.js';
 
 import Filter from '../enum/filter.js';
 import FilterLabel from '../enum/filter-label.js';
-import FilterCallback from '../enum/filter-callback.js';
+import FilterPredicate from '../enum/filter-predicate.js';
 
 /** Презентор фильтра */
 export default class FilterSelectPresenter {
@@ -35,7 +35,7 @@ export default class FilterSelectPresenter {
         Object.keys(Filter).map((key) => [FilterLabel[key], Filter[key]])
       )
       .setOptionsDisabled(
-        Object.keys(Filter).map((key) => !this.#points.filter(FilterCallback[key]).length)
+        Object.keys(Filter).map((key) => !this.#points.filter(FilterPredicate[key]).length)
       )
       .setValue(Filter.EVERYTHING);
 
