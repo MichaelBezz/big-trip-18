@@ -1,41 +1,62 @@
-/** @typedef {import('../adapter/point-adapter').default} PointAdapter */
-/** @typedef {import('../model/route-model').default} RouteModel */
-
-// import RouteView from '../view/route-view.js';
-import SortSelectView from '../view/sort-select-view';
+import Presenter from './presenter.js';
 
 import Sort from '../enum/sort.js';
 import SortLabel from '../enum/sort-label.js';
 import SortDisabled from '../enum/sort-disabled.js';
+import SortCompare from '../enum/sort-compare.js';
 
-/** Презентор сортировки */
-export default class SortSelectPresenter {
-  /** @type {RouteModel} */
-  #model = null;
-
-  /** @type {SortSelectView} */
-  #view = null;
-
-  // /** @type {RouteView} */
-  // #container = null;
-
+/**
+ * Презентор сортировки
+ * @template {ApplicationModel} Model
+ * @template {SortSelectView} View
+ * @extends Presenter<Model,View>
+ */
+export default class SortSelectPresenter extends Presenter {
   /**
-   * @param {RouteModel} model
+   * @param {[model: Model, view: View]} init
    */
-  constructor(model) {
-    this.#model = model;
-    this.#view = new SortSelectView();
-    // this.#container = document.querySelector(String(RouteView));
+  constructor(...init) {
+    super(...init);
 
-    this.#view
-      .setOptions(
-        Object.keys(Sort).map((key) => [SortLabel[key], Sort[key]])
-      )
-      .setOptionsDisabled(
-        Object.values(SortDisabled)
-      )
+    this.buildSortSelectView();
+
+    this.model.points.addEventListener(
+      ['add', 'update', 'remove', 'filter'],
+      this.updateSortSelectView.bind(this)
+    );
+
+    this.view.addEventListener(
+      'sort-change',
+      this.onSortChange.bind(this)
+    );
+  }
+
+  buildSortSelectView() {
+    /** @type {SortOptionState[]} */
+    const optionStates = Object.keys(Sort).map((key) => [SortLabel[key], Sort[key]]);
+
+    this.view
+      .setOptions(optionStates)
       .setValue(Sort.DAY);
 
-    // this.#container.append(this.#view);
+    this.disableSortOptions();
+  }
+
+  updateSortSelectView() {
+    this.view.setValue(Sort.DAY);
+    this.disableSortOptions();
+  }
+
+  disableSortOptions() {
+    const optionsDisabled = Object.values(SortDisabled);
+
+    this.view.setOptionsDisabled(optionsDisabled);
+  }
+
+  onSortChange() {
+    const checkedSort = Sort.findKey(this.view.getValue());
+    const sortCompare = SortCompare[checkedSort];
+
+    this.model.points.setSort(sortCompare);
   }
 }

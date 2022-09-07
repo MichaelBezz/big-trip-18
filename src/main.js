@@ -9,9 +9,11 @@ import CollectionModel from './model/collection-model.js';
 import DataTableModel from './model/data-table-model.js';
 
 import FilterSelectView from './view/filter-select-view.js';
+import SortSelectView from './view/sort-select-view.js';
 import PointListView from './view/point-list-view.js';
 
 import FilterSelectPresenter from './presenter/filter-select-presenter.js';
+import SortSelectPresenter from './presenter/sort-select-presenter.js';
 import PointListPresenter from './presenter/point-list-presenter.js';
 // import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
@@ -39,10 +41,14 @@ const applicationModel = new ApplicationModel(points, destinations, offerGroups)
 /** @type {FilterSelectView} */
 const filterSelectView = new FilterSelectView();
 
+/** @type {SortSelectView} */
+const sortSelectView = new SortSelectView();
+
 /** @type {PointListView} */
 const pointListView = document.querySelector(String(PointListView));
 
 applicationModel.ready().then(() => {
   new FilterSelectPresenter(applicationModel, filterSelectView);
+  new SortSelectPresenter(applicationModel, sortSelectView);
   new PointListPresenter(applicationModel, pointListView);
 });
