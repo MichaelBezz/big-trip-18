@@ -3,15 +3,8 @@ import FilterOptionView from './filter-option-view.js';
 
 /** Представление списка фильтров */
 export default class FilterSelectView extends RadioGroupView {
-
-  /** @type {HTMLDivElement} */
-  #container;
-
   constructor() {
     super();
-
-    this.#container = document.querySelector('.trip-controls__filters');
-    this.#container.append(this);
 
     this.addEventListener('change', this.onChange);
   }

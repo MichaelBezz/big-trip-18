@@ -40,10 +40,10 @@ const offerGroups = new CollectionModel(offersStore, (offerGroup) => new OfferGr
 const applicationModel = new ApplicationModel(points, destinations, offerGroups);
 
 /** @type {FilterSelectView} */
-const filterSelectView = new FilterSelectView();
+const filterSelectView = document.querySelector(String(FilterSelectView));
 
 /** @type {SortSelectView} */
-const sortSelectView = new SortSelectView();
+const sortSelectView = document.querySelector(String(SortSelectView));
 
 /** @type {PointListView} */
 const pointListView = document.querySelector(String(PointListView));
