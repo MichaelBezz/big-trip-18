@@ -1,0 +1,4 @@
+/* PointOfferView */
+.event__offer:not([hidden]) {
+  display: block;
+}

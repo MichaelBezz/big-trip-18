@@ -1,45 +1,64 @@
-import ComponentView, {html} from './component-view.js';
-import OfferListView from './offer-list-view.js';
+import ListItemView, {html} from './list-item-view.js';
+import PointOfferView from './point-offer-view.js';
+
+/**
+ * @typedef PointState
+ * @prop {number} id
+ * @prop {string} date
+ * @prop {string} startIsoDate
+ * @prop {string} endIsoDate
+ * @prop {string} icon
+ * @prop {string} title
+ * @prop {string} startTime
+ * @prop {string} endTime
+ * @prop {number} price
+ * @prop {PointOfferState[]} offers
+ */
 
 /** Представление точки на маршруте */
-export default class PointView extends ComponentView {
-  #id = null;
+export default class PointView extends ListItemView {
+  #id;
 
   /**
-   * @param {number} id
+   * @param {PointState} state
    */
-  constructor(id) {
-    super();
+  constructor(state) {
+    super(state);
 
-    this.#id = id;
+    this.#id = state.id;
 
-    /** @type {OfferListView} */
-    this.offerListView = this.querySelector(String(OfferListView));
-
+    this.setOffers(state.offers);
     this.addEventListener('click', this.onClick);
   }
 
-  /** @override */
-  createAdjacentHtml() {
+  /**
+   * @override
+   * @param {PointState} state
+   */
+  createAdjacentHtml(state) {
+    const {date, startIsoDate, endIsoDate, icon, title, startTime, endTime, price} = state;
+
     return html`
       <div class="event">
-        <time class="event__date" datetime=""></time>
+        <time class="event__date" datetime="${startIsoDate}">${date}</time>
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title"></h3>
+        <h3 class="event__title">${title}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime=""></time>
+            <time class="event__start-time" datetime="${startIsoDate}">${startTime}</time>
             &mdash;
-            <time class="event__end-time" datetime=""></time>
+            <time class="event__end-time" datetime="${endIsoDate}">${endTime}</time>
           </p>
         </div>
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value"></span>
+          &euro;&nbsp;<span class="event__price-value">${price}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-        ${OfferListView}
+        <div class="event__selected-offers">
+          <!-- PointOfferView -->
+        </div>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
@@ -48,86 +67,18 @@ export default class PointView extends ComponentView {
   }
 
   /**
-   * Установит дату
-   * @param {string} date
-   * @param {string} isoDate
+   * Установит (выбранные) дополнительные опции
+   * @param {PointOfferState[]} states
    */
-  setDate(isoDate, date) {
-    const view = this.querySelector('.event__date');
+  setOffers(states) {
+    const views = states.map((state) => new PointOfferView(...state));
 
-    Object.assign(view, {
-      dateTime: isoDate,
-      textContent: date
-    });
+    this.querySelector('.event__selected-offers').replaceChildren(...views);
 
     return this;
   }
 
   /**
-   * Установит иконку
-   * @param {PointType} type
-   */
-  setIcon(type) {
-    /** @type {HTMLImageElement} */
-    (this.querySelector('.event__type-icon')).src = `img/icons/${type}.png`;
-
-    return this;
-  }
-
-  /**
-   * Установит заголовок
-   * @param {string} title
-   */
-  setTitle(title) {
-    this.querySelector('.event__title').textContent = title;
-
-    return this;
-  }
-
-  /**
-   * Установит время начала
-   * @param {string} isoDate
-   * @param {string} time
-   */
-  setStartTime(isoDate, time) {
-    const view = this.querySelector('.event__start-time');
-
-    Object.assign(view, {
-      dateTime: isoDate,
-      textContent: time
-    });
-
-    return this;
-  }
-
-  /**
-   * Установит время окончания
-   * @param {string} isoDate
-   * @param {string} time
-   */
-  setEndTime(isoDate, time) {
-    const view = this.querySelector('.event__end-time');
-
-    Object.assign(view, {
-      dateTime: isoDate,
-      textContent: time
-    });
-
-    return this;
-  }
-
-  /**
-   * Установит цену
-   * @param {number} price
-   */
-  setPrice(price) {
-    this.querySelector('.event__price-value').textContent = String(price);
-
-    return this;
-  }
-
-  /**
-   * Обработает событие click
    * @param {Event & {target: HTMLButtonElement}} event
    */
   onClick(event) {

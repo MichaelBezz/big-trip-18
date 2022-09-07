@@ -1,8 +1,13 @@
-import ComponentView, {html} from './component-view.js';
+import RadioGroupView, {html} from './radio-group-view.js';
 import FilterOptionView from './filter-option-view.js';
 
 /** Представление списка фильтров */
-export default class FilterSelectView extends ComponentView {
+export default class FilterSelectView extends RadioGroupView {
+  constructor() {
+    super();
+
+    this.addEventListener('change', this.onChange);
+  }
 
   /** @override */
   createAdjacentHtml() {
@@ -16,7 +21,7 @@ export default class FilterSelectView extends ComponentView {
 
   /**
    * Установит фильтры
-   * @param {[string, string][]} states
+   * @param {FilterOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new FilterOptionView(...state));
@@ -27,28 +32,14 @@ export default class FilterSelectView extends ComponentView {
   }
 
   /**
-   * Выберет фильтр по типу
-   * @param {string} filterType
+   * @param {Event & {target: HTMLInputElement}} event
    */
-  select(filterType) {
-    /** @type {HTMLInputElement} */
-    (this.querySelector(`[value="${filterType}"]`)).checked = true;
+  onChange(event) {
+    if (event.target.type !== 'radio') {
+      return;
+    }
 
-    return this;
-  }
-
-  /**
-   * Установит флаг disabled
-   * @param {boolean[]} flags
-   */
-  setOptionsDisabled(flags) {
-    const views = this.querySelectorAll('input');
-
-    flags.forEach((flag, index) => {
-      views[index].checked = flag;
-    });
-
-    return this;
+    this.dispatchEvent(new CustomEvent('filter-change'));
   }
 }
 

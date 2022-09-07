@@ -1,10 +1,10 @@
-import ComponentView, {html} from './component-view.js';
+import RadioGroupView, {html} from './radio-group-view.js';
 import TypeOptionView from './type-option-view.js';
 
 /** Представление меню типов */
-export default class TypeSelectView extends ComponentView {
+export default class TypeSelectView extends RadioGroupView {
   constructor() {
-    super(...arguments);
+    super();
 
     this.classList.add('event__type-wrapper');
 
@@ -30,12 +30,11 @@ export default class TypeSelectView extends ComponentView {
 
   /**
    * Установит пункты меню
-   * @param {[string, PointType][]} states
+   * @param {TypeOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new TypeOptionView(...state));
 
-    this.querySelectorAll('legend ~ *').forEach((view) => view.remove());
     this.querySelector('legend').after(...views);
 
     return this;
@@ -43,18 +42,21 @@ export default class TypeSelectView extends ComponentView {
 
   /**
    * Выберет пункт меню и установит иконку
-   * @param {PointType | string} type
+   * @param {string} value
    */
-  select(type) {
-    this.querySelector('img').src = `img/icons/${type}.png`;
+  setValue(value) {
+    super.setValue(value);
 
-    /** @type {HTMLInputElement} */
-    (this.querySelector(`[value="${type}"]`)).checked = true;
+    this.querySelector('img').src = `img/icons/${value}.png`;
 
-    return this.switchFlag(false);
+    return this;
   }
 
-  switchFlag(flag = true) {
+  /**
+   * Закроет меню типов
+   * @param {boolean} flag
+   */
+  collapse(flag = true) {
     /** @type {HTMLInputElement} */
     (this.querySelector('.event__type-toggle')).checked = flag;
 
@@ -62,28 +64,19 @@ export default class TypeSelectView extends ComponentView {
   }
 
   /**
-   * Обработает событие change
    * @param {Event & {target: HTMLInputElement}} event
    */
   onChange(event) {
-    const {type, value, checked} = event.target;
+    const {type, value} = event.target;
 
     if (type === 'checkbox') {
-      this.dispatchEvent(
-        new CustomEvent('type-expand', {
-          detail: checked
-        })
-      );
+      event.stopPropagation();
 
       return;
     }
 
     if (type === 'radio') {
-      this.select(value).dispatchEvent(
-        new CustomEvent('type-change', {
-          detail: value
-        })
-      );
+      this.setValue(value).collapse(false);
     }
   }
 }

@@ -1,9 +1,11 @@
 import ComponentView, {html} from './component-view.js';
 
+/** @typedef {[text: string, value: string]} DestinationOptionState */
+
 /** Представление пункта назначения */
 export default class DestinationSelectView extends ComponentView {
   constructor() {
-    super(...arguments);
+    super();
 
     /** @type {HTMLLabelElement} */
     this.labelView = this.querySelector('label.event__label');
@@ -19,7 +21,7 @@ export default class DestinationSelectView extends ComponentView {
     this.addEventListener('focus', this.onFocus, true);
     this.addEventListener('change', this.onChange);
     this.addEventListener('keydown', this.onKeydown);
-    this.addEventListener('blur', this.onBlure);
+    this.addEventListener('blur', this.onBlur, true);
   }
 
   /** @override */
@@ -47,7 +49,7 @@ export default class DestinationSelectView extends ComponentView {
 
   /**
    * Установит тип точки
-   * @param {PointType} type
+   * @param {string} type
    */
   setLabel(type) {
     this.labelView.textContent = type;
@@ -87,8 +89,8 @@ export default class DestinationSelectView extends ComponentView {
   }
 
   /**
-   * Установит пункты назначениея в datalist
-   * @param {[string, string][]} states
+   * Установит пункты назначения в datalist
+   * @param {DestinationOptionState[]} states
    */
   setOptions(states) {
     const views = states.map((state) => new Option(...state));
@@ -104,10 +106,6 @@ export default class DestinationSelectView extends ComponentView {
 
   onChange() {
     this.moveValueToPlaceholder();
-
-    this.dispatchEvent(
-      new CustomEvent('destination-change')
-    );
   }
 
   /**
@@ -119,7 +117,7 @@ export default class DestinationSelectView extends ComponentView {
     }
   }
 
-  onBlure() {
+  onBlur() {
     this.movePlaceholderToValue();
   }
 }

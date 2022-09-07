@@ -1,22 +1,34 @@
 import ComponentView, {html} from './component-view.js';
 
+/** @typedef {[label: string, value: string]} SortOptionState */
+
 /** Представление пункта сортировки */
 export default class SortOptionView extends ComponentView {
   /**
-   * @override
-   * @param {string} label
-   * @param {string} value
-   * @param {boolean} isDisabled
+   * @param {SortOptionState} state
    */
-  createAdjacentHtml(label, value, isDisabled) {
+  constructor(...state) {
+    const [label, value] = state;
+
+    super(label, value);
+
+    this.classList.add('trip-sort__item',`trip-sort__item--${value}`);
+  }
+
+  /**
+   * @override
+   * @param {SortOptionState} state
+   */
+  createAdjacentHtml(...state) {
+    const [label, value] = state;
+
     return html`
       <input
         id="sort-${value}"
         class="trip-sort__input  visually-hidden"
         type="radio"
         name="trip-sort"
-        value="sort-${value}"
-        ${isDisabled ? 'disabled' : ''}
+        value="${value}"
       >
       <label class="trip-sort__btn" for="sort-${value}">
         ${label}

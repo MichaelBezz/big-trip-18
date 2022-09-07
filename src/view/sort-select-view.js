@@ -1,13 +1,12 @@
-import ComponentView, {html} from './component-view.js';
+import RadioGroupView, {html} from './radio-group-view.js';
 import SortOptionView from './sort-option-view.js';
 
 /** Представление списка сортировки */
-export default class SortSelectView extends ComponentView {
+export default class SortSelectView extends RadioGroupView {
   constructor() {
     super();
 
-    /** @type {HTMLFormElement} */
-    this.formView = this.querySelector('form.trip-sort');
+    this.addEventListener('change', this.onChange);
   }
 
   /** @override */
@@ -20,30 +19,26 @@ export default class SortSelectView extends ComponentView {
   }
 
   /**
-   * Выберет сортировку
-   * @param {string} sortType
+   * Установит пункты сортировки
+   * @param {SortOptionState[]} states
    */
-  select(sortType) {
-    /** @type {HTMLInputElement} */
-    (this.querySelector(`[value="sort-${sortType}"]`)).checked = true;
+  setOptions(states) {
+    const views = states.map((state) => new SortOptionView(...state));
+
+    this.querySelector('.trip-sort').append(...views);
 
     return this;
   }
 
   /**
-   * Установит пункты сортировки
-   * @param {[string, string, boolean][]} states
+   * @param {Event & {target: HTMLInputElement}} event
    */
-  setSortOptions(states) {
-    const views = states.map((state) =>
-      Object.assign(new SortOptionView(...state), {
-        className: `trip-sort__item  trip-sort__item--${state[1]}`
-      })
-    );
+  onChange(event) {
+    if (event.target.type !== 'radio') {
+      return;
+    }
 
-    this.formView.append(...views);
-
-    return this;
+    this.dispatchEvent(new CustomEvent('sort-change'));
   }
 }
 

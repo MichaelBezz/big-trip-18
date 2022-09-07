@@ -1,6 +1,9 @@
 import {generatePoints} from '../mock/point-mock.js';
 import {generateDestinations} from '../mock/destination-mock.js';
 import {generateOfferGroups} from '../mock/offer-mock.js';
+
+// TODO удалить или переработать
+
 import PointAdapter from '../adapter/point-adapter.js';
 
 /**
@@ -35,7 +38,10 @@ export default class RouteModel extends EventTarget {
     this.#offerGroups = generateOfferGroups();
   }
 
-  /** Получит список точек с отформатированными полями */
+  /**
+   * Получит список точек с отформатированными полями
+   * @return {PointAdapter[]}
+   */
   getPoints() {
     return this.#points.map((point) => new PointAdapter(clone(point)));
   }
@@ -43,6 +49,7 @@ export default class RouteModel extends EventTarget {
   /**
    * Получит точку маршрута по id с отформатированными полями
    * @param {number} id
+   * @return {PointAdapter}
    */
   getPointById(id) {
     return this.getPoints().find((item) => item.id === id);
@@ -50,7 +57,8 @@ export default class RouteModel extends EventTarget {
 
   /**
    * Получит доступные опции для определенного типа точки
-   * @param {PointType} type
+   * @param {string} type
+   * @return {Offer[]}
    */
   getAvailableOffers(type) {
     const availableOffers = this.#offerGroups.find((group) => group.type === type).offers;
@@ -60,8 +68,9 @@ export default class RouteModel extends EventTarget {
 
   /**
    * Получит опции для точки
-   * @param {PointType} type
+   * @param {string} type
    * @param {number[]} ids
+   * @return {Offer[]}
    */
   getSelectedOffers(type, ids) {
     const selectedOffers = this.getAvailableOffers(type).filter((item) => ids.includes(item.id));
@@ -69,7 +78,10 @@ export default class RouteModel extends EventTarget {
     return clone(selectedOffers);
   }
 
-  /** Получит список пунктов назначения */
+  /**
+   * Получит список пунктов назначения
+   * @return {Destination[]}
+   */
   getDestinations() {
     return clone(this.#destinations);
   }
@@ -77,6 +89,7 @@ export default class RouteModel extends EventTarget {
   /**
    * Получит пункт назначения по id
    * @param {number} id
+   * @return {Destination}
    */
   getDestinationById(id) {
     const destination = this.#destinations.find((item) => item.id === id);
@@ -91,7 +104,7 @@ export default class RouteModel extends EventTarget {
   //  */
   // async updatePoints(id, data) {
   //   /*
-  //     1. Отправить данные в хранилише
+  //     1. Отправить данные в хранилище
   //     2. Сообщить, что точка обновлена
   //   */
 

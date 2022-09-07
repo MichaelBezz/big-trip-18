@@ -1,9 +1,11 @@
 import ComponentView, {html} from './component-view.js';
 
+/** @typedef {[src: string, alt: string]} DestinationPictureState */
+
 /** Представление описания пункта назначения */
 export default class DestinationDetailsView extends ComponentView {
   constructor() {
-    super(...arguments);
+    super();
 
     this.classList.add('event__section', 'event__section--destination');
   }
@@ -33,7 +35,7 @@ export default class DestinationDetailsView extends ComponentView {
 
   /**
    * Установит картинки
-   * @param {[string, string][]} states
+   * @param {DestinationPictureState[]} states
    */
   setPictures(states) {
     const views = states.map(([src, alt]) =>

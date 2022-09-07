@@ -1,5 +1,7 @@
 import {getRandomInteger, getRandomElement} from '../utils.js';
 
+// TODO удалить или переработать
+
 const POINT_NAMES = [
   'Amsterdam',
   'Geneva',

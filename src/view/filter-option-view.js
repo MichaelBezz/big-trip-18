@@ -1,19 +1,25 @@
 import ComponentView, {html} from './component-view.js';
 
+/** @typedef {[label: string, value: string]} FilterOptionState */
+
 /** Представление фильтра */
 export default class FilterOptionView extends ComponentView {
-  constructor() {
-    super(...arguments);
+  /**
+   * @param  {FilterOptionState} state
+   */
+  constructor(...state) {
+    super(...state);
 
     this.classList.add('trip-filters__filter');
   }
 
   /**
    * @override
-   * @param {string} label
-   * @param {string} value
+   * @param {FilterOptionState} state
    */
-  createAdjacentHtml(label, value) {
+  createAdjacentHtml(...state) {
+    const [label, value] = state;
+
     return html`
       <input
         id="filter-${value}"

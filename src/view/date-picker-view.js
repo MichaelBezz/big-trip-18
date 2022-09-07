@@ -1,16 +1,25 @@
 import ComponentView, {html} from './component-view.js';
 
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
 /** Представление даты и времени */
 export default class DatePickerView extends ComponentView {
+  #datepicker = null;
+
   constructor() {
-    super(...arguments);
+    super();
+
+    /** @type {HTMLInputElement} */
+    this.startTime = this.querySelector('[name="event-start-time"]');
+
+    /** @type {HTMLInputElement} */
+    this.EndTime = this.querySelector('[name="event-end-time"]');
 
     this.classList.add('event__field-group', 'event__field-group--time');
   }
 
-  /**
-   * @override
-   */
+  /** @override */
   createAdjacentHtml() {
     return html`
       <label class="visually-hidden" for="event-start-time-1">From</label>
@@ -22,12 +31,41 @@ export default class DatePickerView extends ComponentView {
   }
 
   /**
+   * Установит Datepicker
+   * @param {HTMLInputElement} view
+   * @param {string} defaultDate
+   */
+  setDatepicker(view, defaultDate) {
+    this.#datepicker = flatpickr(
+      view,
+      {
+        defaultDate,
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        // eslint-disable-next-line camelcase
+        time_24hr: true,
+        locale: {
+          firstDayOfWeek: 1 // start week on Monday
+        }
+      }
+    );
+  }
+
+  /** Удалит экземпляр Datepicker */
+  removeDatepicker() {
+    if (this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
+  }
+
+  /**
    * Установит время начала
    * @param {string} isoDate
    */
   setStartTime(isoDate) {
-    /** @type {HTMLInputElement} */
-    (this.querySelector('[name="event-start-time"]')).value = isoDate;
+    this.startTime.value = isoDate;
+    this.setDatepicker(this.startTime, isoDate);
 
     return this;
   }
@@ -37,8 +75,8 @@ export default class DatePickerView extends ComponentView {
    * @param {string} isoDate
    */
   setEndTime(isoDate) {
-    /** @type {HTMLInputElement} */
-    (this.querySelector('[name="event-end-time"]')).value = isoDate;
+    this.EndTime.value = isoDate;
+    this.setDatepicker(this.EndTime, isoDate);
 
     return this;
   }

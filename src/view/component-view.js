@@ -1,10 +1,13 @@
 export default class ComponentView extends HTMLElement {
-  constructor() {
+  /**
+   * @param  {...*} data
+   */
+  constructor(...data) {
     super();
 
     this.insertAdjacentHTML(
       this.position,
-      this.createAdjacentHtml(...arguments)
+      this.createAdjacentHtml(...data)
     );
   }
 
