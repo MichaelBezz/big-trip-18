@@ -2,7 +2,6 @@ import Presenter from './presenter.js';
 
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
-import {formatDateWithTime, formatNumber} from '../utils.js';
 
 /**
  * Презентор формы редактирования
@@ -37,8 +36,7 @@ export default class PointEditorPresenter extends Presenter {
       return [label, type];
     });
 
-    this.view.typeSelectView
-      .setOptions(optionStates);
+    this.view.typeSelectView.setOptions(optionStates);
   }
 
   buildDestinationSelectView() {
@@ -49,8 +47,7 @@ export default class PointEditorPresenter extends Presenter {
     /** @type {DestinationOptionState[]} */
     const optionStates = [...new Set(destinationNames)].map((name) => ['', name]);
 
-    this.view.destinationSelectView
-      .setOptions(optionStates);
+    this.view.destinationSelectView.setOptions(optionStates);
   }
 
   updateTypeSelectView() {
@@ -67,12 +64,12 @@ export default class PointEditorPresenter extends Presenter {
 
   updateDatePickerView() {
     this.view.datePickerView
-      .setStartTime(formatDateWithTime(this.#point.startDate))
-      .setEndTime(formatDateWithTime(this.#point.endDate));
+      .setStartDate(this.#point.startDate)
+      .setEndDate(this.#point.endDate);
   }
 
   updatePriceInputView() {
-    this.view.priceInputView.setPrice(formatNumber(this.#point.basePrice));
+    this.view.priceInputView.setPrice(this.#point.basePrice);
   }
 
   updateOfferSelectView() {

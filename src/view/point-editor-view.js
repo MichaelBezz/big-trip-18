@@ -80,7 +80,6 @@ export default class PointEditorView extends ComponentView {
 
   /** Закроет редактор точки (заменив на #linkedView) */
   close() {
-    this.datePickerView.removeDatepicker();
     this.replaceWith(this.#linkedView);
 
     document.removeEventListener('keydown', this.onDocumentKeydown);
