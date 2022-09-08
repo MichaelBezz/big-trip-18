@@ -3,11 +3,6 @@ import FilterOptionView from './filter-option-view.js';
 
 /** Представление списка фильтров */
 export default class FilterSelectView extends RadioGroupView {
-  constructor() {
-    super();
-
-    this.addEventListener('change', this.onChange);
-  }
 
   /** @override */
   createAdjacentHtml() {
@@ -29,17 +24,6 @@ export default class FilterSelectView extends RadioGroupView {
     this.querySelector('form').prepend(...views);
 
     return this;
-  }
-
-  /**
-   * @param {Event & {target: HTMLInputElement}} event
-   */
-  onChange(event) {
-    if (event.target.type !== 'radio') {
-      return;
-    }
-
-    this.dispatchEvent(new CustomEvent('filter-change'));
   }
 }
 

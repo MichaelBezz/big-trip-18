@@ -25,10 +25,7 @@ export default class SortSelectPresenter extends Presenter {
       this.updateSortSelectView.bind(this)
     );
 
-    this.view.addEventListener(
-      'sort-change',
-      this.onSortChange.bind(this)
-    );
+    this.view.addEventListener('change', this.onSortSelectChange.bind(this));
   }
 
   buildSortSelectView() {
@@ -53,7 +50,7 @@ export default class SortSelectPresenter extends Presenter {
     this.view.setOptionsDisabled(optionsDisabled);
   }
 
-  onSortChange() {
+  onSortSelectChange() {
     const checkedSort = Sort.findKey(this.view.getValue());
     const sortCompare = SortCompare[checkedSort];
 

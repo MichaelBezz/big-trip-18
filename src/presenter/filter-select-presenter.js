@@ -24,10 +24,7 @@ export default class FilterSelectPresenter extends Presenter {
       this.updateFilterSelectView.bind(this)
     );
 
-    this.view.addEventListener(
-      'filter-change',
-      this.onFilterChange.bind(this)
-    );
+    this.view.addEventListener('change', this.onFilterSelectChange.bind(this));
   }
 
   buildFilterSelectView() {
@@ -52,7 +49,7 @@ export default class FilterSelectPresenter extends Presenter {
     this.view.setOptionsDisabled(isDisabled);
   }
 
-  onFilterChange() {
+  onFilterSelectChange() {
     const checkedFilter = Filter.findKey(this.view.getValue());
     const filterPredicate = FilterPredicate[checkedFilter];
 
