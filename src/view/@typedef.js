@@ -1,3 +1,5 @@
+/** @typedef {import('./create-button-view').default} CreateButtonView */
+
 /** @typedef {import('./filter-select-view').default} FilterSelectView */
 /** @typedef {import('./filter-option-view').FilterOptionState} FilterOptionState */
 
