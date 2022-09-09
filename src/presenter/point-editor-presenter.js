@@ -1,5 +1,6 @@
 import Presenter from './presenter.js';
 
+import Mode from '../enum/mode.js';
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
 
@@ -7,7 +8,7 @@ import TypeLabel from '../enum/type-label.js';
  * Презентор формы редактирования
  * @template {ApplicationModel} Model
  * @template {PointEditorView} View
- * @extends Presenter<Model,View>
+ * @extends {Presenter<Model,View>}
  */
 export default class PointEditorPresenter extends Presenter {
   /** @type {PointAdapter}*/
@@ -22,7 +23,9 @@ export default class PointEditorPresenter extends Presenter {
     this.buildTypeSelectView();
     this.buildDestinationSelectView();
 
-    document.addEventListener('point-edit', this.onPointEdit.bind(this));
+    this.model.addEventListener('edit', this.onPointEdit.bind(this));
+    this.view.addEventListener('close', () => this.model.setMode(Mode.VIEW));
+    this.view.addEventListener('reset', this.onPointEditorReset.bind(this)); // === кнопка DELETE
     this.view.typeSelectView.addEventListener('change', this.onTypeSelectChange.bind(this));
     this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectChange.bind(this));
   }
@@ -112,13 +115,13 @@ export default class PointEditorPresenter extends Presenter {
     this.updateDestinationDetailsView();
   }
 
-  /**
-   * @param {CustomEvent & {target: PointView, detail: number}} event
-   */
-  onPointEdit(event) {
-    this.#point = this.model.points.findById(event.detail);
+  onPointEdit() {
+    this.#point = this.model.editablePoint;
 
-    this.view.close();
+    /** @type {PointView} */
+    const editablePoint = document.querySelector(`#point-${this.#point.id}`);
+
+    this.view.close(true);
 
     this.updateTypeSelectView();
     this.updateDestinationSelectView();
@@ -128,7 +131,25 @@ export default class PointEditorPresenter extends Presenter {
     this.updateDestinationDetailsView();
 
     this.view
-      .link(event.target)
+      .link(editablePoint)
       .open();
+  }
+
+  /**
+   * Событие reset происходит на форме => кнопка DELETE
+   * @param {Event} event
+   */
+  async onPointEditorReset(event) {
+    event.preventDefault();
+
+    const editablePointId = this.model.editablePoint.id;
+
+    try {
+      await this.model.points.remove(editablePointId);
+      this.view.close();
+
+    } catch (exception) {
+      // shake
+    }
   }
 }

@@ -1,11 +1,13 @@
 import Presenter from './presenter.js';
+
+import Mode from '../enum/mode.js';
 import {formatDate, formatTime} from '../utils.js';
 
 /**
  * Презентор списка точек
  * @template {ApplicationModel} Model
  * @template {PointListView} View
- * @extends Presenter<Model,View>
+ * @extends {Presenter<Model,View>}
  */
 export default class PointListPresenter extends Presenter {
   /**
@@ -20,6 +22,10 @@ export default class PointListPresenter extends Presenter {
       ['add', 'update', 'remove', 'filter', 'sort'],
       this.updateView.bind(this)
     );
+
+    this.view.addEventListener('point-edit', ( /** @type {CustomEvent} */ event) => {
+      this.model.setMode(Mode.EDIT, event.detail);
+    });
   }
 
   updateView() {

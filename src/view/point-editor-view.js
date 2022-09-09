@@ -69,20 +69,30 @@ export default class PointEditorView extends ComponentView {
     return this;
   }
 
-  /** Откроет редактор точки (заменив на #linkedView) */
+  /**
+   * Заменит #linkedView на PointEditorView
+   * Обработает события по Esc
+   */
   open() {
     this.#linkedView.replaceWith(this);
-
-    document.addEventListener('keydown', this.onDocumentKeydown);
+    document.addEventListener('keydown', this);
 
     return this;
   }
 
-  /** Закроет редактор точки (заменив на #linkedView) */
-  close() {
+  /**
+   * Заменит PointEditorView на #linkedView
+   * Удалит события по Esc
+   * При необходимости добавит отправит close
+   * @param {boolean} dispatch
+   */
+  close(dispatch = false) {
     this.replaceWith(this.#linkedView);
+    document.removeEventListener('keydown', this);
 
-    document.removeEventListener('keydown', this.onDocumentKeydown);
+    if (!dispatch) {
+      this.dispatchEvent(new CustomEvent('close'));
+    }
 
     return this;
   }
@@ -97,20 +107,17 @@ export default class PointEditorView extends ComponentView {
   }
 
   /**
-   * @this {Document}
+   * NOTE Стандартный метод обработки события на объекте
    * @param {KeyboardEvent} event
    */
-  onDocumentKeydown(event) {
+  handleEvent(event) {
     // NOTE Событие без key при выборе опции в TypeSelectView
     if (!event.key?.startsWith('Esc')) {
       return;
     }
 
     event.preventDefault();
-
-    /** @type {PointEditorView} */
-    const editorView = document.querySelector(String(PointEditorView));
-    editorView.close();
+    this.close();
   }
 }
 

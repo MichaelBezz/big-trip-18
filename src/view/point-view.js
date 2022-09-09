@@ -26,6 +26,7 @@ export default class PointView extends ListItemView {
     super(state);
 
     this.#id = state.id;
+    this.id = `point-${state.id}`;
 
     this.setOffers(state.offers);
     this.addEventListener('click', this.onClick);
