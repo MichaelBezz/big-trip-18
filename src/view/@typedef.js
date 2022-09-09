@@ -1,6 +1,8 @@
 /** @typedef {import('./filter-select-view').default} FilterSelectView */
 /** @typedef {import('./filter-option-view').FilterOptionState} FilterOptionState */
 
+/** @typedef {import('./placeholder-view').default} PlaceholderView */
+
 /** @typedef {import('./sort-select-view').default} SortSelectView */
 /** @typedef {import('./sort-option-view').SortOptionState} SortOptionState */
 
