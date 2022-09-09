@@ -17,36 +17,52 @@ export default class FilterSelectPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
-    this.buildFilterSelectView();
+    this.buildFilterSelect();
+
+    this.model.addEventListener(
+      ['view', 'create', 'edit'],
+      this.onFilterSelectDisable.bind(this)
+    );
 
     this.model.points.addEventListener(
       ['add', 'update', 'remove', 'sort'],
-      this.updateFilterSelectView.bind(this)
+      this.onFilterSelectUpdate.bind(this)
     );
 
     this.view.addEventListener('change', this.onFilterSelectChange.bind(this));
   }
 
-  buildFilterSelectView() {
+  getOptionsDisabled() {
+    return Object.values(FilterPredicate).map((predicate) =>
+      !this.model.points.list(predicate).length
+    );
+  }
+
+  buildFilterSelect() {
     /** @type {FilterOptionState[]} */
     const optionStates = Object.keys(Filter).map((key) => [FilterLabel[key], Filter[key]]);
 
     this.view
       .setOptions(optionStates)
+      .setOptionsDisabled(this.getOptionsDisabled())
       .setValue(Filter.EVERYTHING);
-
-    this.disableFilterOptions();
   }
 
-  updateFilterSelectView() {
-    this.disableFilterOptions();
+  /**
+   * @param {CustomEvent} event
+   */
+  onFilterSelectDisable(event) {
+    const flags = this.getOptionsDisabled();
+
+    if (event.type !== 'view') {
+      flags.fill(true);
+    }
+
+    this.view.setOptionsDisabled(flags);
   }
 
-  disableFilterOptions() {
-    const points = this.model.points.list();
-    const isDisabled = Object.keys(Filter).map((key) => !points.filter(FilterPredicate[key]).length);
-
-    this.view.setOptionsDisabled(isDisabled);
+  onFilterSelectUpdate() {
+    this.view.setOptionsDisabled(this.getOptionsDisabled());
   }
 
   onFilterSelectChange() {
