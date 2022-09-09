@@ -4,7 +4,7 @@ import CollectionModel from './collection-model';
  * Абстрактная model для фильтрации и сортировки
  * @template Item
  * @template {Adapter} ItemAdapter
- * @extends CollectionModel<Item,ItemAdapter>
+ * @extends {CollectionModel<Item,ItemAdapter>}
  */
 export default class DataTableModel extends CollectionModel {
 

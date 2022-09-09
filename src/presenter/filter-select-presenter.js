@@ -8,7 +8,7 @@ import FilterPredicate from '../enum/filter-predicate.js';
  * Презентор фильтра
  * @template {ApplicationModel} Model
  * @template {FilterSelectView} View
- * @extends Presenter<Model,View>
+ * @extends {Presenter<Model,View>}
  */
 export default class FilterSelectPresenter extends Presenter {
   /**

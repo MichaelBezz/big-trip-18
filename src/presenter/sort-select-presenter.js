@@ -9,7 +9,7 @@ import SortCompare from '../enum/sort-compare.js';
  * Презентор сортировки
  * @template {ApplicationModel} Model
  * @template {SortSelectView} View
- * @extends Presenter<Model,View>
+ * @extends {Presenter<Model,View>}
  */
 export default class SortSelectPresenter extends Presenter {
   /**
