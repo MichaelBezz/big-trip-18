@@ -9,7 +9,7 @@ import SortCompare from '../enum/sort-compare.js';
  * Презентор сортировки
  * @template {ApplicationModel} Model
  * @template {SortSelectView} View
- * @extends Presenter<Model,View>
+ * @extends {Presenter<Model,View>}
  */
 export default class SortSelectPresenter extends Presenter {
   /**
@@ -18,42 +18,50 @@ export default class SortSelectPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
-    this.buildSortSelectView();
+    this.buildSortSelect();
 
-    this.model.points.addEventListener(
-      ['add', 'update', 'remove', 'filter'],
-      this.updateSortSelectView.bind(this)
+    this.model.addEventListener(
+      ['view', 'create', 'edit'],
+      this.onSortSelectDisable.bind(this)
     );
 
-    this.view.addEventListener(
-      'sort-change',
-      this.onSortChange.bind(this)
-    );
+    this.model.points.addEventListener('filter', this.onSortSelectUpdate.bind(this));
+    this.view.addEventListener('change', this.onSortSelectChange.bind(this));
   }
 
-  buildSortSelectView() {
+  getOptionsDisabled() {
+    return Object.values(SortDisabled);
+  }
+
+  buildSortSelect() {
     /** @type {SortOptionState[]} */
     const optionStates = Object.keys(Sort).map((key) => [SortLabel[key], Sort[key]]);
 
     this.view
       .setOptions(optionStates)
+      .setOptionsDisabled(this.getOptionsDisabled())
       .setValue(Sort.DAY);
-
-    this.disableSortOptions();
   }
 
-  updateSortSelectView() {
+  /**
+   * @param {CustomEvent} event
+   */
+  onSortSelectDisable(event) {
+    const flags = this.getOptionsDisabled();
+
+    if (event.type !== 'view') {
+      flags.fill(true);
+    }
+
+    this.view.setOptionsDisabled(flags);
+  }
+
+  onSortSelectUpdate() {
     this.view.setValue(Sort.DAY);
-    this.disableSortOptions();
+    this.model.points.setSort(SortCompare[Sort.DAY]);
   }
 
-  disableSortOptions() {
-    const optionsDisabled = Object.values(SortDisabled);
-
-    this.view.setOptionsDisabled(optionsDisabled);
-  }
-
-  onSortChange() {
+  onSortSelectChange() {
     const checkedSort = Sort.findKey(this.view.getValue());
     const sortCompare = SortCompare[checkedSort];
 

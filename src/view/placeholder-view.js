@@ -1,12 +1,12 @@
 import ComponentView, {html} from './component-view.js';
 
 /** Представление placeholder */
-export default class FilterPlaceholderView extends ComponentView {
+export default class PlaceholderView extends ComponentView {
 
   /** @override */
   createAdjacentHtml() {
     return html`
-      <p class="trip-events__msg"></p>
+      <p class="trip-events__msg">Loading...</p>
     `;
   }
 
@@ -21,4 +21,4 @@ export default class FilterPlaceholderView extends ComponentView {
   }
 }
 
-customElements.define(String(FilterPlaceholderView), FilterPlaceholderView);
+customElements.define(String(PlaceholderView), PlaceholderView);

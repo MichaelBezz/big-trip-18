@@ -3,11 +3,6 @@ import SortOptionView from './sort-option-view.js';
 
 /** Представление списка сортировки */
 export default class SortSelectView extends RadioGroupView {
-  constructor() {
-    super();
-
-    this.addEventListener('change', this.onChange);
-  }
 
   /** @override */
   createAdjacentHtml() {
@@ -28,17 +23,6 @@ export default class SortSelectView extends RadioGroupView {
     this.querySelector('.trip-sort').append(...views);
 
     return this;
-  }
-
-  /**
-   * @param {Event & {target: HTMLInputElement}} event
-   */
-  onChange(event) {
-    if (event.target.type !== 'radio') {
-      return;
-    }
-
-    this.dispatchEvent(new CustomEvent('sort-change'));
   }
 }
 

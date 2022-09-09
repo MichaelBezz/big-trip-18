@@ -1,7 +1,13 @@
 import Model from './model.js';
 
+import Mode from '../enum/mode.js';
+
 /** Модель приложения */
 export default class ApplicationModel extends Model {
+
+  /** @type {number} */
+  #mode;
+
   /**
    * @param {DataTableModel<Point,PointAdapter>} points
    * @param {CollectionModel<Destination,DestinationAdapter>} destinations
@@ -11,6 +17,7 @@ export default class ApplicationModel extends Model {
     super();
 
     this.points = points;
+    this.editablePoint = null;
     this.destinations = destinations;
     this.offerGroups = offerGroups;
   }
@@ -22,5 +29,23 @@ export default class ApplicationModel extends Model {
       this.destinations.ready(),
       this.offerGroups.ready()
     ]);
+  }
+
+  /**
+   * Установит режим модели
+   * @param {number} mode
+   * @param {number} editablePointId
+   */
+  setMode(mode, editablePointId = null) {
+    this.#mode = mode;
+    this.editablePoint = this.points.findById(editablePointId);
+
+    const eventType = Mode.findKey(mode).toLowerCase();
+    this.dispatchEvent(new CustomEvent(eventType));
+  }
+
+  /** Получит режим модели */
+  getMode() {
+    return this.#mode;
   }
 }

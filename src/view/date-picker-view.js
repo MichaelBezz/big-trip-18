@@ -3,18 +3,28 @@ import ComponentView, {html} from './component-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+/** @typedef {import('flatpickr/dist/types/instance').Instance} Calendar */
+/** @typedef {import('flatpickr/dist/types/options').Options} CalendarOptions */
+/** @typedef {import('flatpickr/dist/types/options').DateOption} CalendarDate */
+
 /** Представление даты и времени */
 export default class DatePickerView extends ComponentView {
-  #datepicker = null;
+  /** @type {Calendar} */
+  #startDateCalendar;
+
+  /** @type {Calendar} */
+  #endDateCalendar;
 
   constructor() {
     super();
 
     /** @type {HTMLInputElement} */
-    this.startTime = this.querySelector('[name="event-start-time"]');
+    this.startTimeView = this.querySelector('[name="event-start-time"]');
 
     /** @type {HTMLInputElement} */
-    this.EndTime = this.querySelector('[name="event-end-time"]');
+    this.endTimeView = this.querySelector('[name="event-end-time"]');
+
+    this.initCalendar();
 
     this.classList.add('event__field-group', 'event__field-group--time');
   }
@@ -30,33 +40,48 @@ export default class DatePickerView extends ComponentView {
     `;
   }
 
-  /**
-   * Установит Datepicker
-   * @param {HTMLInputElement} view
-   * @param {string} defaultDate
-   */
-  setDatepicker(view, defaultDate) {
-    this.#datepicker = flatpickr(
-      view,
-      {
-        defaultDate,
-        dateFormat: 'd/m/y H:i',
-        enableTime: true,
-        // eslint-disable-next-line camelcase
-        time_24hr: true,
-        locale: {
-          firstDayOfWeek: 1 // start week on Monday
-        }
-      }
-    );
+  initCalendar() {
+    const formatOptions = {
+      'dateFormat': 'd/m/y H:i',
+      'enableTime': true,
+      'time_24hr': true,
+      'locale': {firstDayOfWeek: 1}
+    };
+
+    this.#startDateCalendar = flatpickr(this.startTimeView, formatOptions);
+    this.#endDateCalendar = flatpickr(this.endTimeView, formatOptions);
+
+    return this;
   }
 
-  /** Удалит экземпляр Datepicker */
-  removeDatepicker() {
-    if (this.#datepicker) {
-      this.#datepicker.destroy();
-      this.#datepicker = null;
-    }
+  /**
+   * @param {CalendarDate} date
+   * @param {CalendarOptions} options
+   */
+  setStartDate(date, options = {}) {
+    this.#startDateCalendar.setDate(date);
+    this.#startDateCalendar.set(options);
+
+    return this;
+  }
+
+  getStartDate() {
+    return this.#startDateCalendar.selectedDates[0];
+  }
+
+  /**
+   * @param {CalendarDate} date
+   * @param {CalendarOptions} options
+   */
+  setEndDate(date, options = {}) {
+    this.#endDateCalendar.setDate(date);
+    this.#endDateCalendar.set(options);
+
+    return this;
+  }
+
+  getEndDate() {
+    return this.#endDateCalendar.selectedDates[0];
   }
 
   /**
@@ -64,8 +89,7 @@ export default class DatePickerView extends ComponentView {
    * @param {string} isoDate
    */
   setStartTime(isoDate) {
-    this.startTime.value = isoDate;
-    this.setDatepicker(this.startTime, isoDate);
+    this.startTimeView.value = isoDate;
 
     return this;
   }
@@ -75,8 +99,7 @@ export default class DatePickerView extends ComponentView {
    * @param {string} isoDate
    */
   setEndTime(isoDate) {
-    this.EndTime.value = isoDate;
-    this.setDatepicker(this.EndTime, isoDate);
+    this.endTimeView.value = isoDate;
 
     return this;
   }
