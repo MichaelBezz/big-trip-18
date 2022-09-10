@@ -6,7 +6,7 @@
 /** @typedef {import('./placeholder-view').default} PlaceholderView */
 
 /** @typedef {import('./sort-select-view').default} SortSelectView */
-/** @typedef {import('./sort-option-view').SortOptionState} SortOptionState */
+/** @typedef {import('./sort-select-view').SortOptionState} SortOptionState */
 
 /** @typedef {import('./point-list-view').default} PointListView */
 /** @typedef {import('./point-view').default} PointView */
