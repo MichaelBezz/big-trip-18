@@ -3,6 +3,7 @@ import Presenter from './presenter.js';
 import Mode from '../enum/mode.js';
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
+import {formatDateWithTime} from '../utils.js';
 
 /**
  * Презентор формы редактирования
@@ -22,10 +23,11 @@ export default class PointEditorPresenter extends Presenter {
 
     this.buildTypeSelectView();
     this.buildDestinationSelectView();
+    this.buildDayDatePickerView();
 
     this.model.addEventListener('edit', this.onPointEdit.bind(this));
+    this.view.addEventListener('reset', this.onPointEditorReset.bind(this));
     this.view.addEventListener('close', () => this.model.setMode(Mode.VIEW));
-    this.view.addEventListener('reset', this.onPointEditorReset.bind(this)); // === кнопка DELETE
     this.view.typeSelectView.addEventListener('change', this.onTypeSelectChange.bind(this));
     this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectChange.bind(this));
   }
@@ -53,6 +55,10 @@ export default class PointEditorPresenter extends Presenter {
     this.view.destinationSelectView.setOptions(optionStates);
   }
 
+  buildDayDatePickerView() {
+    this.view.datePickerView.configure({dateFormat: 'd/m/y H:i'});
+  }
+
   updateTypeSelectView() {
     this.view.typeSelectView.setValue(this.#point.type);
   }
@@ -67,8 +73,8 @@ export default class PointEditorPresenter extends Presenter {
 
   updateDatePickerView() {
     this.view.datePickerView
-      .setStartDate(this.#point.startDate)
-      .setEndDate(this.#point.endDate);
+      .setStartDate(formatDateWithTime(this.#point.startDate))
+      .setEndDate(formatDateWithTime(this.#point.endDate));
   }
 
   updatePriceInputView() {

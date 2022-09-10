@@ -24,7 +24,15 @@ export default class DatePickerView extends ComponentView {
     /** @type {HTMLInputElement} */
     this.endTimeView = this.querySelector('[name="event-end-time"]');
 
-    this.initCalendar();
+    this.#startDateCalendar = flatpickr(this.startTimeView, {
+      enableTime: true,
+      onChange: (dates) => this.#endDateCalendar.set('minDate', dates[0])
+    });
+
+    this.#endDateCalendar = flatpickr(this.endTimeView, {
+      enableTime: true,
+      onChange: (dates) => this.#startDateCalendar.set('maxDate', dates[0])
+    });
 
     this.classList.add('event__field-group', 'event__field-group--time');
   }
@@ -40,27 +48,22 @@ export default class DatePickerView extends ComponentView {
     `;
   }
 
-  initCalendar() {
-    const formatOptions = {
-      'dateFormat': 'd/m/y H:i',
-      'enableTime': true,
-      'time_24hr': true,
-      'locale': {firstDayOfWeek: 1}
-    };
-
-    this.#startDateCalendar = flatpickr(this.startTimeView, formatOptions);
-    this.#endDateCalendar = flatpickr(this.endTimeView, formatOptions);
+  /**
+   * @param {CalendarOptions} options
+   */
+  configure(options) {
+    this.#startDateCalendar.set(options);
+    this.#endDateCalendar.set(options);
 
     return this;
   }
 
   /**
    * @param {CalendarDate} date
-   * @param {CalendarOptions} options
    */
-  setStartDate(date, options = {}) {
+  setStartDate(date) {
     this.#startDateCalendar.setDate(date);
-    this.#startDateCalendar.set(options);
+    this.#endDateCalendar.set('minDate', date);
 
     return this;
   }
@@ -71,37 +74,16 @@ export default class DatePickerView extends ComponentView {
 
   /**
    * @param {CalendarDate} date
-   * @param {CalendarOptions} options
    */
-  setEndDate(date, options = {}) {
+  setEndDate(date) {
     this.#endDateCalendar.setDate(date);
-    this.#endDateCalendar.set(options);
+    this.#startDateCalendar.set('maxDate', date);
 
     return this;
   }
 
   getEndDate() {
     return this.#endDateCalendar.selectedDates[0];
-  }
-
-  /**
-   * Установит время начала
-   * @param {string} isoDate
-   */
-  setStartTime(isoDate) {
-    this.startTimeView.value = isoDate;
-
-    return this;
-  }
-
-  /**
-   * Установит время окончания
-   * @param {string} isoDate
-   */
-  setEndTime(isoDate) {
-    this.endTimeView.value = isoDate;
-
-    return this;
   }
 }
 
