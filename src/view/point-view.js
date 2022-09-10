@@ -1,5 +1,4 @@
 import ListItemView, {html} from './list-item-view.js';
-import PointOfferView from './point-offer-view.js';
 
 /**
  * @typedef PointState
@@ -14,6 +13,8 @@ import PointOfferView from './point-offer-view.js';
  * @prop {number} price
  * @prop {PointOfferState[]} offers
  */
+
+/** @typedef {[title: string, price: number]} PointOfferState */
 
 /** Представление точки на маршруте */
 export default class PointView extends ListItemView {
@@ -68,13 +69,28 @@ export default class PointView extends ListItemView {
   }
 
   /**
+   * @param  {PointOfferState} state
+   */
+  createOfferHtml(...state) {
+    const [title, price] = state;
+
+    return html`
+      <div class="event__offer">
+        <span class="event__offer-title">${title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${price}</span>
+      </div>
+    `;
+  }
+
+  /**
    * Установит (выбранные) дополнительные опции
    * @param {PointOfferState[]} states
    */
   setOffers(states) {
-    const views = states.map((state) => new PointOfferView(...state));
-
-    this.querySelector('.event__selected-offers').replaceChildren(...views);
+    this.querySelector('.event__selected-offers').insertAdjacentHTML('afterbegin', html`${
+      states.map((state) => this.createOfferHtml(...state))
+    }`);
 
     return this;
   }
