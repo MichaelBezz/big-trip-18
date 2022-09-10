@@ -12,8 +12,6 @@ import {formatDateWithTime} from '../utils.js';
  * @extends {Presenter<Model,View>}
  */
 export default class PointEditorPresenter extends Presenter {
-  /** @type {PointAdapter}*/
-  #point;
 
   /**
    * @param {[model: Model, view: View]} init
@@ -60,25 +58,29 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   updateTypeSelectView() {
-    this.view.typeSelectView.setValue(this.#point.type);
+    this.view.typeSelectView.setValue(this.model.editablePoint.type);
   }
 
   updateDestinationSelectView() {
-    const destination = this.model.destinations.findById(this.#point.destinationId);
+    const {type, destinationId} = this.model.editablePoint;
+
+    const destination = this.model.destinations.findById(destinationId);
 
     this.view.destinationSelectView
-      .setLabel(this.#point.type)
+      .setLabel(type)
       .setValue(destination.name);
   }
 
   updateDatePickerView() {
+    const {startDate, endDate} = this.model.editablePoint;
+
     this.view.datePickerView
-      .setStartDate(formatDateWithTime(this.#point.startDate))
-      .setEndDate(formatDateWithTime(this.#point.endDate));
+      .setStartDate(formatDateWithTime(startDate))
+      .setEndDate(formatDateWithTime(endDate));
   }
 
   updatePriceInputView() {
-    this.view.priceInputView.setPrice(this.#point.basePrice);
+    this.view.priceInputView.setPrice(this.model.editablePoint.basePrice);
   }
 
   updateOfferSelectView() {
@@ -88,7 +90,7 @@ export default class PointEditorPresenter extends Presenter {
     /** @type {OfferOptionState[]} */
     const optionStates = availableOffers.map((offer) => {
       const {id, title, price} = offer;
-      const isChecked = this.#point.offerIds.includes(id);
+      const isChecked = this.model.editablePoint.offerIds.includes(id);
 
       return [id, title, price, isChecked];
     });
@@ -122,10 +124,8 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   onPointEdit() {
-    this.#point = this.model.editablePoint;
-
     /** @type {PointView} */
-    const editablePoint = document.querySelector(`#point-${this.#point.id}`);
+    const editablePoint = document.querySelector(`#point-${this.model.editablePoint.id}`);
 
     this.view.close(true);
 
