@@ -50,9 +50,9 @@ export default class OfferSelectView extends ComponentView {
    * @param {OfferOptionState[]} states
    */
   setOptions(states) {
-    this.querySelector('.event__available-offers').insertAdjacentHTML('afterbegin', html`${
+    this.querySelector('.event__available-offers').innerHTML = html`${
       states.map((state) => this.createOptionHtml(...state))
-    }`);
+    }`;
 
     return this;
   }

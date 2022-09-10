@@ -88,9 +88,9 @@ export default class PointView extends ListItemView {
    * @param {PointOfferState[]} states
    */
   setOffers(states) {
-    this.querySelector('.event__selected-offers').insertAdjacentHTML('afterbegin', html`${
+    this.querySelector('.event__selected-offers').innerHTML = html`${
       states.map((state) => this.createOfferHtml(...state))
-    }`);
+    }`;
 
     return this;
   }
