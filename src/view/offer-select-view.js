@@ -1,6 +1,7 @@
 import ComponentView, {html} from './component-view.js';
-import OfferOptionView from './offer-option-view.js';
 import './offer-select-view.css';
+
+/** @typedef {[id: number, title: string, price: number, isChecked: boolean]} OfferOptionState */
 
 /** Представление списка (доступных) опций в редакторе */
 export default class OfferSelectView extends ComponentView {
@@ -21,13 +22,37 @@ export default class OfferSelectView extends ComponentView {
   }
 
   /**
+   * @param  {OfferOptionState} state
+   */
+  createOptionHtml(...state) {
+    const [id, title, price, isChecked] = state;
+
+    return html`
+      <div class="event__offer-selector">
+        <input
+          class="event__offer-checkbox  visually-hidden"
+          id="event-offer-${id}"
+          type="checkbox"
+          name="event-offer-${id}"
+          ${isChecked ? 'checked' : ''}
+        >
+        <label class="event__offer-label" for="event-offer-${id}">
+          <span class="event__offer-title">${title}</span>
+          &plus;&euro;&nbsp;
+          <span class="event__offer-price">${price}</span>
+        </label>
+      </div>
+    `;
+  }
+
+  /**
    * Установит доступные опции
    * @param {OfferOptionState[]} states
    */
   setOptions(states) {
-    const views = states.map((state) => new OfferOptionView(...state));
-
-    this.querySelector('.event__available-offers').replaceChildren(...views);
+    this.querySelector('.event__available-offers').insertAdjacentHTML('afterbegin', html`${
+      states.map((state) => this.createOptionHtml(...state))
+    }`);
 
     return this;
   }
