@@ -8,12 +8,14 @@ import ApplicationModel from './model/application-model.js';
 import CollectionModel from './model/collection-model.js';
 import DataTableModel from './model/data-table-model.js';
 
+import CreateButtonView from './view/create-button-view.js';
 import FilterSelectView from './view/filter-select-view.js';
 import PlaceholderView from './view/placeholder-view.js';
 import SortSelectView from './view/sort-select-view.js';
 import PointListView from './view/point-list-view.js';
 import PointEditorView from './view/point-editor-view.js';
 
+import CreateButtonPresenter from './presenter/create-button-presenter.js';
 import FilterSelectPresenter from './presenter/filter-select-presenter.js';
 import PlaceholderPresenter from './presenter/placeholder-presenter.js';
 import SortSelectPresenter from './presenter/sort-select-presenter.js';
@@ -41,6 +43,9 @@ const offerGroups = new CollectionModel(offersStore, (offerGroup) => new OfferGr
 
 const applicationModel = new ApplicationModel(points, destinations, offerGroups);
 
+/** @type {CreateButtonView} */
+const createButtonView = document.querySelector(String(CreateButtonView));
+
 /** @type {FilterSelectView} */
 const filterSelectView = document.querySelector(String(FilterSelectView));
 
@@ -48,15 +53,18 @@ const filterSelectView = document.querySelector(String(FilterSelectView));
 const placeholderView = document.querySelector(String(PlaceholderView));
 
 /** @type {SortSelectView} */
-const sortSelectView = document.querySelector(String(SortSelectView));
+const sortSelectView = new SortSelectView();
 
 /** @type {PointListView} */
-const pointListView = document.querySelector(String(PointListView));
+const pointListView = new PointListView();
 
 /** @type {PointEditorView} */
 const pointEditorView = new PointEditorView();
 
 applicationModel.ready().then(() => {
+  placeholderView.replaceWith(sortSelectView, pointListView);
+
+  new CreateButtonPresenter(applicationModel, createButtonView);
   new FilterSelectPresenter(applicationModel, filterSelectView);
   new PlaceholderPresenter(applicationModel, placeholderView);
   new SortSelectPresenter(applicationModel, sortSelectView);
