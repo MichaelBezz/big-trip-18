@@ -53,15 +53,17 @@ const filterSelectView = document.querySelector(String(FilterSelectView));
 const placeholderView = document.querySelector(String(PlaceholderView));
 
 /** @type {SortSelectView} */
-const sortSelectView = document.querySelector(String(SortSelectView));
+const sortSelectView = new SortSelectView();
 
 /** @type {PointListView} */
-const pointListView = document.querySelector(String(PointListView));
+const pointListView = new PointListView();
 
 /** @type {PointEditorView} */
 const pointEditorView = new PointEditorView();
 
 applicationModel.ready().then(() => {
+  placeholderView.replaceWith(sortSelectView, pointListView);
+
   new CreateButtonPresenter(applicationModel, createButtonView);
   new FilterSelectPresenter(applicationModel, filterSelectView);
   new PlaceholderPresenter(applicationModel, placeholderView);
