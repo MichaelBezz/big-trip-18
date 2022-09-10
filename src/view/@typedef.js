@@ -14,7 +14,7 @@
 /** @typedef {import('./point-offer-view').PointOfferState} PointOfferState */
 
 /** @typedef {import('./point-editor-view').default} PointEditorView */
-/** @typedef {import('./type-option-view').TypeOptionState} TypeOptionState */
+/** @typedef {import('./type-select-view').TypeOptionState} TypeOptionState */
 /** @typedef {import('./destination-select-view').DestinationOptionState} DestinationOptionState */
 /** @typedef {import('./offer-option-view').OfferOptionState} OfferOptionState */
 /** @typedef {import('./destination-details-view').DestinationPictureState} DestinationPictureState */
