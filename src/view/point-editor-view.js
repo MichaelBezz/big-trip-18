@@ -6,6 +6,16 @@ import PriceInputView from './price-input-view.js';
 import OfferSelectView from './offer-select-view.js';
 import DestinationDetailsView from './destination-details-view.js';
 
+const SaveStates = {
+  NORMAL: 'Save',
+  PROCESS: 'Saving...'
+};
+
+const DeleteStates = {
+  NORMAL: 'Delete',
+  PROCESS: 'Deleting...'
+};
+
 /** Представление формы редактирования точки */
 export default class PointEditorView extends ComponentView {
   #linkedView = null;
@@ -30,6 +40,12 @@ export default class PointEditorView extends ComponentView {
 
     /** @type {DestinationDetailsView} */
     this.destinationDetailsView = this.querySelector(String(DestinationDetailsView));
+
+    /** @type {HTMLButtonElement} */
+    this.saveButton = this.querySelector('.event__save-btn');
+
+    /** @type {HTMLButtonElement} */
+    this.deleteButton = this.querySelector('.event__reset-btn');
 
     this.classList.add('trip-events__item');
     this.addEventListener('click', this.onClick);
@@ -95,6 +111,26 @@ export default class PointEditorView extends ComponentView {
     }
 
     return this;
+  }
+
+  disableSaveButton() {
+    this.saveButton.disabled = true;
+    this.saveButton.textContent = SaveStates.PROCESS;
+  }
+
+  enableSaveButton() {
+    this.saveButton.disabled = false;
+    this.saveButton.textContent = SaveStates.NORMAL;
+  }
+
+  disableDeleteButton() {
+    this.deleteButton.disabled = true;
+    this.deleteButton.textContent = DeleteStates.PROCESS;
+  }
+
+  enableDeleteButton() {
+    this.deleteButton.disabled = false;
+    this.deleteButton.textContent = DeleteStates.NORMAL;
   }
 
   /**
