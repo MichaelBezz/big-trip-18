@@ -25,6 +25,7 @@ export default class PointEditorPresenter extends Presenter {
 
     this.model.addEventListener('edit', this.onPointEdit.bind(this));
     this.view.addEventListener('reset', this.onPointEditorReset.bind(this));
+    this.view.addEventListener('submit', this.onPointEditorSubmit.bind(this));
     this.view.addEventListener('close', () => this.model.setMode(Mode.VIEW));
     this.view.typeSelectView.addEventListener('change', this.onTypeSelectChange.bind(this));
     this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectChange.bind(this));
@@ -87,6 +88,13 @@ export default class PointEditorPresenter extends Presenter {
     const selectedType = this.view.typeSelectView.getValue();
     const availableOffers = this.model.offerGroups.findById(selectedType).items;
 
+    if (!availableOffers.length) {
+      this.view.offerSelectView.hidden = true;
+      return;
+    }
+
+    this.view.offerSelectView.hidden = false;
+
     /** @type {OfferOptionState[]} */
     const optionStates = availableOffers.map((offer) => {
       const {id, title, price} = offer;
@@ -102,6 +110,13 @@ export default class PointEditorPresenter extends Presenter {
   updateDestinationDetailsView() {
     const selectedDestinationName = this.view.destinationSelectView.getValue();
     const destination = this.model.destinations.findBy('name', selectedDestinationName);
+
+    if (!destination) {
+      this.view.destinationDetailsView.hidden = true;
+      return;
+    }
+
+    this.view.destinationDetailsView.hidden = false;
 
     /** @type {DestinationPictureState[]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
@@ -142,20 +157,41 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   /**
-   * Событие reset происходит на форме => кнопка DELETE
+   * @param {Event} event
+   */
+  async onPointEditorSubmit(event) {
+    event.preventDefault();
+
+    this.view.disableSaveButton();
+
+    try {
+      // TODO await this.model.points.update(this.model.editablePoint.id, '');
+      this.view.close();
+
+    } catch (exception) {
+      // TODO shake
+    }
+
+    this.view.enableSaveButton();
+  }
+
+  /**
+   * DELETE
    * @param {Event} event
    */
   async onPointEditorReset(event) {
     event.preventDefault();
 
-    const editablePointId = this.model.editablePoint.id;
+    this.view.disableDeleteButton();
 
     try {
-      await this.model.points.remove(editablePointId);
+      await this.model.points.remove(this.model.editablePoint.id);
       this.view.close();
 
     } catch (exception) {
-      // shake
+      // TODO shake
     }
+
+    this.view.enableDeleteButton();
   }
 }
