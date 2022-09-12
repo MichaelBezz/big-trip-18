@@ -12,7 +12,7 @@ import CreateButtonView from './view/create-button-view.js';
 import FilterView from './view/filter-view.js';
 import SortView from './view/sort-view.js';
 import PointListView from './view/point-list-view.js';
-// import PointCreatorView from './view/point-creator-view.js';
+import PointCreatorView from './view/point-creator-view.js';
 import PointEditorView from './view/point-editor-view.js';
 
 import CreateButtonPresenter from './presenter/create-button-presenter.js';
@@ -20,7 +20,7 @@ import PlaceholderPresenter from './presenter/placeholder-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import SortPresenter from './presenter/sort-presenter.js';
 import PointListPresenter from './presenter/point-list-presenter.js';
-// import PointCreatorPresenter from './presenter/point-creator-presenter.js';
+import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
@@ -59,8 +59,8 @@ const sortView = document.querySelector(String(SortView));
 /** @type {PointListView} */
 const pointListView = document.querySelector(String(PointListView));
 
-// /** @type {PointCreatorView} */
-// const pointCreatorView = new PointCreatorView();
+/** @type {PointCreatorView} */
+const pointCreatorView = new PointCreatorView();
 
 /** @type {PointEditorView} */
 const pointEditorView = new PointEditorView();
@@ -71,7 +71,7 @@ applicationModel.ready().then(() => {
   new PlaceholderPresenter(applicationModel, placeholderView);
   new SortPresenter(applicationModel, sortView);
   new PointListPresenter(applicationModel, pointListView);
-  // new PointCreatorPresenter(applicationModel, pointCreatorView);
+  new PointCreatorPresenter(applicationModel, pointCreatorView);
   new PointEditorPresenter(applicationModel, pointEditorView);
 });
 
