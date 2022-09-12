@@ -1,6 +1,6 @@
 import Presenter from './presenter.js';
 
-import Sort from '../enum/sort.js';
+import SortType from '../enum/sort-type.js';
 import SortLabel from '../enum/sort-label.js';
 import SortDisabled from '../enum/sort-disabled.js';
 import SortCompare from '../enum/sort-compare.js';
@@ -35,12 +35,12 @@ export default class SortSelectPresenter extends Presenter {
 
   buildSortSelect() {
     /** @type {SortOptionState[]} */
-    const optionStates = Object.keys(Sort).map((key) => [SortLabel[key], Sort[key]]);
+    const optionStates = Object.keys(SortType).map((key) => [SortLabel[key], SortType[key]]);
 
     this.view
       .setOptions(optionStates)
       .setOptionsDisabled(this.getOptionsDisabled())
-      .setValue(Sort.DAY);
+      .setValue(SortType.DAY);
   }
 
   /**
@@ -57,12 +57,12 @@ export default class SortSelectPresenter extends Presenter {
   }
 
   onSortSelectReset() {
-    this.view.setValue(Sort.DAY);
-    this.model.points.setSort(SortCompare[Sort.DAY]);
+    this.view.setValue(SortType.DAY);
+    this.model.points.setSort(SortCompare[SortType.DAY]);
   }
 
   onSortSelectChange() {
-    const checkedSort = Sort.findKey(this.view.getValue());
+    const checkedSort = SortType.findKey(this.view.getValue());
     const sortCompare = SortCompare[checkedSort];
 
     this.model.points.setSort(sortCompare);

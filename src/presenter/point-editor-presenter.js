@@ -2,8 +2,8 @@ import Presenter from './presenter.js';
 import PointAdapter from '../adapter/point-adapter.js';
 
 import Mode from '../enum/mode.js';
-import Type from '../enum/type.js';
-import TypeLabel from '../enum/type-label.js';
+import PointType from '../enum/point-type.js';
+import PointLabel from '../enum/point-label.js';
 
 /**
  * Презентор формы редактирования
@@ -33,9 +33,9 @@ export default class PointEditorPresenter extends Presenter {
 
   buildTypeSelectView() {
     /** @type {TypeOptionState[]} */
-    const optionStates = Object.values(Type).map((type) => {
-      const key = Type.findKey(type);
-      const label = TypeLabel[key];
+    const optionStates = Object.values(PointType).map((type) => {
+      const key = PointType.findKey(type);
+      const label = PointLabel[key];
 
       return [label, type];
     });
@@ -150,9 +150,9 @@ export default class PointEditorPresenter extends Presenter {
 
   onTypeSelectChange() {
     const value = this.view.typeSelectView.getValue();
-    const key = Type.findKey(value);
+    const key = PointType.findKey(value);
 
-    this.view.destinationSelectView.setLabel(TypeLabel[key]);
+    this.view.destinationSelectView.setLabel(PointLabel[key]);
     this.updateOfferSelectView();
   }
 

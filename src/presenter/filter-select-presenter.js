@@ -1,6 +1,6 @@
 import Presenter from './presenter.js';
 
-import Filter from '../enum/filter.js';
+import FilterType from '../enum/filter-type.js';
 import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
 
@@ -40,12 +40,12 @@ export default class FilterSelectPresenter extends Presenter {
 
   buildFilterSelect() {
     /** @type {FilterOptionState[]} */
-    const optionStates = Object.keys(Filter).map((key) => [FilterLabel[key], Filter[key]]);
+    const optionStates = Object.keys(FilterType).map((key) => [FilterLabel[key], FilterType[key]]);
 
     this.view
       .setOptions(optionStates)
       .setOptionsDisabled(this.getOptionsDisabled())
-      .setValue(Filter.EVERYTHING);
+      .setValue(FilterType.EVERYTHING);
   }
 
   /**
@@ -66,7 +66,7 @@ export default class FilterSelectPresenter extends Presenter {
   }
 
   onFilterSelectChange() {
-    const checkedFilter = Filter.findKey(this.view.getValue());
+    const checkedFilter = FilterType.findKey(this.view.getValue());
     const filterPredicate = FilterPredicate[checkedFilter];
 
     this.model.points.setFilter(filterPredicate);
