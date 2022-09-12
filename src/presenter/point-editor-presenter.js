@@ -93,13 +93,6 @@ export default class PointEditorPresenter extends Presenter {
     const selectedType = this.view.typeSelectView.getValue();
     const availableOffers = this.model.offerGroups.findById(selectedType).items;
 
-    if (!availableOffers.length) {
-      this.view.offerSelectView.hidden = true;
-      return;
-    }
-
-    this.view.offerSelectView.hidden = false;
-
     /** @type {OfferOptionState[]} */
     const optionStates = availableOffers.map((offer) => {
       const {id, title, price} = offer;
@@ -109,6 +102,7 @@ export default class PointEditorPresenter extends Presenter {
     });
 
     this.view.offerSelectView
+      .set('hidden', !availableOffers.length)
       .setOptions(optionStates);
   }
 
@@ -116,17 +110,11 @@ export default class PointEditorPresenter extends Presenter {
     const selectedDestinationName = this.view.destinationSelectView.getDestination();
     const destination = this.model.destinations.findBy('name', selectedDestinationName);
 
-    if (!destination) {
-      this.view.destinationDetailsView.hidden = true;
-      return;
-    }
-
-    this.view.destinationDetailsView.hidden = false;
-
     /** @type {DestinationPictureState[]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
 
     this.view.destinationDetailsView
+      .set('hidden', !destination)
       .setDescription(destination.description)
       .setPictures(pictureStates);
   }
