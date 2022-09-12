@@ -10,9 +10,9 @@ import DataTableModel from './model/data-table-model.js';
 
 import CreateButtonView from './view/create-button-view.js';
 import FilterSelectView from './view/filter-select-view.js';
-import PlaceholderView from './view/placeholder-view.js';
 import SortSelectView from './view/sort-select-view.js';
 import PointListView from './view/point-list-view.js';
+// import PointCreatorView from './view/point-creator-view.js';
 import PointEditorView from './view/point-editor-view.js';
 
 import CreateButtonPresenter from './presenter/create-button-presenter.js';
@@ -20,6 +20,7 @@ import FilterSelectPresenter from './presenter/filter-select-presenter.js';
 import PlaceholderPresenter from './presenter/placeholder-presenter.js';
 import SortSelectPresenter from './presenter/sort-select-presenter.js';
 import PointListPresenter from './presenter/point-list-presenter.js';
+// import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
@@ -49,26 +50,28 @@ const createButtonView = document.querySelector(String(CreateButtonView));
 /** @type {FilterSelectView} */
 const filterSelectView = document.querySelector(String(FilterSelectView));
 
-/** @type {PlaceholderView} */
-const placeholderView = document.querySelector(String(PlaceholderView));
+/** @type {HTMLParagraphElement} */
+const placeholderView = document.querySelector('.trip-events__msg');
 
 /** @type {SortSelectView} */
-const sortSelectView = new SortSelectView();
+const sortSelectView = document.querySelector(String(SortSelectView));
 
 /** @type {PointListView} */
-const pointListView = new PointListView();
+const pointListView = document.querySelector(String(PointListView));
+
+// /** @type {PointCreatorView} */
+// const pointCreatorView = new PointCreatorView();
 
 /** @type {PointEditorView} */
 const pointEditorView = new PointEditorView();
 
 applicationModel.ready().then(() => {
-  placeholderView.replaceWith(sortSelectView, pointListView);
-
   new CreateButtonPresenter(applicationModel, createButtonView);
   new FilterSelectPresenter(applicationModel, filterSelectView);
   new PlaceholderPresenter(applicationModel, placeholderView);
   new SortSelectPresenter(applicationModel, sortSelectView);
   new PointListPresenter(applicationModel, pointListView);
+  // new PointCreatorPresenter(applicationModel, pointCreatorView);
   new PointEditorPresenter(applicationModel, pointEditorView);
 });
 
@@ -84,3 +87,7 @@ applicationModel.addEventListener(['view', 'create', 'edit'], (event) => {
 applicationModel.points.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
   trace(event.type);
 });
+
+//TODO activePoint
+//TODO переименовать слушатели
+//TODO перенести типы в typedef
