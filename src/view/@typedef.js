@@ -11,6 +11,7 @@
 /** @typedef {import('./point-view').PointState} PointState */
 /** @typedef {import('./point-view').PointOfferState} PointOfferState */
 
+/** @typedef {import('./point-creator-view').default} PointCreatorView */
 /** @typedef {import('./point-editor-view').default} PointEditorView */
 /** @typedef {import('./point-type-select-view').TypeOptionState} TypeOptionState */
 /** @typedef {import('./destination-select-view').DestinationOptionState} DestinationOptionState */
