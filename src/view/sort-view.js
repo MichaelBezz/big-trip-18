@@ -3,7 +3,7 @@ import RadioGroupView, {html} from './radio-group-view.js';
 /** @typedef {[label: string, value: string]} SortOptionState */
 
 /** Представление списка сортировки */
-export default class SortSelectView extends RadioGroupView {
+export default class SortView extends RadioGroupView {
 
   /** @override */
   createAdjacentHtml() {
@@ -49,4 +49,4 @@ export default class SortSelectView extends RadioGroupView {
   }
 }
 
-customElements.define(String(SortSelectView), SortSelectView);
+customElements.define(String(SortView), SortView);

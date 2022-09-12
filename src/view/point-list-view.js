@@ -1,8 +1,14 @@
-import ListView from './list-view.js';
+import View from './view.js';
 import PointView from './point-view.js';
 
 /** Представление списка точек */
-export default class PointListView extends ListView {
+export default class PointListView extends View {
+  constructor() {
+    super();
+
+    this.classList.add('trip-events__list');
+  }
+
   /**
    * @param {PointState[]} states
    */

@@ -1,4 +1,4 @@
-import ListItemView, {html} from './list-item-view.js';
+import PointItemView, {html} from './point-item-view.js';
 
 /**
  * @typedef PointState
@@ -17,7 +17,7 @@ import ListItemView, {html} from './list-item-view.js';
 /** @typedef {[title: string, price: number]} PointOfferState */
 
 /** Представление точки на маршруте */
-export default class PointView extends ListItemView {
+export default class PointView extends PointItemView {
   #id;
 
   /**

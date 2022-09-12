@@ -3,7 +3,7 @@ import View, {html} from './view.js';
 /** @typedef {[src: string, alt: string]} DestinationPictureState */
 
 /** Представление описания пункта назначения */
-export default class DestinationDetailsView extends View {
+export default class DestinationView extends View {
   constructor() {
     super();
 
@@ -52,4 +52,4 @@ export default class DestinationDetailsView extends View {
   }
 }
 
-customElements.define(String(DestinationDetailsView), DestinationDetailsView);
+customElements.define(String(DestinationView), DestinationView);

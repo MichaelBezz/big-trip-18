@@ -3,7 +3,7 @@ import RadioGroupView, {html} from './radio-group-view.js';
 /** @typedef {[label: string, value: string]} TypeOptionState */
 
 /** Представление меню типов */
-export default class TypeSelectView extends RadioGroupView {
+export default class PointTypeSelectView extends RadioGroupView {
   constructor() {
     super();
 
@@ -107,4 +107,4 @@ export default class TypeSelectView extends RadioGroupView {
   }
 }
 
-customElements.define(String(TypeSelectView), TypeSelectView);
+customElements.define(String(PointTypeSelectView), PointTypeSelectView);

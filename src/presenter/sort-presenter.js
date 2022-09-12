@@ -8,10 +8,10 @@ import SortCompare from '../enum/sort-compare.js';
 /**
  * Презентор сортировки
  * @template {ApplicationModel} Model
- * @template {SortSelectView} View
+ * @template {SortView} View
  * @extends {Presenter<Model,View>}
  */
-export default class SortSelectPresenter extends Presenter {
+export default class SortPresenter extends Presenter {
   /**
    * @param {[model: Model, view: View]} init
    */

@@ -7,10 +7,10 @@ import FilterPredicate from '../enum/filter-predicate.js';
 /**
  * Презентор фильтра
  * @template {ApplicationModel} Model
- * @template {FilterSelectView} View
+ * @template {FilterView} View
  * @extends {Presenter<Model,View>}
  */
-export default class FilterSelectPresenter extends Presenter {
+export default class FilterPresenter extends Presenter {
   /**
    * @param {[model: Model, view: View]} init
    */

@@ -113,7 +113,7 @@ export default class PointEditorPresenter extends Presenter {
     /** @type {DestinationPictureState[]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
 
-    this.view.destinationDetailsView
+    this.view.destinationView
       .set('hidden', !destination)
       .setDescription(destination.description)
       .setPictures(pictureStates);

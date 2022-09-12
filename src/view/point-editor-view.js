@@ -1,10 +1,10 @@
 import View, {html} from './view.js';
-import TypeSelectView from './type-select-view.js';
+import PointTypeSelectView from './point-type-select-view.js';
 import DestinationSelectView from './destination-select-view.js';
 import DatePickerView from './date-picker-view.js';
 import PriceInputView from './price-input-view.js';
 import OfferSelectView from './offer-select-view.js';
-import DestinationDetailsView from './destination-details-view.js';
+import DestinationView from './destination-view.js';
 
 const SaveButtonStates = {
   NORMAL: 'Save',
@@ -23,8 +23,8 @@ export default class PointEditorView extends View {
   constructor() {
     super();
 
-    /** @type {TypeSelectView} */
-    this.typeSelectView = this.querySelector(String(TypeSelectView));
+    /** @type {PointTypeSelectView} */
+    this.typeSelectView = this.querySelector(String(PointTypeSelectView));
 
     /** @type {DestinationSelectView} */
     this.destinationSelectView = this.querySelector(String(DestinationSelectView));
@@ -38,8 +38,8 @@ export default class PointEditorView extends View {
     /** @type {OfferSelectView} */
     this.offerSelectView = this.querySelector(String(OfferSelectView));
 
-    /** @type {DestinationDetailsView} */
-    this.destinationDetailsView = this.querySelector(String(DestinationDetailsView));
+    /** @type {DestinationView} */
+    this.destinationView = this.querySelector(String(DestinationView));
 
     /** @type {HTMLButtonElement} */
     this.saveButton = this.querySelector('.event__save-btn');
@@ -56,7 +56,7 @@ export default class PointEditorView extends View {
     return html`
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
-          ${TypeSelectView}
+          ${PointTypeSelectView}
           ${DestinationSelectView}
           ${DatePickerView}
           ${PriceInputView}
@@ -69,7 +69,7 @@ export default class PointEditorView extends View {
 
         <section class="event__details">
           ${OfferSelectView}
-          ${DestinationDetailsView}
+          ${DestinationView}
         </section>
       </form>
     `;

@@ -9,16 +9,16 @@ import CollectionModel from './model/collection-model.js';
 import DataTableModel from './model/data-table-model.js';
 
 import CreateButtonView from './view/create-button-view.js';
-import FilterSelectView from './view/filter-select-view.js';
-import SortSelectView from './view/sort-select-view.js';
+import FilterView from './view/filter-view.js';
+import SortView from './view/sort-view.js';
 import PointListView from './view/point-list-view.js';
 // import PointCreatorView from './view/point-creator-view.js';
 import PointEditorView from './view/point-editor-view.js';
 
 import CreateButtonPresenter from './presenter/create-button-presenter.js';
-import FilterSelectPresenter from './presenter/filter-select-presenter.js';
 import PlaceholderPresenter from './presenter/placeholder-presenter.js';
-import SortSelectPresenter from './presenter/sort-select-presenter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
+import SortPresenter from './presenter/sort-presenter.js';
 import PointListPresenter from './presenter/point-list-presenter.js';
 // import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
@@ -47,14 +47,14 @@ const applicationModel = new ApplicationModel(points, destinations, offerGroups)
 /** @type {CreateButtonView} */
 const createButtonView = document.querySelector(String(CreateButtonView));
 
-/** @type {FilterSelectView} */
-const filterSelectView = document.querySelector(String(FilterSelectView));
+/** @type {FilterView} */
+const filterView = document.querySelector(String(FilterView));
 
 /** @type {HTMLParagraphElement} */
 const placeholderView = document.querySelector('.trip-events__msg');
 
-/** @type {SortSelectView} */
-const sortSelectView = document.querySelector(String(SortSelectView));
+/** @type {SortView} */
+const sortView = document.querySelector(String(SortView));
 
 /** @type {PointListView} */
 const pointListView = document.querySelector(String(PointListView));
@@ -67,9 +67,9 @@ const pointEditorView = new PointEditorView();
 
 applicationModel.ready().then(() => {
   new CreateButtonPresenter(applicationModel, createButtonView);
-  new FilterSelectPresenter(applicationModel, filterSelectView);
+  new FilterPresenter(applicationModel, filterView);
   new PlaceholderPresenter(applicationModel, placeholderView);
-  new SortSelectPresenter(applicationModel, sortSelectView);
+  new SortPresenter(applicationModel, sortView);
   new PointListPresenter(applicationModel, pointListView);
   // new PointCreatorPresenter(applicationModel, pointCreatorView);
   new PointEditorPresenter(applicationModel, pointEditorView);
