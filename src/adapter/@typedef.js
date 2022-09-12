@@ -6,26 +6,13 @@
 /**
  * @typedef Point
  * @prop {string} id
- * @prop {PointType} type
+ * @prop {string} type
  * @prop {number} destination
  * @prop {string} date_from
  * @prop {string} date_to
  * @prop {number} base_price
  * @prop {number[]} offers
- */
-
-/**
- * @typedef LocalPoint
- * @prop {PointType} type
- * @prop {number} destination
- * @prop {string} date_from
- * @prop {string} date_to
- * @prop {number} base_price
- * @prop {number[]} offers
- */
-
-/**
- * @typedef {'taxi' | 'bus' | 'train' | 'ship' | 'drive' | 'flight' | 'check-in' | 'sightseeing' | 'restaurant'} PointType
+ * @prop {boolean} is_favorite
  */
 
 /**
@@ -33,13 +20,19 @@
  * @prop {number} id
  * @prop {string} name
  * @prop {string} description
- * @prop {Picture[]} pictures
+ * @prop {DestinationPicture[]} pictures
  */
 
 /**
- * @typedef Picture
+ * @typedef DestinationPicture
  * @prop {string} src
  * @prop {string} description
+ */
+
+/**
+ * @typedef OfferGroup
+ * @prop {string} type
+ * @prop {Offer[]} offers
  */
 
 /**
@@ -47,10 +40,4 @@
  * @prop {number} id
  * @prop {string} title
  * @prop {number} price
- */
-
-/**
- * @typedef OfferGroup
- * @prop {PointType} type
- * @prop {Offer[]} offers
  */
