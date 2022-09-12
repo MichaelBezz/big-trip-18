@@ -1,4 +1,5 @@
 import Presenter from './presenter.js';
+import PointAdapter from '../adapter/point-adapter.js';
 
 import Mode from '../enum/mode.js';
 import Type from '../enum/type.js';
@@ -73,7 +74,7 @@ export default class PointEditorPresenter extends Presenter {
 
     this.view.destinationSelectView
       .setLabel(type)
-      .setValue(destination.name);
+      .setDestination(destination.name);
   }
 
   updateDatePickerView() {
@@ -83,7 +84,9 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   updatePriceInputView() {
-    this.view.priceInputView.setPrice(this.model.editablePoint.basePrice);
+    const {basePrice} = this.model.editablePoint;
+
+    this.view.priceInputView.setPrice(String(basePrice));
   }
 
   updateOfferSelectView() {
@@ -110,7 +113,7 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   updateDestinationDetailsView() {
-    const selectedDestinationName = this.view.destinationSelectView.getValue();
+    const selectedDestinationName = this.view.destinationSelectView.getDestination();
     const destination = this.model.destinations.findBy('name', selectedDestinationName);
 
     if (!destination) {
@@ -126,6 +129,23 @@ export default class PointEditorPresenter extends Presenter {
     this.view.destinationDetailsView
       .setDescription(destination.description)
       .setPictures(pictureStates);
+  }
+
+  getFormData() {
+    const point = new PointAdapter();
+
+    const destinationName = this.view.destinationSelectView.getDestination();
+    const [startDate, endDate] = this.view.datePickerView.getDates();
+
+    point.type = this.view.typeSelectView.getValue();
+    point.destinationId = this.model.destinations.findBy('name', destinationName)?.id;
+    point.startDate = startDate;
+    point.endDate = endDate;
+    point.basePrice = Number(this.view.priceInputView.getPrice());
+    point.offerIds = this.view.offerSelectView.getSelectedValues().map(Number);
+    point.isFavorite = false;
+
+    return point;
   }
 
   onTypeSelectChange() {
@@ -167,7 +187,7 @@ export default class PointEditorPresenter extends Presenter {
     this.view.disableSaveButton();
 
     try {
-      // TODO await this.model.points.update(this.model.editablePoint.id, '');
+      await this.model.points.update(this.model.editablePoint.id, this.getFormData());
       this.view.close();
 
     } catch (exception) {

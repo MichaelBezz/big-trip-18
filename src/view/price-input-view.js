@@ -25,13 +25,13 @@ export default class PriceInputView extends ComponentView {
   /**
    * @param {string} value
    */
-  setValue(value) {
+  setPrice(value) {
     this.inputView.value = value;
 
     return this;
   }
 
-  getValue() {
+  getPrice() {
     return this.inputView.value;
   }
 }
