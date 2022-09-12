@@ -18,10 +18,11 @@ const DeleteButtonStates = {
 
 /** Представление формы редактирования точки */
 export default class PointEditorView extends View {
-  #linkedView = null;
-
   constructor() {
     super();
+
+    /** @type {Element} */
+    this.targetView = null;
 
     /** @type {PointTypeSelectView} */
     this.typeSelectView = this.querySelector(String(PointTypeSelectView));
@@ -42,12 +43,14 @@ export default class PointEditorView extends View {
     this.destinationView = this.querySelector(String(DestinationView));
 
     /** @type {HTMLButtonElement} */
-    this.saveButton = this.querySelector('.event__save-btn');
+    this.submitButtonView = this.querySelector('.event__save-btn');
 
     /** @type {HTMLButtonElement} */
-    this.deleteButton = this.querySelector('.event__reset-btn');
+    this.resetButtonView = this.querySelector('.event__reset-btn');
 
-    this.classList.add('trip-events__item');
+    /** @type {HTMLButtonElement} */
+    this.closeButtonView = this.querySelector('.event__rollup-btn');
+
     this.addEventListener('click', this.onClick);
   }
 
@@ -60,11 +63,7 @@ export default class PointEditorView extends View {
           ${DestinationSelectView}
           ${DatePickerView}
           ${PriceInputView}
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
-          </button>
+          ${this.createButtonsHtml()}
         </header>
 
         <section class="event__details">
@@ -75,14 +74,32 @@ export default class PointEditorView extends View {
     `;
   }
 
+  createButtonsHtml() {
+    return html`
+      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+      <button class="event__reset-btn" type="reset">Delete</button>
+      <button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span>
+      </button>
+    `;
+  }
+
   /**
-   * Свяжет редактор с другим представлением
-   * @param {HTMLElement} view
+   * Назначит целевой элемент
+   * @param {Element} view
    */
-  link(view) {
-    this.#linkedView = view;
+  target(view) {
+    this.targetView = view;
 
     return this;
+  }
+
+  connect() {
+    this.targetView.replaceWith(this);
+  }
+
+  disconnect() {
+    this.replaceWith(this.targetView);
   }
 
   /**
@@ -90,7 +107,8 @@ export default class PointEditorView extends View {
    * Обработает события по Esc
    */
   open() {
-    this.#linkedView.replaceWith(this);
+    this.connect();
+
     document.addEventListener('keydown', this);
 
     return this;
@@ -103,7 +121,8 @@ export default class PointEditorView extends View {
    * @param {boolean} dispatch
    */
   close(dispatch = false) {
-    this.replaceWith(this.#linkedView);
+    this.disconnect();
+
     document.removeEventListener('keydown', this);
 
     if (!dispatch) {
@@ -114,40 +133,40 @@ export default class PointEditorView extends View {
   }
 
   disableSaveButton() {
-    this.saveButton.disabled = true;
-    this.saveButton.textContent = SaveButtonStates.PROCESS;
+    this.submitButtonView.disabled = true;
+    this.submitButtonView.textContent = SaveButtonStates.PROCESS;
   }
 
   enableSaveButton() {
-    this.saveButton.disabled = false;
-    this.saveButton.textContent = SaveButtonStates.NORMAL;
+    this.submitButtonView.disabled = false;
+    this.submitButtonView.textContent = SaveButtonStates.NORMAL;
   }
 
   disableDeleteButton() {
-    this.deleteButton.disabled = true;
-    this.deleteButton.textContent = DeleteButtonStates.PROCESS;
+    this.resetButtonView.disabled = true;
+    this.resetButtonView.textContent = DeleteButtonStates.PROCESS;
   }
 
   enableDeleteButton() {
-    this.deleteButton.disabled = false;
-    this.deleteButton.textContent = DeleteButtonStates.NORMAL;
+    this.resetButtonView.disabled = false;
+    this.resetButtonView.textContent = DeleteButtonStates.NORMAL;
   }
 
   /**
    * @param {MouseEvent & {target: Element}} event
    */
   onClick(event) {
-    if (event.target.closest('.event__rollup-btn')) {
+    if (event.target === this.closeButtonView) {
       this.close();
     }
   }
 
   /**
    * NOTE Стандартный метод обработки события на объекте
+   * NOTE Событие без key при выборе опции в PointTypeSelectView
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
-    // NOTE Событие без key при выборе опции в TypeSelectView
     if (!event.key?.startsWith('Esc')) {
       return;
     }

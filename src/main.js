@@ -91,3 +91,4 @@ applicationModel.points.addEventListener(['add', 'update', 'remove', 'filter', '
 //TODO activePoint
 //TODO переименовать слушатели
 //TODO перенести типы в typedef
+//TODO сделать creator

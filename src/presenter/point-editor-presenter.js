@@ -162,7 +162,7 @@ export default class PointEditorPresenter extends Presenter {
     this.updateDestinationDetailsView();
 
     this.view
-      .link(editablePoint)
+      .target(editablePoint)
       .open();
   }
 
