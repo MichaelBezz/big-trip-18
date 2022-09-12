@@ -1,7 +1,7 @@
-import ComponentView, {html} from './component-view.js';
+import View, {html} from './view.js';
 
 /** Представление placeholder */
-export default class PlaceholderView extends ComponentView {
+export default class PlaceholderView extends View {
 
   /** @override */
   createAdjacentHtml() {

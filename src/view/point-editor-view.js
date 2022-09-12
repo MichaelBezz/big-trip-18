@@ -1,4 +1,4 @@
-import ComponentView, {html} from './component-view.js';
+import View, {html} from './view.js';
 import TypeSelectView from './type-select-view.js';
 import DestinationSelectView from './destination-select-view.js';
 import DatePickerView from './date-picker-view.js';
@@ -6,18 +6,18 @@ import PriceInputView from './price-input-view.js';
 import OfferSelectView from './offer-select-view.js';
 import DestinationDetailsView from './destination-details-view.js';
 
-const SaveStates = {
+const SaveButtonStates = {
   NORMAL: 'Save',
   PROCESS: 'Saving...'
 };
 
-const DeleteStates = {
+const DeleteButtonStates = {
   NORMAL: 'Delete',
   PROCESS: 'Deleting...'
 };
 
 /** Представление формы редактирования точки */
-export default class PointEditorView extends ComponentView {
+export default class PointEditorView extends View {
   #linkedView = null;
 
   constructor() {
@@ -115,22 +115,22 @@ export default class PointEditorView extends ComponentView {
 
   disableSaveButton() {
     this.saveButton.disabled = true;
-    this.saveButton.textContent = SaveStates.PROCESS;
+    this.saveButton.textContent = SaveButtonStates.PROCESS;
   }
 
   enableSaveButton() {
     this.saveButton.disabled = false;
-    this.saveButton.textContent = SaveStates.NORMAL;
+    this.saveButton.textContent = SaveButtonStates.NORMAL;
   }
 
   disableDeleteButton() {
     this.deleteButton.disabled = true;
-    this.deleteButton.textContent = DeleteStates.PROCESS;
+    this.deleteButton.textContent = DeleteButtonStates.PROCESS;
   }
 
   enableDeleteButton() {
     this.deleteButton.disabled = false;
-    this.deleteButton.textContent = DeleteStates.NORMAL;
+    this.deleteButton.textContent = DeleteButtonStates.NORMAL;
   }
 
   /**

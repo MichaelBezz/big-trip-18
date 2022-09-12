@@ -1,10 +1,10 @@
-import ComponentView from './component-view.js';
+import View from './view.js';
 import './list-item-view.css';
 
-export * from './component-view.js';
+export * from './view.js';
 
 /** Базовое представление Item */
-export default class ListItemView extends ComponentView {
+export default class ListItemView extends View {
   /**
    * @param  {PointState[]} states
    */

@@ -1,6 +1,6 @@
-import ComponentView, {html} from './component-view.js';
+import View, {html} from './view.js';
 
-export default class CreateButtonView extends ComponentView {
+export default class CreateButtonView extends View {
   constructor() {
     super();
 

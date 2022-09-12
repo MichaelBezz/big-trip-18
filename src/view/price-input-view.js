@@ -1,7 +1,7 @@
-import ComponentView, {html} from './component-view.js';
+import View, {html} from './view.js';
 
 /** Представление цены */
-export default class PriceInputView extends ComponentView {
+export default class PriceInputView extends View {
   constructor() {
     super();
 
