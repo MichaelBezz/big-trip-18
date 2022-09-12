@@ -3,7 +3,6 @@ import Presenter from './presenter.js';
 import Mode from '../enum/mode.js';
 import Type from '../enum/type.js';
 import TypeLabel from '../enum/type-label.js';
-import {formatDateWithTime} from '../utils.js';
 
 /**
  * Презентор формы редактирования
@@ -55,7 +54,12 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   buildDayDatePickerView() {
-    this.view.datePickerView.configure({dateFormat: 'd/m/y H:i'});
+    const calendarOptions = {
+      dateFormat: 'd/m/y H:i',
+      locale: {firstDayOfWeek: 1}
+    };
+
+    this.view.datePickerView.configure(calendarOptions);
   }
 
   updateTypeSelectView() {
@@ -75,9 +79,7 @@ export default class PointEditorPresenter extends Presenter {
   updateDatePickerView() {
     const {startDate, endDate} = this.model.editablePoint;
 
-    this.view.datePickerView
-      .setStartDate(formatDateWithTime(startDate))
-      .setEndDate(formatDateWithTime(endDate));
+    this.view.datePickerView.setDate(startDate, endDate);
   }
 
   updatePriceInputView() {
