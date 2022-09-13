@@ -2,7 +2,7 @@ import View from './view.js';
 import PointView from './point-view.js';
 
 /** Представление списка точек */
-export default class PointListView extends View {
+export default class ListView extends View {
   constructor() {
     super();
 
@@ -21,4 +21,4 @@ export default class PointListView extends View {
   }
 }
 
-customElements.define(String(PointListView), PointListView);
+customElements.define(String(ListView), ListView);

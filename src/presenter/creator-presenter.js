@@ -3,10 +3,10 @@ import Presenter from './presenter.js';
 /**
  * Презентор формы создания
  * @template {ApplicationModel} Model
- * @template {PointCreatorView} View
+ * @template {CreatorView} View
  * @extends {Presenter<Model,View>}
  */
-export default class PointCreatorPresenter extends Presenter {
+export default class CreatorPresenter extends Presenter {
   /**
    * @param {[model: Model, view: View]} init
    */

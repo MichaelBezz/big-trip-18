@@ -8,10 +8,10 @@ import PointLabel from '../enum/point-label.js';
 /**
  * Презентор формы редактирования
  * @template {ApplicationModel} Model
- * @template {PointEditorView} View
+ * @template {EditorView} View
  * @extends {Presenter<Model,View>}
  */
-export default class PointEditorPresenter extends Presenter {
+export default class EditorPresenter extends Presenter {
 
   /**
    * @param {[model: Model, view: View]} init
