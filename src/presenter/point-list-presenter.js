@@ -68,9 +68,9 @@ export default class PointListPresenter extends Presenter {
   }
 
   /**
-   * @param {CustomEvent} event
+   * @param {PointEvent} event
    */
   onViewPointEdit(event) {
-    this.model.setMode(Mode.EDIT, event.detail);
+    this.model.setMode(Mode.EDIT, event.detail.id);
   }
 }

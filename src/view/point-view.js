@@ -89,7 +89,7 @@ export default class PointView extends PointItemView {
 
     this.dispatchEvent(
       new CustomEvent('point-edit', {
-        detail: this.#id,
+        detail: {id: this.#id},
         bubbles: true
       })
     );
