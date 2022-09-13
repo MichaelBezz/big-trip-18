@@ -64,11 +64,11 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   updateTypeSelectView() {
-    this.view.typeSelectView.setValue(this.model.editablePoint.type);
+    this.view.typeSelectView.setValue(this.model.activePoint.type);
   }
 
   updateDestinationSelectView() {
-    const {type, destinationId} = this.model.editablePoint;
+    const {type, destinationId} = this.model.activePoint;
 
     const destination = this.model.destinations.findById(destinationId);
 
@@ -78,13 +78,13 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   updateDatePickerView() {
-    const {startDate, endDate} = this.model.editablePoint;
+    const {startDate, endDate} = this.model.activePoint;
 
     this.view.datePickerView.setDate(startDate, endDate);
   }
 
   updatePriceInputView() {
-    const {basePrice} = this.model.editablePoint;
+    const {basePrice} = this.model.activePoint;
 
     this.view.priceInputView.setPrice(String(basePrice));
   }
@@ -96,7 +96,7 @@ export default class PointEditorPresenter extends Presenter {
     /** @type {OfferOptionState[]} */
     const optionStates = availableOffers.map((offer) => {
       const {id, title, price} = offer;
-      const isChecked = this.model.editablePoint.offerIds.includes(id);
+      const isChecked = this.model.activePoint.offerIds.includes(id);
 
       return [id, title, price, isChecked];
     });
@@ -150,7 +150,7 @@ export default class PointEditorPresenter extends Presenter {
 
   onPointEdit() {
     /** @type {PointView} */
-    const editablePoint = document.querySelector(`#point-${this.model.editablePoint.id}`);
+    const activePoint = document.querySelector(`#point-${this.model.activePoint.id}`);
 
     this.view.close(true);
 
@@ -162,7 +162,7 @@ export default class PointEditorPresenter extends Presenter {
     this.updateDestinationDetailsView();
 
     this.view
-      .target(editablePoint)
+      .target(activePoint)
       .open();
   }
 
@@ -175,7 +175,7 @@ export default class PointEditorPresenter extends Presenter {
     this.view.disableSaveButton();
 
     try {
-      await this.model.points.update(this.model.editablePoint.id, this.getFormData());
+      await this.model.points.update(this.model.activePoint.id, this.getFormData());
       this.view.close();
 
     } catch (exception) {
@@ -195,7 +195,7 @@ export default class PointEditorPresenter extends Presenter {
     this.view.disableDeleteButton();
 
     try {
-      await this.model.points.remove(this.model.editablePoint.id);
+      await this.model.points.remove(this.model.activePoint.id);
       this.view.close();
 
     } catch (exception) {
