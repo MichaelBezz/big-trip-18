@@ -7,6 +7,10 @@ import PriceInputView from './price-input-view.js';
 import OfferSelectView from './offer-select-view.js';
 import DestinationView from './destination-view.js';
 
+import ButtonState from '../enum/button-state.js';
+
+export * from './point-item-view.js';
+
 /** Представление формы создания точки */
 export default class PointCreatorView extends PointItemView {
   constructor() {
@@ -115,6 +119,16 @@ export default class PointCreatorView extends PointItemView {
     }
 
     return this;
+  }
+
+  disableSubmitButton() {
+    this.submitButtonView.disabled = true;
+    this.submitButtonView.textContent = ButtonState.SUBMIT_PROCESS;
+  }
+
+  enableSubmitButton() {
+    this.submitButtonView.disabled = false;
+    this.submitButtonView.textContent = ButtonState.SUBMIT_NORMAL;
   }
 
   /**
