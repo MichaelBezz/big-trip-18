@@ -83,7 +83,7 @@ export default class PointCreatorView extends PointItemView {
 
   /** Метод подключения view */
   connect() {
-    this.targetView.prepend(this);
+    this.targetView?.prepend(this);
   }
 
   /** Метод отключения view */

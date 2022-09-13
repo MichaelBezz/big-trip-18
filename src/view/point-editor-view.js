@@ -26,7 +26,7 @@ export default class PointEditorView extends PointCreatorView {
 
   /** @override */
   connect() {
-    this.targetView.replaceWith(this);
+    this.targetView?.replaceWith(this);
   }
 
   /** @override */
