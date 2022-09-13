@@ -17,7 +17,7 @@ const DeleteButtonStates = {
 };
 
 /** Представление формы редактирования точки */
-export default class EditorView extends View {
+export default class PointEditorView extends View {
   constructor() {
     super();
 
@@ -176,4 +176,4 @@ export default class EditorView extends View {
   }
 }
 
-customElements.define(String(EditorView), EditorView);
+customElements.define(String(PointEditorView), PointEditorView);

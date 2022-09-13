@@ -1,10 +1,10 @@
 import View from './view.js';
-import './item-view.css';
+import './point-item-view.css';
 
 export * from './view.js';
 
 /** Базовое представление Item */
-export default class ItemView extends View {
+export default class PointItemView extends View {
   /**
    * @param  {PointState[]} states
    */

@@ -4,10 +4,10 @@
 
 /** @typedef {import('./filter-view').default} FilterView */
 /** @typedef {import('./sort-view').default} SortView */
-/** @typedef {import('./list-view').default} ListView */
+/** @typedef {import('./point-list-view').default} PointListView */
 /** @typedef {import('./point-view').default} PointView */
-/** @typedef {import('./creator-view').default} CreatorView */
-/** @typedef {import('./editor-view').default} EditorView */
+/** @typedef {import('./point-creator-view').default} PointCreatorView */
+/** @typedef {import('./point-editor-view').default} PointEditorView */
 
 /**
  * @typedef PointState

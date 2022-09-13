@@ -1,4 +1,4 @@
-import ItemView, {html} from './item-view.js';
+import PointItemView, {html} from './point-item-view.js';
 
 import PointTypeSelectView from './point-type-select-view.js';
 import DestinationSelectView from './destination-select-view.js';
@@ -8,7 +8,7 @@ import OfferSelectView from './offer-select-view.js';
 import DestinationView from './destination-view.js';
 
 /** Представление формы создания точки */
-export default class CreatorView extends ItemView {
+export default class PointCreatorView extends PointItemView {
   constructor() {
     super();
 
@@ -52,4 +52,4 @@ export default class CreatorView extends ItemView {
   }
 }
 
-customElements.define(String(CreatorView), CreatorView);
+customElements.define(String(PointCreatorView), PointCreatorView);

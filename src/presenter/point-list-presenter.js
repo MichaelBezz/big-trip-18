@@ -6,10 +6,10 @@ import {formatDate, formatTime} from '../utils.js';
 /**
  * Презентор списка точек
  * @template {ApplicationModel} Model
- * @template {ListView} View
+ * @template {PointListView} View
  * @extends {Presenter<Model,View>}
  */
-export default class ListPresenter extends Presenter {
+export default class PointListPresenter extends Presenter {
   /**
    * @param {[model: Model, view: View]} init
    */

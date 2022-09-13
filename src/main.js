@@ -10,15 +10,15 @@ import DataTableModel from './model/data-table-model.js';
 
 import FilterView from './view/filter-view.js';
 import SortView from './view/sort-view.js';
-import ListView from './view/list-view.js';
-import CreatorView from './view/creator-view.js';
-import EditorView from './view/editor-view.js';
+import PointListView from './view/point-list-view.js';
+import PointCreatorView from './view/point-creator-view.js';
+import PointEditorView from './view/point-editor-view.js';
 
 import FilterPresenter from './presenter/filter-presenter.js';
 import SortPresenter from './presenter/sort-presenter.js';
-import ListPresenter from './presenter/list-presenter.js';
-import CreatorPresenter from './presenter/creator-presenter.js';
-import EditorPresenter from './presenter/editor-presenter.js';
+import PointListPresenter from './presenter/point-list-presenter.js';
+import PointCreatorPresenter from './presenter/point-creator-presenter.js';
+import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
 import CreateButtonPresenter from './presenter/create-button-presenter.js';
 import PlaceholderPresenter from './presenter/placeholder-presenter.js';
@@ -47,32 +47,32 @@ const applicationModel = new ApplicationModel(points, destinations, offerGroups)
 /** @type {HTMLButtonElement} */
 const createButtonView = document.querySelector('.trip-main__event-add-btn');
 
-/** @type {FilterView} */
-const filterView = document.querySelector(String(FilterView));
-
 /** @type {HTMLParagraphElement} */
 const placeholderView = document.querySelector('.trip-events__msg');
+
+/** @type {FilterView} */
+const filterView = document.querySelector(String(FilterView));
 
 /** @type {SortView} */
 const sortView = document.querySelector(String(SortView));
 
-/** @type {ListView} */
-const listView = document.querySelector(String(ListView));
+/** @type {PointListView} */
+const pointListView = document.querySelector(String(PointListView));
 
-/** @type {CreatorView} */
-const creatorView = new CreatorView();
+/** @type {PointCreatorView} */
+const pointCreatorView = new PointCreatorView();
 
-/** @type {EditorView} */
-const editorView = new EditorView();
+/** @type {PointEditorView} */
+const pointEditorView = new PointEditorView();
 
 applicationModel.ready().then(() => {
   new CreateButtonPresenter(applicationModel, createButtonView);
   new FilterPresenter(applicationModel, filterView);
   new PlaceholderPresenter(applicationModel, placeholderView);
   new SortPresenter(applicationModel, sortView);
-  new ListPresenter(applicationModel, listView);
-  new CreatorPresenter(applicationModel, creatorView);
-  new EditorPresenter(applicationModel, editorView);
+  new PointListPresenter(applicationModel, pointListView);
+  new PointCreatorPresenter(applicationModel, pointCreatorView);
+  new PointEditorPresenter(applicationModel, pointEditorView);
 });
 
 

@@ -1,7 +1,7 @@
-import ItemView, {html} from './item-view.js';
+import PointItemView, {html} from './point-item-view.js';
 
 /** Представление точки на маршруте */
-export default class PointView extends ItemView {
+export default class PointView extends PointItemView {
   #id;
 
   /**
