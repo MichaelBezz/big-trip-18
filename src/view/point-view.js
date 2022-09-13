@@ -1,21 +1,5 @@
 import ItemView, {html} from './item-view.js';
 
-/**
- * @typedef PointState
- * @prop {number} id
- * @prop {string} date
- * @prop {string} startIsoDate
- * @prop {string} endIsoDate
- * @prop {string} icon
- * @prop {string} title
- * @prop {string} startTime
- * @prop {string} endTime
- * @prop {number} price
- * @prop {PointOfferState[]} offers
- */
-
-/** @typedef {[title: string, price: number]} PointOfferState */
-
 /** Представление точки на маршруте */
 export default class PointView extends ItemView {
   #id;

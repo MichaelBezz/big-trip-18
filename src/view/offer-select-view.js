@@ -1,8 +1,6 @@
 import View, {html} from './view.js';
 import './offer-select-view.css';
 
-/** @typedef {[id: number, title: string, price: number, isChecked: boolean]} OfferOptionState */
-
 /** Представление списка (доступных) опций в редакторе */
 export default class OfferSelectView extends View {
   constructor() {

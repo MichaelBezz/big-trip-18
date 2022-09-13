@@ -1,7 +1,5 @@
 import View, {html} from './view.js';
 
-/** @typedef {[src: string, alt: string]} DestinationPictureState */
-
 /** Представление описания пункта назначения */
 export default class DestinationView extends View {
   constructor() {

@@ -1,7 +1,5 @@
 import RadioGroupView, {html} from './radio-group-view.js';
 
-/** @typedef {[label: string, value: string]} TypeOptionState */
-
 /** Представление меню типов */
 export default class PointTypeSelectView extends RadioGroupView {
   constructor() {

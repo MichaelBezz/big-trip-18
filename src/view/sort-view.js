@@ -1,7 +1,5 @@
 import RadioGroupView, {html} from './radio-group-view.js';
 
-/** @typedef {[label: string, value: string]} SortOptionState */
-
 /** Представление списка сортировки */
 export default class SortView extends RadioGroupView {
 

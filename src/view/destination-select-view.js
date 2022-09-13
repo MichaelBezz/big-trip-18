@@ -1,7 +1,5 @@
 import View, {html} from './view.js';
 
-/** @typedef {[text: string, value: string]} DestinationOptionState */
-
 /** Представление пункта назначения */
 export default class DestinationSelectView extends View {
   constructor() {
