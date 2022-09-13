@@ -136,18 +136,26 @@ export default class PointCreatorPresenter extends Presenter {
   async onViewSubmit(event) {
     event.preventDefault();
 
+    this.view.disableSubmitButton();
+
     try {
       await this.model.points.add(this.getFormData());
-
       this.view.close();
 
     } catch (exception) {
       // TODO shake
     }
+
+    this.view.enableSubmitButton();
   }
 
-  /** Обработает событие на кнопке RESET */
-  onViewReset() {
+  /**
+   * Обработает событие RESET
+   * @param {Event} event
+   */
+  onViewReset(event) {
+    event.preventDefault();
+
     this.view.close();
   }
 
