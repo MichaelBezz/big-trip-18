@@ -1,4 +1,5 @@
 import View, {html} from './view.js';
+
 import PointTypeSelectView from './point-type-select-view.js';
 import DestinationSelectView from './destination-select-view.js';
 import DatePickerView from './date-picker-view.js';
@@ -85,7 +86,6 @@ export default class PointEditorView extends View {
   }
 
   /**
-   * Назначит целевой элемент
    * @param {Element} view
    */
   target(view) {
@@ -102,10 +102,6 @@ export default class PointEditorView extends View {
     this.replaceWith(this.targetView);
   }
 
-  /**
-   * Заменит #linkedView на PointEditorView
-   * Обработает события по Esc
-   */
   open() {
     this.connect();
 
@@ -115,9 +111,6 @@ export default class PointEditorView extends View {
   }
 
   /**
-   * Заменит PointEditorView на #linkedView
-   * Удалит события по Esc
-   * При необходимости добавит отправит close
    * @param {boolean} dispatch
    */
   close(dispatch = false) {
@@ -132,22 +125,22 @@ export default class PointEditorView extends View {
     return this;
   }
 
-  disableSaveButton() {
+  disableSubmitButton() {
     this.submitButtonView.disabled = true;
     this.submitButtonView.textContent = SaveButtonStates.PROCESS;
   }
 
-  enableSaveButton() {
+  enableSubmitButton() {
     this.submitButtonView.disabled = false;
     this.submitButtonView.textContent = SaveButtonStates.NORMAL;
   }
 
-  disableDeleteButton() {
+  disableResetButton() {
     this.resetButtonView.disabled = true;
     this.resetButtonView.textContent = DeleteButtonStates.PROCESS;
   }
 
-  enableDeleteButton() {
+  enableResetButton() {
     this.resetButtonView.disabled = false;
     this.resetButtonView.textContent = DeleteButtonStates.NORMAL;
   }
@@ -172,6 +165,7 @@ export default class PointEditorView extends View {
     }
 
     event.preventDefault();
+
     this.close();
   }
 }

@@ -6,10 +6,10 @@ export default class DestinationSelectView extends View {
     super();
 
     /** @type {HTMLLabelElement} */
-    this.labelView = this.querySelector('label.event__label');
+    this.labelView = this.querySelector('.event__label');
 
     /** @type {HTMLInputElement} */
-    this.inputView = this.querySelector('input.event__input');
+    this.inputView = this.querySelector('.event__input--destination');
 
     /** @type {HTMLDataListElement} */
     this.datalistView = this.querySelector('datalist');

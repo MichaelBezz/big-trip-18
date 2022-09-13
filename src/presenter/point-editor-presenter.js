@@ -65,6 +65,18 @@ export default class PointEditorPresenter extends Presenter {
     this.view.datePickerView.configure(calendarOptions);
   }
 
+  buildOfferSelectView() {
+    const selectedType = this.view.pointTypeSelectView.getValue();
+    const availableOffers = this.model.offerGroups.findById(selectedType).items;
+
+    /** @type {OfferOptionState[]} */
+    const optionStates = availableOffers.map((offer) => [offer.id, offer.title, offer.price]);
+
+    this.view.offerSelectView
+      .set('hidden', !availableOffers.length)
+      .setOptions(optionStates);
+  }
+
   updateTypeSelectView() {
     this.view.pointTypeSelectView.setValue(this.model.activePoint.type);
   }
@@ -95,22 +107,16 @@ export default class PointEditorPresenter extends Presenter {
     const selectedType = this.view.pointTypeSelectView.getValue();
     const availableOffers = this.model.offerGroups.findById(selectedType).items;
 
-    /** @type {OfferOptionState[]} */
-    const optionStates = availableOffers.map((offer) => {
-      const {id, title, price} = offer;
-      const isChecked = this.model.activePoint.offerIds.includes(id);
+    const checkedOptions = availableOffers.map((offer) =>
+      this.model.activePoint.offerIds.includes(offer.id)
+    );
 
-      return [id, title, price, isChecked];
-    });
-
-    this.view.offerSelectView
-      .set('hidden', !availableOffers.length)
-      .setOptions(optionStates);
+    this.view.offerSelectView.setCheckedOptions(checkedOptions);
   }
 
-  updateDestinationDetailsView() {
-    const selectedDestinationName = this.view.destinationSelectView.getDestination();
-    const destination = this.model.destinations.findBy('name', selectedDestinationName);
+  updateDestinationView() {
+    const selectedDestination = this.view.destinationSelectView.getDestination();
+    const destination = this.model.destinations.findBy('name', selectedDestination);
 
     /** @type {DestinationPictureState[]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
@@ -121,6 +127,7 @@ export default class PointEditorPresenter extends Presenter {
       .setPictures(pictureStates);
   }
 
+  /** Получит данные с формы */
   getFormData() {
     const point = new PointAdapter();
 
@@ -132,12 +139,13 @@ export default class PointEditorPresenter extends Presenter {
     point.startDate = startDate;
     point.endDate = endDate;
     point.basePrice = Number(this.view.priceInputView.getPrice());
-    point.offerIds = this.view.offerSelectView.getSelectedValues().map(Number);
+    point.offerIds = this.view.offerSelectView.getCheckedValues().map(Number);
     point.isFavorite = false;
 
     return point;
   }
 
+  /** Обновит форму */
   onModelEdit() {
     /** @type {PointView} */
     const point = document.querySelector(`#point-${this.model.activePoint.id}`);
@@ -148,8 +156,9 @@ export default class PointEditorPresenter extends Presenter {
     this.updateDestinationSelectView();
     this.updateDatePickerView();
     this.updatePriceInputView();
+    this.buildOfferSelectView();
     this.updateOfferSelectView();
-    this.updateDestinationDetailsView();
+    this.updateDestinationView();
 
     this.view
       .target(point)
@@ -157,12 +166,13 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   /**
+   * Обработает событие SAVE
    * @param {Event} event
    */
   async onViewSubmit(event) {
     event.preventDefault();
 
-    this.view.disableSaveButton();
+    this.view.disableSubmitButton();
 
     try {
       await this.model.points.update(this.model.activePoint.id, this.getFormData());
@@ -172,16 +182,17 @@ export default class PointEditorPresenter extends Presenter {
       // TODO shake
     }
 
-    this.view.enableSaveButton();
+    this.view.enableSubmitButton();
   }
 
   /**
+   * Обработает событие DELETE
    * @param {Event} event
    */
   async onViewReset(event) {
     event.preventDefault();
 
-    this.view.disableDeleteButton();
+    this.view.disableResetButton();
 
     try {
       await this.model.points.remove(this.model.activePoint.id);
@@ -191,9 +202,10 @@ export default class PointEditorPresenter extends Presenter {
       // TODO shake
     }
 
-    this.view.enableDeleteButton();
+    this.view.enableResetButton();
   }
 
+  /** Обработает событие CLOSE */
   onViewClose() {
     this.model.setMode(Mode.VIEW);
   }
@@ -203,10 +215,10 @@ export default class PointEditorPresenter extends Presenter {
     const key = PointType.findKey(value);
 
     this.view.destinationSelectView.setLabel(PointLabel[key]);
-    this.updateOfferSelectView();
+    this.buildOfferSelectView();
   }
 
   onViewDestinationSelectChange() {
-    this.updateDestinationDetailsView();
+    this.updateDestinationView();
   }
 }
