@@ -4,6 +4,7 @@ import PointAdapter from '../adapter/point-adapter.js';
 import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
 import PointLabel from '../enum/point-label.js';
+import UnitFormat from '../enum/unit-format.js';
 
 /**
  * Презентор формы редактирования
@@ -58,7 +59,7 @@ export default class PointEditorPresenter extends Presenter {
 
   buildDayDatePickerView() {
     const calendarOptions = {
-      dateFormat: 'd/m/y H:i',
+      dateFormat: UnitFormat.DATE_WITH_TIME,
       locale: {firstDayOfWeek: 1}
     };
 
