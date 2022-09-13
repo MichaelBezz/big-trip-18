@@ -53,7 +53,7 @@ export default class DestinationSelectView extends View {
   }
 
   /**
-   * Установит label
+   * Установит название типа точки (перед пунктом назначения)
    * @param {string} value
    */
   setLabel(value) {

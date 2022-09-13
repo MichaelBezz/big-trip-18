@@ -4,6 +4,7 @@ import PointAdapter from '../adapter/point-adapter.js';
 import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
 import PointLabel from '../enum/point-label.js';
+import UnitFormat from '../enum/unit-format.js';
 
 /**
  * Презентор формы создания
@@ -20,7 +21,7 @@ export default class PointCreatorPresenter extends Presenter {
 
     this.buildPointTypeSelectView();
     this.buildDestinationSelectView();
-    this.buildDayDatePickerView();
+    this.buildDatePickerView();
     this.buildOfferSelectView();
     this.buildDestinationView();
 
@@ -34,6 +35,7 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.destinationSelectView.addEventListener('change', this.onViewDestinationSelectChange.bind(this));
   }
 
+  /** TypeSelect -> setOptions -> setValue (установит тип точки) */
   buildPointTypeSelectView() {
     /** @type {TypeOptionState[]} */
     const optionStates = Object.values(PointType).map((type) => {
@@ -48,6 +50,7 @@ export default class PointCreatorPresenter extends Presenter {
       .setValue(PointType.TAXI);
   }
 
+  /** DestinationSelect -> setOptions -> setLabel (установит название типа точки) */
   buildDestinationSelectView() {
     const destinationNames = this.model.destinations
       .listAll()
@@ -61,15 +64,17 @@ export default class PointCreatorPresenter extends Presenter {
       .setLabel(PointType.TAXI);
   }
 
-  buildDayDatePickerView() {
+  /** DatePicker -> configure */
+  buildDatePickerView() {
     const calendarOptions = {
-      dateFormat: 'd/m/y H:i',
+      dateFormat: UnitFormat.DATE_WITH_TIME,
       locale: {firstDayOfWeek: 1}
     };
 
     this.view.datePickerView.configure(calendarOptions);
   }
 
+  /** OfferSelect -> set(hidden) -> setOptions */
   buildOfferSelectView() {
     const selectedType = this.view.pointTypeSelectView.getValue();
     const availableOffers = this.model.offerGroups.findById(selectedType).items;
@@ -82,20 +87,15 @@ export default class PointCreatorPresenter extends Presenter {
       .setOptions(optionStates);
   }
 
+  /** Destination -> set(hidden) */
   buildDestinationView() {
     this.view.destinationView.set('hidden', true);
   }
 
-  updateDestinationSelectView() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const key = PointType.findKey(selectedType);
-
-    this.view.destinationSelectView.setLabel(PointLabel[key]);
-  }
-
+  /** Destination -> set(hidden) -> setDescription -> setPictures */
   updateDestinationView() {
-    const selectedDestinationName = this.view.destinationSelectView.getDestination();
-    const destination = this.model.destinations.findBy('name', selectedDestinationName);
+    const selectedDestination = this.view.destinationSelectView.getDestination();
+    const destination = this.model.destinations.findBy('name', selectedDestination);
 
     /** @type {DestinationPictureState[]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
@@ -106,7 +106,7 @@ export default class PointCreatorPresenter extends Presenter {
       .setPictures(pictureStates);
   }
 
-  /** Получит данные с формы */
+  /** Соберет данные с формы */
   getFormData() {
     const point = new PointAdapter();
 
@@ -130,7 +130,7 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   /**
-   * Обработает событие SAVE
+   * Обработает событие SUBMIT
    * @param {Event} event
    */
   async onViewSubmit(event) {
@@ -146,7 +146,7 @@ export default class PointCreatorPresenter extends Presenter {
     }
   }
 
-  /** Обработает событие CANCEL */
+  /** Обработает событие на кнопке RESET */
   onViewReset() {
     this.view.close();
   }
@@ -156,11 +156,24 @@ export default class PointCreatorPresenter extends Presenter {
     this.model.setMode(Mode.VIEW);
   }
 
+  /**
+   * Обработает событие CHANGE на PointTypeSelect
+   * Обновит название типа точки (перед пунктом назначения)
+   * Перерисует доступные опции
+   */
   onViewPointTypeSelectChange() {
-    this.updateDestinationSelectView();
+    const selectedType = this.view.pointTypeSelectView.getValue();
+    const key = PointType.findKey(selectedType);
+
+    this.view.destinationSelectView.setLabel(PointLabel[key]);
+
     this.buildOfferSelectView();
   }
 
+  /**
+   * Обработает событие CHANGE на DestinationSelect
+   * Перерисует блок с описанием и картинками пункта назначения
+   */
   onViewDestinationSelectChange() {
     this.updateDestinationView();
   }
