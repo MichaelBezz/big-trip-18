@@ -22,11 +22,12 @@ export default class SortPresenter extends Presenter {
 
     this.model.addEventListener(
       ['view', 'create', 'edit'],
-      this.onSortSelectDisable.bind(this)
+      this.onModelChange.bind(this)
     );
 
-    this.model.points.addEventListener('filter', this.onSortSelectReset.bind(this));
-    this.view.addEventListener('change', this.onSortSelectChange.bind(this));
+    this.model.points.addEventListener('filter', this.onModelPointsFilter.bind(this));
+
+    this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
   getOptionsDisabled() {
@@ -44,9 +45,10 @@ export default class SortPresenter extends Presenter {
   }
 
   /**
+   * Блокирует сортировку, если mode !=== view
    * @param {CustomEvent} event
    */
-  onSortSelectDisable(event) {
+  onModelChange(event) {
     const flags = this.getOptionsDisabled();
 
     if (event.type !== 'view') {
@@ -56,12 +58,14 @@ export default class SortPresenter extends Presenter {
     this.view.setOptionsDisabled(flags);
   }
 
-  onSortSelectReset() {
+  /** Сбросит сортировку, если по событию filter */
+  onModelPointsFilter() {
     this.view.setValue(SortType.DAY);
     this.model.points.setSort(SortCompare[SortType.DAY]);
   }
 
-  onSortSelectChange() {
+  /** Сортирует список с точками */
+  onViewChange() {
     const checkedSort = SortType.findKey(this.view.getValue());
     const sortCompare = SortCompare[checkedSort];
 

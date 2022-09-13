@@ -21,15 +21,15 @@ export default class FilterPresenter extends Presenter {
 
     this.model.addEventListener(
       ['view', 'create', 'edit'],
-      this.onFilterSelectDisable.bind(this)
+      this.onModelChange.bind(this)
     );
 
     this.model.points.addEventListener(
       ['add', 'update', 'remove', 'sort'],
-      this.onFilterSelectUpdate.bind(this)
+      this.onModelPointsChange.bind(this)
     );
 
-    this.view.addEventListener('change', this.onFilterSelectChange.bind(this));
+    this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
   getOptionsDisabled() {
@@ -49,9 +49,10 @@ export default class FilterPresenter extends Presenter {
   }
 
   /**
+   * Блокирует фильтры, если mode !=== view
    * @param {CustomEvent} event
    */
-  onFilterSelectDisable(event) {
+  onModelChange(event) {
     const flags = this.getOptionsDisabled();
 
     if (event.type !== 'view') {
@@ -61,11 +62,13 @@ export default class FilterPresenter extends Presenter {
     this.view.setOptionsDisabled(flags);
   }
 
-  onFilterSelectUpdate() {
+  /** Блокирует фильтры, если в списке нет точек */
+  onModelPointsChange() {
     this.view.setOptionsDisabled(this.getOptionsDisabled());
   }
 
-  onFilterSelectChange() {
+  /** Фильтрует список с точками */
+  onViewChange() {
     const checkedFilter = FilterType.findKey(this.view.getValue());
     const filterPredicate = FilterPredicate[checkedFilter];
 

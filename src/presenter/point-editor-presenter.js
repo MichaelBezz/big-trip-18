@@ -23,12 +23,14 @@ export default class PointEditorPresenter extends Presenter {
     this.buildDestinationSelectView();
     this.buildDayDatePickerView();
 
-    this.model.addEventListener('edit', this.onPointEdit.bind(this));
-    this.view.addEventListener('reset', this.onPointEditorReset.bind(this));
-    this.view.addEventListener('submit', this.onPointEditorSubmit.bind(this));
-    this.view.addEventListener('close', () => this.model.setMode(Mode.VIEW));
-    this.view.typeSelectView.addEventListener('change', this.onTypeSelectChange.bind(this));
-    this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectChange.bind(this));
+    this.model.addEventListener('edit', this.onModelEdit.bind(this));
+
+    this.view.addEventListener('submit', this.onViewSubmit.bind(this));
+    this.view.addEventListener('reset', this.onViewReset.bind(this));
+    this.view.addEventListener('close', this.onViewClose.bind(this));
+
+    this.view.pointTypeSelectView.addEventListener('change', this.onViewPointTypeSelectChange.bind(this));
+    this.view.destinationSelectView.addEventListener('change', this.onViewDestinationSelectChange.bind(this));
   }
 
   buildTypeSelectView() {
@@ -40,7 +42,7 @@ export default class PointEditorPresenter extends Presenter {
       return [label, type];
     });
 
-    this.view.typeSelectView.setOptions(optionStates);
+    this.view.pointTypeSelectView.setOptions(optionStates);
   }
 
   buildDestinationSelectView() {
@@ -64,7 +66,7 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   updateTypeSelectView() {
-    this.view.typeSelectView.setValue(this.model.activePoint.type);
+    this.view.pointTypeSelectView.setValue(this.model.activePoint.type);
   }
 
   updateDestinationSelectView() {
@@ -90,7 +92,7 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   updateOfferSelectView() {
-    const selectedType = this.view.typeSelectView.getValue();
+    const selectedType = this.view.pointTypeSelectView.getValue();
     const availableOffers = this.model.offerGroups.findById(selectedType).items;
 
     /** @type {OfferOptionState[]} */
@@ -125,7 +127,7 @@ export default class PointEditorPresenter extends Presenter {
     const destinationName = this.view.destinationSelectView.getDestination();
     const [startDate, endDate] = this.view.datePickerView.getDates();
 
-    point.type = this.view.typeSelectView.getValue();
+    point.type = this.view.pointTypeSelectView.getValue();
     point.destinationId = this.model.destinations.findBy('name', destinationName)?.id;
     point.startDate = startDate;
     point.endDate = endDate;
@@ -136,21 +138,9 @@ export default class PointEditorPresenter extends Presenter {
     return point;
   }
 
-  onTypeSelectChange() {
-    const value = this.view.typeSelectView.getValue();
-    const key = PointType.findKey(value);
-
-    this.view.destinationSelectView.setLabel(PointLabel[key]);
-    this.updateOfferSelectView();
-  }
-
-  onDestinationSelectChange() {
-    this.updateDestinationDetailsView();
-  }
-
-  onPointEdit() {
+  onModelEdit() {
     /** @type {PointView} */
-    const activePoint = document.querySelector(`#point-${this.model.activePoint.id}`);
+    const point = document.querySelector(`#point-${this.model.activePoint.id}`);
 
     this.view.close(true);
 
@@ -162,14 +152,14 @@ export default class PointEditorPresenter extends Presenter {
     this.updateDestinationDetailsView();
 
     this.view
-      .target(activePoint)
+      .target(point)
       .open();
   }
 
   /**
    * @param {Event} event
    */
-  async onPointEditorSubmit(event) {
+  async onViewSubmit(event) {
     event.preventDefault();
 
     this.view.disableSaveButton();
@@ -186,10 +176,9 @@ export default class PointEditorPresenter extends Presenter {
   }
 
   /**
-   * DELETE
    * @param {Event} event
    */
-  async onPointEditorReset(event) {
+  async onViewReset(event) {
     event.preventDefault();
 
     this.view.disableDeleteButton();
@@ -203,5 +192,21 @@ export default class PointEditorPresenter extends Presenter {
     }
 
     this.view.enableDeleteButton();
+  }
+
+  onViewClose() {
+    this.model.setMode(Mode.VIEW);
+  }
+
+  onViewPointTypeSelectChange() {
+    const value = this.view.pointTypeSelectView.getValue();
+    const key = PointType.findKey(value);
+
+    this.view.destinationSelectView.setLabel(PointLabel[key]);
+    this.updateOfferSelectView();
+  }
+
+  onViewDestinationSelectChange() {
+    this.updateDestinationDetailsView();
   }
 }

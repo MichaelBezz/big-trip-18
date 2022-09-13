@@ -25,7 +25,7 @@ export default class PointEditorView extends View {
     this.targetView = null;
 
     /** @type {PointTypeSelectView} */
-    this.typeSelectView = this.querySelector(String(PointTypeSelectView));
+    this.pointTypeSelectView = this.querySelector(String(PointTypeSelectView));
 
     /** @type {DestinationSelectView} */
     this.destinationSelectView = this.querySelector(String(DestinationSelectView));

@@ -8,20 +8,20 @@ import ApplicationModel from './model/application-model.js';
 import CollectionModel from './model/collection-model.js';
 import DataTableModel from './model/data-table-model.js';
 
-import CreateButtonView from './view/create-button-view.js';
 import FilterView from './view/filter-view.js';
 import SortView from './view/sort-view.js';
 import PointListView from './view/point-list-view.js';
 import PointCreatorView from './view/point-creator-view.js';
 import PointEditorView from './view/point-editor-view.js';
 
-import CreateButtonPresenter from './presenter/create-button-presenter.js';
-import PlaceholderPresenter from './presenter/placeholder-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import SortPresenter from './presenter/sort-presenter.js';
 import PointListPresenter from './presenter/point-list-presenter.js';
 import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
+
+import CreateButtonPresenter from './presenter/create-button-presenter.js';
+import PlaceholderPresenter from './presenter/placeholder-presenter.js';
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
 const POINTS_URL = `${BASE_URL}/points`;
@@ -44,8 +44,8 @@ const offerGroups = new CollectionModel(offersStore, (offerGroup) => new OfferGr
 
 const applicationModel = new ApplicationModel(points, destinations, offerGroups);
 
-/** @type {CreateButtonView} */
-const createButtonView = document.querySelector(String(CreateButtonView));
+/** @type {HTMLButtonElement} */
+const createButtonView = document.querySelector('.trip-main__event-add-btn');
 
 /** @type {FilterView} */
 const filterView = document.querySelector(String(FilterView));
@@ -88,7 +88,5 @@ applicationModel.points.addEventListener(['add', 'update', 'remove', 'filter', '
   trace(event.type);
 });
 
-//TODO activePoint
-//TODO переименовать слушатели
 //TODO перенести типы в typedef
 //TODO сделать creator
