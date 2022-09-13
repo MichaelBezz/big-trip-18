@@ -4,7 +4,7 @@ import Mode from '../enum/mode.js';
 
 /**
  * @template {ApplicationModel} Model
- * @template {CreateButtonView} View
+ * @template {HTMLButtonElement} View
  * @extends Presenter<Model,View>
  */
 export default class CreateButtonPresenter extends Presenter {
@@ -14,12 +14,19 @@ export default class CreateButtonPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
-    this.model.addEventListener(['view', 'create', 'edit'], () => {
-      this.view.blockButton(this.model.getMode() === Mode.CREATE);
-    });
+    this.model.addEventListener(
+      ['view', 'create', 'edit'],
+      this.onModelChange.bind(this)
+    );
 
-    this.view.addEventListener('click', () => {
-      this.model.setMode(Mode.CREATE);
-    });
+    this.view.addEventListener('click', this.onViewClick.bind(this));
+  }
+
+  onModelChange() {
+    this.view.disabled = (this.model.getMode() === Mode.CREATE);
+  }
+
+  onViewClick() {
+    this.model.setMode(Mode.CREATE);
   }
 }
