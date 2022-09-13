@@ -1,7 +1,5 @@
 import Enum from './enum.js';
 
-/** @typedef {(item: PointAdapter, nextItem: PointAdapter) => number} PointCompare */
-
 export default class SortCompare extends Enum {
   /**
    * @param {PointAdapter} pointA
