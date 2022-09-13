@@ -1,4 +1,5 @@
 import Presenter from './presenter.js';
+import PointAdapter from '../adapter/point-adapter.js';
 
 import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
@@ -25,6 +26,7 @@ export default class PointCreatorPresenter extends Presenter {
 
     this.model.addEventListener('create', this.onModelCreate.bind(this));
 
+    this.view.addEventListener('submit', this.onViewSubmit.bind(this));
     this.view.addEventListener('reset', this.onViewReset.bind(this));
     this.view.addEventListener('close', this.onViewClose.bind(this));
 
@@ -104,9 +106,44 @@ export default class PointCreatorPresenter extends Presenter {
       .setPictures(pictureStates);
   }
 
+  /** Получит данные с формы */
+  getFormData() {
+    const point = new PointAdapter();
+
+    const destinationName = this.view.destinationSelectView.getDestination();
+    const [startDate, endDate] = this.view.datePickerView.getDates();
+
+    point.type = this.view.pointTypeSelectView.getValue();
+    point.destinationId = this.model.destinations.findBy('name', destinationName)?.id;
+    point.startDate = startDate;
+    point.endDate = endDate;
+    point.basePrice = Number(this.view.priceInputView.getPrice());
+    point.offerIds = this.view.offerSelectView.getCheckedValues().map(Number);
+    point.isFavorite = false;
+
+    return point;
+  }
+
   /** Обработает событие CREATE */
   onModelCreate() {
     this.view.open();
+  }
+
+  /**
+   * Обработает событие SAVE
+   * @param {Event} event
+   */
+  async onViewSubmit(event) {
+    event.preventDefault();
+
+    try {
+      await this.model.points.add(this.getFormData());
+
+      this.view.close();
+
+    } catch (exception) {
+      // TODO shake
+    }
   }
 
   /** Обработает событие CANCEL */
