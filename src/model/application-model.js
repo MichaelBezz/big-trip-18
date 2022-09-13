@@ -34,11 +34,11 @@ export default class ApplicationModel extends Model {
   /**
    * Установит режим модели
    * @param {number} mode
-   * @param {number} editablePointId
+   * @param {number} activePointId
    */
-  setMode(mode, editablePointId = null) {
+  setMode(mode, activePointId = null) {
     this.#mode = mode;
-    this.activePoint = this.points.findById(editablePointId);
+    this.activePoint = this.points.findById(activePointId);
 
     const eventType = Mode.findKey(mode).toLowerCase();
     this.dispatchEvent(new CustomEvent(eventType));
