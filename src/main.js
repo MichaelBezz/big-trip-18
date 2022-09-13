@@ -60,7 +60,7 @@ const sortView = document.querySelector(String(SortView));
 const pointListView = document.querySelector(String(PointListView));
 
 /** @type {PointCreatorView} */
-const pointCreatorView = new PointCreatorView();
+const pointCreatorView = new PointCreatorView().target(pointListView);
 
 /** @type {PointEditorView} */
 const pointEditorView = new PointEditorView();
@@ -87,6 +87,3 @@ applicationModel.addEventListener(['view', 'create', 'edit'], (event) => {
 applicationModel.points.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
   trace(event.type);
 });
-
-//TODO перенести типы в typedef
-//TODO сделать creator

@@ -1,5 +1,9 @@
 import Presenter from './presenter.js';
 
+import Mode from '../enum/mode.js';
+import PointType from '../enum/point-type.js';
+import PointLabel from '../enum/point-label.js';
+
 /**
  * Презентор формы создания
  * @template {ApplicationModel} Model
@@ -12,5 +16,115 @@ export default class PointCreatorPresenter extends Presenter {
    */
   constructor(...init) {
     super(...init);
+
+    this.buildPointTypeSelectView();
+    this.buildDestinationSelectView();
+    this.buildDayDatePickerView();
+    this.buildOfferSelectView();
+    this.buildDestinationView();
+
+    this.model.addEventListener('create', this.onModelCreate.bind(this));
+
+    this.view.addEventListener('reset', this.onViewReset.bind(this));
+    this.view.addEventListener('close', this.onViewClose.bind(this));
+
+    this.view.pointTypeSelectView.addEventListener('change', this.onViewPointTypeSelectChange.bind(this));
+    this.view.destinationSelectView.addEventListener('change', this.onViewDestinationSelectChange.bind(this));
+  }
+
+  buildPointTypeSelectView() {
+    /** @type {TypeOptionState[]} */
+    const optionStates = Object.values(PointType).map((type) => {
+      const key = PointType.findKey(type);
+      const label = PointLabel[key];
+
+      return [label, type];
+    });
+
+    this.view.pointTypeSelectView
+      .setOptions(optionStates)
+      .setValue(PointType.TAXI);
+  }
+
+  buildDestinationSelectView() {
+    const destinationNames = this.model.destinations
+      .listAll()
+      .map((destination) => destination.name);
+
+    /** @type {DestinationOptionState[]} */
+    const optionStates = [...new Set(destinationNames)].map((name) => ['', name]);
+
+    this.view.destinationSelectView
+      .setOptions(optionStates)
+      .setLabel(PointType.TAXI);
+  }
+
+  buildDayDatePickerView() {
+    const calendarOptions = {
+      dateFormat: 'd/m/y H:i',
+      locale: {firstDayOfWeek: 1}
+    };
+
+    this.view.datePickerView.configure(calendarOptions);
+  }
+
+  buildOfferSelectView() {
+    const selectedType = this.view.pointTypeSelectView.getValue();
+    const availableOffers = this.model.offerGroups.findById(selectedType).items;
+
+    /** @type {OfferOptionState[]} */
+    const optionStates = availableOffers.map((offer) => [offer.id, offer.title, offer.price]);
+
+    this.view.offerSelectView
+      .set('hidden', !availableOffers.length)
+      .setOptions(optionStates);
+  }
+
+  buildDestinationView() {
+    this.view.destinationView.set('hidden', true);
+  }
+
+  updateDestinationSelectView() {
+    const selectedType = this.view.pointTypeSelectView.getValue();
+    const key = PointType.findKey(selectedType);
+
+    this.view.destinationSelectView.setLabel(PointLabel[key]);
+  }
+
+  updateDestinationView() {
+    const selectedDestinationName = this.view.destinationSelectView.getDestination();
+    const destination = this.model.destinations.findBy('name', selectedDestinationName);
+
+    /** @type {DestinationPictureState[]} */
+    const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
+
+    this.view.destinationView
+      .set('hidden', !destination)
+      .setDescription(destination.description)
+      .setPictures(pictureStates);
+  }
+
+  /** Обработает событие CREATE */
+  onModelCreate() {
+    this.view.open();
+  }
+
+  /** Обработает событие CANCEL */
+  onViewReset() {
+    this.view.close();
+  }
+
+  /** Обработает событие CLOSE */
+  onViewClose() {
+    this.model.setMode(Mode.VIEW);
+  }
+
+  onViewPointTypeSelectChange() {
+    this.updateDestinationSelectView();
+    this.buildOfferSelectView();
+  }
+
+  onViewDestinationSelectChange() {
+    this.updateDestinationView();
   }
 }
