@@ -106,7 +106,7 @@ export default class PointCreatorPresenter extends Presenter {
       .setPictures(pictureStates);
   }
 
-  /** Соберет данные с формы */
+  /** Соберет данные формы */
   getFormData() {
     const point = new PointAdapter();
 
@@ -122,6 +122,16 @@ export default class PointCreatorPresenter extends Presenter {
     point.isFavorite = false;
 
     return point;
+  }
+
+  /** Сбросит данные формы */
+  resetFormData() {
+    this.view.pointTypeSelectView.setValue(PointType.TAXI);
+    this.view.destinationSelectView.setLabel(PointType.TAXI).setDestination('');
+    this.view.datePickerView.setDate('');
+    this.view.priceInputView.setPrice('');
+    this.buildOfferSelectView();
+    this.buildDestinationView();
   }
 
   /** Обработает событие CREATE */
@@ -157,6 +167,7 @@ export default class PointCreatorPresenter extends Presenter {
     event.preventDefault();
 
     this.view.close();
+    this.resetFormData();
   }
 
   /** Обработает событие CLOSE */
