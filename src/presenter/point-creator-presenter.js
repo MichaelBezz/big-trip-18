@@ -26,6 +26,7 @@ export default class PointCreatorPresenter extends Presenter {
     this.buildDestinationView();
 
     this.model.addEventListener('create', this.onModelCreate.bind(this));
+    this.model.addEventListener('edit', this.onModelEdit.bind(this));
 
     this.view.addEventListener('submit', this.onViewSubmit.bind(this));
     this.view.addEventListener('reset', this.onViewReset.bind(this));
@@ -140,7 +141,15 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   /**
-   * Обработает событие SUBMIT
+   * Обработает событие EDIT
+   * Закроет creator-view, если модель в режиме edit
+   */
+  onModelEdit() {
+    this.view.close(true);
+  }
+
+  /**
+   * Обработает событие SUBMIT(button SAVE) -> MODEL.ADD
    * @param {Event} event
    */
   async onViewSubmit(event) {
@@ -160,7 +169,7 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   /**
-   * Обработает событие RESET
+   * Обработает событие RESET(button CLOSE)
    * @param {Event} event
    */
   onViewReset(event) {

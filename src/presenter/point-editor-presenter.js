@@ -8,15 +8,6 @@ import PointCreatorPresenter from './point-creator-presenter.js';
  */
 export default class PointEditorPresenter extends PointCreatorPresenter {
 
-  /**
-   * @param {[model: Model, view: View]} init
-   */
-  constructor(...init) {
-    super(...init);
-
-    this.model.addEventListener('edit', this.onModelEdit.bind(this));
-  }
-
   /** TypeSelect -> setValue */
   updateTypeSelectView() {
     this.view.pointTypeSelectView.setValue(this.model.activePoint.type);
@@ -59,7 +50,19 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     this.view.offerSelectView.setCheckedOptions(checkedOptions);
   }
 
-  /** Обработает событие EDIT */
+  /**
+   * Обработает событие CREATE
+   * Закроет editor-view, если модель в режиме create
+   * @override
+   */
+  onModelCreate() {
+    this.view.close(true);
+  }
+
+  /**
+   * Обработает событие EDIT
+   * @override
+   */
   onModelEdit() {
     /** @type {PointView} */
     const point = document.querySelector(`#point-${this.model.activePoint.id}`);
@@ -80,7 +83,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   }
 
   /**
-   * Обработает событие SUBMIT -> UPDATE
+   * Обработает событие SUBMIT(button SAVE) -> MODEL.UPDATE
    * @override
    * @param {Event} event
    */
@@ -101,7 +104,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   }
 
   /**
-   * Обработает событие RESET -> REMOVE
+   * Обработает событие RESET(button DELETE) -> MODEL.REMOVE
    * @override
    * @param {Event} event
    */

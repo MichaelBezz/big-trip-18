@@ -61,7 +61,7 @@ export default class SortPresenter extends Presenter {
     this.view.setOptionsDisabled(flags);
   }
 
-  /** Сбросит сортировку, если по событию filter */
+  /** Сбросит сортировку, по событию filter */
   onModelPointsFilter() {
     this.view.setValue(SortType.DAY);
     this.model.points.setSort(SortCompare[SortType.DAY]);
