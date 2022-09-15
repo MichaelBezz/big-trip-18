@@ -10,48 +10,6 @@ import PointView from '../view/point-view.js';
  */
 export default class PointEditorPresenter extends PointCreatorPresenter {
 
-  /** TypeSelect -> setValue */
-  updateTypeSelectView() {
-    this.view.pointTypeSelectView.setValue(this.model.activePoint.type);
-  }
-
-  /** DestinationSelect -> setLabel -> setDestination */
-  updateDestinationSelectView() {
-    const {type, destinationId} = this.model.activePoint;
-
-    const destination = this.model.destinations.findById(destinationId);
-
-    this.view.destinationSelectView
-      .setLabel(type)
-      .setDestination(destination.name);
-  }
-
-  /** DatePicker -> setDate */
-  updateDatePickerView() {
-    const {startDate, endDate} = this.model.activePoint;
-
-    this.view.datePickerView.setDate(startDate, endDate);
-  }
-
-  /** PriceInput -> setPrice */
-  updatePriceInputView() {
-    const {basePrice} = this.model.activePoint;
-
-    this.view.priceInputView.setPrice(String(basePrice));
-  }
-
-  /** OfferSelect -> setCheckedOptions */
-  updateOfferSelectView() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const availableOffers = this.model.offerGroups.findById(selectedType).items;
-
-    const checkedOptions = availableOffers.map((offer) =>
-      this.model.activePoint.offerIds.includes(offer.id)
-    );
-
-    this.view.offerSelectView.setCheckedOptions(checkedOptions);
-  }
-
   /**
    * @override
    * Обновит activePoint в модели
@@ -83,13 +41,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
 
     this.view.close(true);
 
-    this.updateTypeSelectView();
-    this.updateDestinationSelectView();
-    this.updateDatePickerView();
-    this.updatePriceInputView();
-    this.buildOfferSelectView();
-    this.updateOfferSelectView();
-    this.updateDestinationView();
+    this.updateView();
 
     this.view
       .target(pointView)
@@ -97,7 +49,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   }
 
   /**
-   * Обработает событие RESET(button DELETE) -> MODEL.REMOVE
+   * Обработает событие RESET(button DELETE)
    * @override
    * @param {Event} event
    */
