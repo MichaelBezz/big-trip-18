@@ -1,9 +1,7 @@
-import ComponentView, {html} from './component-view.js';
-
-/** @typedef {[src: string, alt: string]} DestinationPictureState */
+import View, {html} from './view.js';
 
 /** Представление описания пункта назначения */
-export default class DestinationDetailsView extends ComponentView {
+export default class DestinationView extends View {
   constructor() {
     super();
 
@@ -52,4 +50,4 @@ export default class DestinationDetailsView extends ComponentView {
   }
 }
 
-customElements.define(String(DestinationDetailsView), DestinationDetailsView);
+customElements.define(String(DestinationView), DestinationView);

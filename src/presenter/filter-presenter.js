@@ -1,16 +1,16 @@
 import Presenter from './presenter.js';
 
-import Filter from '../enum/filter.js';
+import FilterType from '../enum/filter-type.js';
 import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
 
 /**
  * Презентор фильтра
  * @template {ApplicationModel} Model
- * @template {FilterSelectView} View
+ * @template {FilterView} View
  * @extends {Presenter<Model,View>}
  */
-export default class FilterSelectPresenter extends Presenter {
+export default class FilterPresenter extends Presenter {
   /**
    * @param {[model: Model, view: View]} init
    */
@@ -21,15 +21,15 @@ export default class FilterSelectPresenter extends Presenter {
 
     this.model.addEventListener(
       ['view', 'create', 'edit'],
-      this.onFilterSelectDisable.bind(this)
+      this.onModelChange.bind(this)
     );
 
     this.model.points.addEventListener(
       ['add', 'update', 'remove', 'sort'],
-      this.onFilterSelectUpdate.bind(this)
+      this.onModelPointsChange.bind(this)
     );
 
-    this.view.addEventListener('change', this.onFilterSelectChange.bind(this));
+    this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
   getOptionsDisabled() {
@@ -40,18 +40,19 @@ export default class FilterSelectPresenter extends Presenter {
 
   buildFilterSelect() {
     /** @type {FilterOptionState[]} */
-    const optionStates = Object.keys(Filter).map((key) => [FilterLabel[key], Filter[key]]);
+    const optionStates = Object.keys(FilterType).map((key) => [FilterLabel[key], FilterType[key]]);
 
     this.view
       .setOptions(optionStates)
       .setOptionsDisabled(this.getOptionsDisabled())
-      .setValue(Filter.EVERYTHING);
+      .setValue(FilterType.EVERYTHING);
   }
 
   /**
+   * Блокирует фильтры, если mode !=== view
    * @param {CustomEvent} event
    */
-  onFilterSelectDisable(event) {
+  onModelChange(event) {
     const flags = this.getOptionsDisabled();
 
     if (event.type !== 'view') {
@@ -61,12 +62,14 @@ export default class FilterSelectPresenter extends Presenter {
     this.view.setOptionsDisabled(flags);
   }
 
-  onFilterSelectUpdate() {
+  /** Блокирует фильтры, если в списке нет точек */
+  onModelPointsChange() {
     this.view.setOptionsDisabled(this.getOptionsDisabled());
   }
 
-  onFilterSelectChange() {
-    const checkedFilter = Filter.findKey(this.view.getValue());
+  /** Фильтрует список с точками */
+  onViewChange() {
+    const checkedFilter = FilterType.findKey(this.view.getValue());
     const filterPredicate = FilterPredicate[checkedFilter];
 
     this.model.points.setFilter(filterPredicate);

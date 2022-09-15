@@ -1,8 +1,7 @@
 import RadioGroupView, {html} from './radio-group-view.js';
-import TypeOptionView from './type-option-view.js';
 
 /** Представление меню типов */
-export default class TypeSelectView extends RadioGroupView {
+export default class PointTypeSelectView extends RadioGroupView {
   constructor() {
     super();
 
@@ -29,13 +28,38 @@ export default class TypeSelectView extends RadioGroupView {
   }
 
   /**
+   * @param  {TypeOptionState} state
+   */
+  createOptionHtml(...state) {
+    const [label, value] = state;
+
+    return html`
+      <div class="event__type-item">
+        <input
+          id="event-type-${value}"
+          class="event__type-input  visually-hidden"
+          type="radio"
+          name="event-type"
+          value="${value}"
+        >
+        <label
+          class="event__type-label  event__type-label--${value}"
+          for="event-type-${value}"
+        >
+          ${label}
+        </label>
+      </div>
+    `;
+  }
+
+  /**
    * Установит пункты меню
    * @param {TypeOptionState[]} states
    */
   setOptions(states) {
-    const views = states.map((state) => new TypeOptionView(...state));
-
-    this.querySelector('legend').after(...views);
+    this.querySelector('.event__type-group').insertAdjacentHTML('beforeend', html`${
+      states.map((state) => this.createOptionHtml(...state))
+    }`);
 
     return this;
   }
@@ -81,4 +105,4 @@ export default class TypeSelectView extends RadioGroupView {
   }
 }
 
-customElements.define(String(TypeSelectView), TypeSelectView);
+customElements.define(String(PointTypeSelectView), PointTypeSelectView);

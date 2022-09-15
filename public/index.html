@@ -21,14 +21,11 @@
           </section>
 
           <div class="trip-main__trip-controls  trip-controls">
-            <div class="trip-controls__filters">
-              <h2 class="visually-hidden">Filter events</h2>
-              <!-- Фильтры -->
-              <trip-filter-select></trip-filter-select>
-            </div>
+            <!-- Фильтры -->
+            <trip-filter></trip-filter>
           </div>
-          <!-- Кнопка New event -->
-          <trip-create-button></trip-create-button>
+
+          <button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>
         </div>
       </div>
     </header>
@@ -37,10 +34,11 @@
       <div class="page-body__container">
         <section class="trip-events">
           <h2 class="visually-hidden">Trip events</h2>
-          <!-- Сообщение placeholder -->
-          <trip-placeholder></trip-placeholder>
+          <p class="trip-events__msg">Loading...</p>
           <!-- Сортировка -->
+          <trip-sort></trip-sort>
           <!-- Список точек -->
+          <trip-point-list></trip-point-list>
         </section>
       </div>
     </main>

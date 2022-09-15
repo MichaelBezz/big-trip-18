@@ -1,20 +1,32 @@
-/** @typedef {import('./create-button-view').default} CreateButtonView */
+/** @typedef {import('flatpickr/dist/types/instance').Instance} Calendar */
+/** @typedef {import('flatpickr/dist/types/options').Options} CalendarOptions */
+/** @typedef {import('flatpickr/dist/types/options').DateOption} CalendarDate */
 
-/** @typedef {import('./filter-select-view').default} FilterSelectView */
-/** @typedef {import('./filter-option-view').FilterOptionState} FilterOptionState */
-
-/** @typedef {import('./placeholder-view').default} PlaceholderView */
-
-/** @typedef {import('./sort-select-view').default} SortSelectView */
-/** @typedef {import('./sort-option-view').SortOptionState} SortOptionState */
-
+/** @typedef {import('./filter-view').default} FilterView */
+/** @typedef {import('./sort-view').default} SortView */
 /** @typedef {import('./point-list-view').default} PointListView */
 /** @typedef {import('./point-view').default} PointView */
-/** @typedef {import('./point-view').PointState} PointState */
-/** @typedef {import('./point-offer-view').PointOfferState} PointOfferState */
-
+/** @typedef {import('./point-creator-view').default} PointCreatorView */
 /** @typedef {import('./point-editor-view').default} PointEditorView */
-/** @typedef {import('./type-option-view').TypeOptionState} TypeOptionState */
-/** @typedef {import('./destination-select-view').DestinationOptionState} DestinationOptionState */
-/** @typedef {import('./offer-option-view').OfferOptionState} OfferOptionState */
-/** @typedef {import('./destination-details-view').DestinationPictureState} DestinationPictureState */
+
+/**
+ * @typedef PointState
+ * @prop {number} id
+ * @prop {string} date
+ * @prop {string} startIsoDate
+ * @prop {string} endIsoDate
+ * @prop {string} icon
+ * @prop {string} title
+ * @prop {string} startTime
+ * @prop {string} endTime
+ * @prop {number} price
+ * @prop {PointOfferState[]} offers
+ */
+
+/** @typedef {[label: string, value: string]} FilterOptionState */
+/** @typedef {[label: string, value: string]} SortOptionState */
+/** @typedef {[title: string, price: number]} PointOfferState */
+/** @typedef {[label: string, value: string]} TypeOptionState */
+/** @typedef {[text: string, value: string]} DestinationOptionState */
+/** @typedef {[id: number, title: string, price: number]} OfferOptionState */
+/** @typedef {[src: string, alt: string]} DestinationPictureState */

@@ -1,14 +1,10 @@
-import ComponentView, {html} from './component-view.js';
+import View, {html} from './view.js';
 
-import flatpickr from 'flatpickr';
+import initCalendar from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-/** @typedef {import('flatpickr/dist/types/instance').Instance} Calendar */
-/** @typedef {import('flatpickr/dist/types/options').Options} CalendarOptions */
-/** @typedef {import('flatpickr/dist/types/options').DateOption} CalendarDate */
-
 /** Представление даты и времени */
-export default class DatePickerView extends ComponentView {
+export default class DatePickerView extends View {
   /** @type {Calendar} */
   #startDateCalendar;
 
@@ -24,15 +20,20 @@ export default class DatePickerView extends ComponentView {
     /** @type {HTMLInputElement} */
     this.endTimeView = this.querySelector('[name="event-end-time"]');
 
-    this.#startDateCalendar = flatpickr(this.startTimeView, {
-      enableTime: true,
-      onChange: (dates) => this.#endDateCalendar.set('minDate', dates[0])
+    const calendarOptions = {
+      'enableTime': true,
+      'time_24hr': true
+    };
+
+    const onStartDateChange = ( /** @type {CalendarDate[]} */ dates) =>
+      this.#endDateCalendar.set('minDate', dates[0]);
+
+    this.#startDateCalendar = initCalendar(this.startTimeView, {
+      ...calendarOptions,
+      onChange: [onStartDateChange]
     });
 
-    this.#endDateCalendar = flatpickr(this.endTimeView, {
-      enableTime: true,
-      onChange: (dates) => this.#startDateCalendar.set('maxDate', dates[0])
-    });
+    this.#endDateCalendar = initCalendar(this.endTimeView, calendarOptions);
 
     this.classList.add('event__field-group', 'event__field-group--time');
   }
@@ -49,41 +50,32 @@ export default class DatePickerView extends ComponentView {
   }
 
   /**
-   * @param {CalendarOptions} options
+   * @param {CalendarOptions} startDateOptions
+   * @param {CalendarOptions} endDateOptions
    */
-  configure(options) {
-    this.#startDateCalendar.set(options);
-    this.#endDateCalendar.set(options);
+  configure(startDateOptions, endDateOptions = startDateOptions) {
+    this.#startDateCalendar.set(startDateOptions);
+    this.#endDateCalendar.set(endDateOptions);
 
     return this;
   }
 
   /**
-   * @param {CalendarDate} date
+   * @param {CalendarDate} startDate
+   * @param {CalendarDate} endDate
    */
-  setStartDate(date) {
-    this.#startDateCalendar.setDate(date);
-    this.#endDateCalendar.set('minDate', date);
+  setDate(startDate, endDate = startDate) {
+    this.#startDateCalendar.setDate(startDate, true);
+    this.#endDateCalendar.setDate(endDate, true);
 
     return this;
   }
 
-  getStartDate() {
-    return this.#startDateCalendar.selectedDates[0];
-  }
-
-  /**
-   * @param {CalendarDate} date
-   */
-  setEndDate(date) {
-    this.#endDateCalendar.setDate(date);
-    this.#startDateCalendar.set('maxDate', date);
-
-    return this;
-  }
-
-  getEndDate() {
-    return this.#endDateCalendar.selectedDates[0];
+  getDates() {
+    return [
+      this.#startDateCalendar.selectedDates[0]?.toJSON(),
+      this.#endDateCalendar.selectedDates[0]?.toJSON()
+    ];
   }
 }
 

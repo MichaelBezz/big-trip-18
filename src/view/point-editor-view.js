@@ -1,100 +1,50 @@
-import ComponentView, {html} from './component-view.js';
-import TypeSelectView from './type-select-view.js';
-import DestinationSelectView from './destination-select-view.js';
-import DatePickerView from './date-picker-view.js';
-import PriceInputView from './price-input-view.js';
-import OfferSelectView from './offer-select-view.js';
-import DestinationDetailsView from './destination-details-view.js';
+import PointCreatorView, {html} from './point-creator-view.js';
+
+import SaveButtonLabel from '../enum/save-button-label.js';
+import DeleteButtonLabel from '../enum/delete-button-label.js';
 
 /** Представление формы редактирования точки */
-export default class PointEditorView extends ComponentView {
-  #linkedView = null;
-
+export default class PointEditorView extends PointCreatorView {
   constructor() {
     super();
 
-    /** @type {TypeSelectView} */
-    this.typeSelectView = this.querySelector(String(TypeSelectView));
-
-    /** @type {DestinationSelectView} */
-    this.destinationSelectView = this.querySelector(String(DestinationSelectView));
-
-    /** @type {DatePickerView} */
-    this.datePickerView = this.querySelector(String(DatePickerView));
-
-    /** @type {PriceInputView} */
-    this.priceInputView = this.querySelector(String(PriceInputView));
-
-    /** @type {OfferSelectView} */
-    this.offerSelectView = this.querySelector(String(OfferSelectView));
-
-    /** @type {DestinationDetailsView} */
-    this.destinationDetailsView = this.querySelector(String(DestinationDetailsView));
-
-    this.classList.add('trip-events__item');
     this.addEventListener('click', this.onClick);
   }
 
   /** @override */
-  createAdjacentHtml() {
+  createButtonsHtml() {
     return html`
-      <form class="event event--edit" action="#" method="post">
-        <header class="event__header">
-          ${TypeSelectView}
-          ${DestinationSelectView}
-          ${DatePickerView}
-          ${PriceInputView}
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
-          </button>
-        </header>
-
-        <section class="event__details">
-          ${OfferSelectView}
-          ${DestinationDetailsView}
-        </section>
-      </form>
+      <button class="event__save-btn  btn  btn--blue" type="submit">
+        ${SaveButtonLabel.DEFAULT}
+      </button>
+      <button class="event__reset-btn" type="reset">
+        ${DeleteButtonLabel.DEFAULT}
+      </button>
+      <button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span>
+      </button>
     `;
   }
 
-  /**
-   * Свяжет редактор с другим представлением
-   * @param {HTMLElement} view
-   */
-  link(view) {
-    this.#linkedView = view;
+  /** @override */
+  connect() {
+    this.targetView?.replaceWith(this);
+  }
 
-    return this;
+  /** @override */
+  disconnect() {
+    this.replaceWith(this.targetView);
   }
 
   /**
-   * Заменит #linkedView на PointEditorView
-   * Обработает события по Esc
+   * @param {boolean} flag
    */
-  open() {
-    this.#linkedView.replaceWith(this);
-    document.addEventListener('keydown', this);
+  setDeleteButtonPressed(flag) {
+    /** @type {HTMLButtonElement} */
+    const resetButtonView = this.querySelector('.event__reset-btn');
 
-    return this;
-  }
-
-  /**
-   * Заменит PointEditorView на #linkedView
-   * Удалит события по Esc
-   * При необходимости добавит отправит close
-   * @param {boolean} dispatch
-   */
-  close(dispatch = false) {
-    this.replaceWith(this.#linkedView);
-    document.removeEventListener('keydown', this);
-
-    if (!dispatch) {
-      this.dispatchEvent(new CustomEvent('close'));
-    }
-
-    return this;
+    resetButtonView.disabled = flag;
+    resetButtonView.textContent = flag ? DeleteButtonLabel.PRESSED : DeleteButtonLabel.DEFAULT;
   }
 
   /**
@@ -104,20 +54,6 @@ export default class PointEditorView extends ComponentView {
     if (event.target.closest('.event__rollup-btn')) {
       this.close();
     }
-  }
-
-  /**
-   * NOTE Стандартный метод обработки события на объекте
-   * @param {KeyboardEvent} event
-   */
-  handleEvent(event) {
-    // NOTE Событие без key при выборе опции в TypeSelectView
-    if (!event.key?.startsWith('Esc')) {
-      return;
-    }
-
-    event.preventDefault();
-    this.close();
   }
 }
 

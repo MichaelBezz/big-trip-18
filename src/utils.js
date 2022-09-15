@@ -1,24 +1,18 @@
 import dayjs from 'dayjs';
+import UnitFormat from './enum/unit-format';
 
 /**
  * Вернет дату в формате 'MMM D'
  * @param {string} isoDate
  * @return {string}
  */
-const formatDate = (isoDate) => dayjs(isoDate).format('MMM D');
+const formatDate = (isoDate) => dayjs(isoDate).format(UnitFormat.DATE);
 
 /**
   * Вернет время в формате 'HH:mm'
   * @param {string} isoDate
   * @return {string}
   */
-const formatTime = (isoDate) => dayjs(isoDate).format('HH:mm');
+const formatTime = (isoDate) => dayjs(isoDate).format(UnitFormat.TIME);
 
-/**
-  * Вернет дату и время в формате 'DD/MM/YY HH:mm'
-  * @param {string} isoDate
-  * @return {string}
-  */
-const formatDateWithTime = (isoDate) => dayjs(isoDate).format('DD/MM/YY HH:mm');
-
-export {formatDate, formatTime, formatDateWithTime};
+export {formatDate, formatTime};

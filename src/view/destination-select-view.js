@@ -1,17 +1,15 @@
-import ComponentView, {html} from './component-view.js';
-
-/** @typedef {[text: string, value: string]} DestinationOptionState */
+import View, {html} from './view.js';
 
 /** Представление пункта назначения */
-export default class DestinationSelectView extends ComponentView {
+export default class DestinationSelectView extends View {
   constructor() {
     super();
 
     /** @type {HTMLLabelElement} */
-    this.labelView = this.querySelector('label.event__label');
+    this.labelView = this.querySelector('.event__label');
 
     /** @type {HTMLInputElement} */
-    this.inputView = this.querySelector('input.event__input');
+    this.inputView = this.querySelector('.event__input--destination');
 
     /** @type {HTMLDataListElement} */
     this.datalistView = this.querySelector('datalist');
@@ -42,34 +40,46 @@ export default class DestinationSelectView extends ComponentView {
     `;
   }
 
-  /** Вернет доступные клавиши */
-  get allowedKeys() {
-    return ['Escape', 'Tab', 'ArrowUp', 'ArrowDown'];
-  }
-
   /**
-   * Установит тип точки
-   * @param {string} type
+   * Установит пункты назначения в datalist
+   * @param {DestinationOptionState[]} states
    */
-  setLabel(type) {
-    this.labelView.textContent = type;
+  setOptions(states) {
+    const views = states.map((state) => new Option(...state));
+
+    this.datalistView.replaceChildren(...views);
 
     return this;
   }
 
-  /** Получит место назначения */
-  getValue() {
-    return this.inputView.value || this.inputView.placeholder;
+  /**
+   * Установит название типа точки (перед пунктом назначения)
+   * @param {string} value
+   */
+  setLabel(value) {
+    this.labelView.textContent = value;
+
+    return this;
   }
 
   /**
    * Установит место назначения
    * @param {string} destination
    */
-  setValue(destination) {
+  setDestination(destination) {
     this.inputView.value = destination;
 
     return this;
+  }
+
+  /** Получит место назначения */
+  getDestination() {
+    return this.inputView.value || this.inputView.placeholder;
+  }
+
+  /** Вернет доступные клавиши */
+  get allowedKeys() {
+    return ['Escape', 'Tab', 'ArrowUp', 'ArrowDown'];
   }
 
   /** Заменит placeholder на value */
@@ -86,18 +96,6 @@ export default class DestinationSelectView extends ComponentView {
 
     inputView.value = inputView.placeholder;
     inputView.placeholder = '';
-  }
-
-  /**
-   * Установит пункты назначения в datalist
-   * @param {DestinationOptionState[]} states
-   */
-  setOptions(states) {
-    const views = states.map((state) => new Option(...state));
-
-    this.datalistView.replaceChildren(...views);
-
-    return this;
   }
 
   onFocus() {

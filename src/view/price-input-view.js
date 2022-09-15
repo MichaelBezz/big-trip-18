@@ -1,9 +1,12 @@
-import ComponentView, {html} from './component-view.js';
+import View, {html} from './view.js';
 
 /** Представление цены */
-export default class PriceInputView extends ComponentView {
+export default class PriceInputView extends View {
   constructor() {
     super();
+
+    /** @type {HTMLInputElement} */
+    this.inputView = this.querySelector('.event__input--price');
 
     this.classList.add('event__field-group', 'event__field-group--price');
   }
@@ -20,14 +23,16 @@ export default class PriceInputView extends ComponentView {
   }
 
   /**
-   * Установит цену
-   * @param {number} price
+   * @param {string} value
    */
-  setPrice(price) {
-    /** @type {HTMLInputElement} */
-    (this.querySelector('.event__input--price')).value = String(price);
+  setPrice(value) {
+    this.inputView.value = value;
 
     return this;
+  }
+
+  getPrice() {
+    return this.inputView.value;
   }
 }
 

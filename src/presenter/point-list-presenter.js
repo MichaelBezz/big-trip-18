@@ -20,12 +20,10 @@ export default class PointListPresenter extends Presenter {
 
     this.model.points.addEventListener(
       ['add', 'update', 'remove', 'filter', 'sort'],
-      this.updateView.bind(this)
+      this.onModelPointsChange.bind(this)
     );
 
-    this.view.addEventListener('point-edit', ( /** @type {CustomEvent} */ event) => {
-      this.model.setMode(Mode.EDIT, event.detail);
-    });
+    this.view.addEventListener('point-edit', this.onViewPointEdit.bind(this));
   }
 
   updateView() {
@@ -63,5 +61,25 @@ export default class PointListPresenter extends Presenter {
     });
 
     this.view.setPoints(states);
+  }
+
+  /*
+  TODO Реализовать удаление point-view без полной перерисовки списка
+    @param {CollectionModelEvent<PointAdapter>} event
+    if (event.type === 'remove') {
+      this.view.findById(event.detail.id).remove();
+      return;
+    }
+  */
+
+  onModelPointsChange() {
+    this.updateView();
+  }
+
+  /**
+   * @param {CustomEvent & {target: PointView}} event
+   */
+  onViewPointEdit(event) {
+    this.model.setMode(Mode.EDIT, event.target.getId());
   }
 }

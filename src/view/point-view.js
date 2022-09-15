@@ -1,22 +1,7 @@
-import ListItemView, {html} from './list-item-view.js';
-import PointOfferView from './point-offer-view.js';
-
-/**
- * @typedef PointState
- * @prop {number} id
- * @prop {string} date
- * @prop {string} startIsoDate
- * @prop {string} endIsoDate
- * @prop {string} icon
- * @prop {string} title
- * @prop {string} startTime
- * @prop {string} endTime
- * @prop {number} price
- * @prop {PointOfferState[]} offers
- */
+import PointItemView, {html} from './point-item-view.js';
 
 /** Представление точки на маршруте */
-export default class PointView extends ListItemView {
+export default class PointView extends PointItemView {
   #id;
 
   /**
@@ -25,8 +10,11 @@ export default class PointView extends ListItemView {
   constructor(state) {
     super(state);
 
+    /** NOTE PointListPresenter - setMode(EDIT, getId) */
     this.#id = state.id;
-    this.id = `point-${state.id}`;
+
+    /** NOTE PointEditorPresenter - target(findById) */
+    this.id = `${this.constructor}-${state.id}`;
 
     this.setOffers(state.offers);
     this.addEventListener('click', this.onClick);
@@ -68,13 +56,33 @@ export default class PointView extends ListItemView {
   }
 
   /**
+   * @param  {PointOfferState} state
+   */
+  createOfferHtml(...state) {
+    const [title, price] = state;
+
+    return html`
+      <div class="event__offer">
+        <span class="event__offer-title">${title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${price}</span>
+      </div>
+    `;
+  }
+
+  /** Получит #id из поля state.id */
+  getId() {
+    return this.#id;
+  }
+
+  /**
    * Установит (выбранные) дополнительные опции
    * @param {PointOfferState[]} states
    */
   setOffers(states) {
-    const views = states.map((state) => new PointOfferView(...state));
-
-    this.querySelector('.event__selected-offers').replaceChildren(...views);
+    this.querySelector('.event__selected-offers').innerHTML = html`${
+      states.map((state) => this.createOfferHtml(...state))
+    }`;
 
     return this;
   }
@@ -87,12 +95,17 @@ export default class PointView extends ListItemView {
       return;
     }
 
-    this.dispatchEvent(
-      new CustomEvent('point-edit', {
-        detail: this.#id,
-        bubbles: true
-      })
-    );
+    this.dispatchEvent(new CustomEvent('point-edit', {bubbles: true}));
+  }
+
+  /**
+   * Найдет PointView по атрибуту id
+   * @param {number} id
+   * @param {Document | Element} rootView
+   * @return {PointView}
+   */
+  static findById(id, rootView = document) {
+    return rootView.querySelector(`#${this}-${id}`);
   }
 }
 

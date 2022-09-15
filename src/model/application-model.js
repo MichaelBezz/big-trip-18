@@ -1,6 +1,8 @@
 import Model from './model.js';
 
 import Mode from '../enum/mode.js';
+import PointAdapter from '../adapter/point-adapter.js';
+import PointType from '../enum/point-type.js';
 
 /** Модель приложения */
 export default class ApplicationModel extends Model {
@@ -17,7 +19,7 @@ export default class ApplicationModel extends Model {
     super();
 
     this.points = points;
-    this.editablePoint = null;
+    this.activePoint = null;
     this.destinations = destinations;
     this.offerGroups = offerGroups;
   }
@@ -34,11 +36,30 @@ export default class ApplicationModel extends Model {
   /**
    * Установит режим модели
    * @param {number} mode
-   * @param {number} editablePointId
+   * @param {number} activePointId
    */
-  setMode(mode, editablePointId = null) {
+  setMode(mode, activePointId = null) {
     this.#mode = mode;
-    this.editablePoint = this.points.findById(editablePointId);
+    this.activePoint = null;
+
+    if (mode === Mode.EDIT) {
+      this.activePoint = this.points.findById(activePointId);
+    }
+
+    else if (mode === Mode.CREATE) {
+      const point = new PointAdapter();
+      const [firstDestination] = this.destinations.listAll();
+
+      point.type = PointType.TAXI;
+      point.destinationId = firstDestination.id;
+      point.startDate = new Date().toJSON();
+      point.endDate = point.startDate;
+      point.basePrice = 0;
+      point.offerIds = [];
+      point.isFavorite = false;
+
+      this.activePoint = point;
+    }
 
     const eventType = Mode.findKey(mode).toLowerCase();
     this.dispatchEvent(new CustomEvent(eventType));
