@@ -53,6 +53,19 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   }
 
   /**
+   * @override
+   * Обновит activePoint в модели
+   */
+  saveActivePoint() {
+    return this.model.points.update(this.model.activePoint.id, this.activePoint);
+  }
+
+  /** Удалит activePoint из модели */
+  deleteActivePoint() {
+    return this.model.points.remove(this.model.activePoint.id);
+  }
+
+  /**
    * Обработает событие CREATE
    * Закроет editor-view, если модель в режиме create
    * @override
@@ -84,27 +97,6 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   }
 
   /**
-   * Обработает событие SUBMIT(button SAVE) -> MODEL.UPDATE
-   * @override
-   * @param {Event} event
-   */
-  async onViewSubmit(event) {
-    event.preventDefault();
-
-    this.view.setSaveButtonPressed(true);
-
-    try {
-      await this.model.points.update(this.model.activePoint.id, this.getFormData());
-      this.view.close();
-
-    } catch (exception) {
-      this.view.shake();
-    }
-
-    this.view.setSaveButtonPressed(false);
-  }
-
-  /**
    * Обработает событие RESET(button DELETE) -> MODEL.REMOVE
    * @override
    * @param {Event} event
@@ -115,7 +107,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     this.view.setDeleteButtonPressed(true);
 
     try {
-      await this.model.points.remove(this.model.activePoint.id);
+      await this.deleteActivePoint();
       this.view.close();
 
     } catch (exception) {

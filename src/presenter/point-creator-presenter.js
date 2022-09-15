@@ -108,7 +108,7 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   /** Соберет данные формы */
-  getFormData() {
+  get activePoint() {
     const point = new PointAdapter();
 
     const destinationName = this.view.destinationSelectView.getDestination();
@@ -126,13 +126,18 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   /** Сбросит данные формы */
-  resetFormData() {
+  resetView() {
     this.view.pointTypeSelectView.setValue(PointType.TAXI);
     this.view.destinationSelectView.setLabel(PointType.TAXI).setDestination('');
     this.view.datePickerView.setDate('');
     this.view.priceInputView.setPrice('');
     this.buildOfferSelectView();
     this.buildDestinationView();
+  }
+
+  /** Добавит activePoint в модель */
+  saveActivePoint() {
+    return this.model.points.add(this.activePoint);
   }
 
   /** Обработает событие CREATE */
@@ -158,7 +163,7 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.setSaveButtonPressed(true);
 
     try {
-      await this.model.points.add(this.getFormData());
+      await this.saveActivePoint();
       this.view.close();
 
     } catch (exception) {
@@ -175,8 +180,8 @@ export default class PointCreatorPresenter extends Presenter {
   onViewReset(event) {
     event.preventDefault();
 
+    this.resetView();
     this.view.close();
-    this.resetFormData();
   }
 
   /** Обработает событие CLOSE */
