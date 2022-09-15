@@ -162,7 +162,7 @@ export default class PointCreatorPresenter extends Presenter {
       this.view.close();
 
     } catch (exception) {
-      // TODO shake
+      this.view.shake();
     }
 
     this.view.setSaveButtonPressed(false);

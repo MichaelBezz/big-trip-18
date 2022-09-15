@@ -1,3 +1,5 @@
+import './view.css';
+
 /**
  * Теговый шаблон html
  * @param {TemplateStringsArray} strings
@@ -55,6 +57,16 @@ export default class View extends HTMLElement {
     this[key] = value;
 
     return this;
+  }
+
+  shake() {
+    this.classList.add('shake');
+
+    this.addEventListener('animationend', () => {
+      this.classList.remove('shake');
+    }, {
+      once: true
+    });
   }
 
   static get isViewConstructor() {

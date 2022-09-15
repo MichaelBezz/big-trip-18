@@ -97,7 +97,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
       this.view.close();
 
     } catch (exception) {
-      // TODO shake
+      this.view.shake();
     }
 
     this.view.setSaveButtonPressed(false);
@@ -118,7 +118,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
       this.view.close();
 
     } catch (exception) {
-      // TODO shake
+      this.view.shake();
     }
 
     this.view.setDeleteButtonPressed(false);
