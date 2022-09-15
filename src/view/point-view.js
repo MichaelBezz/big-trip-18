@@ -10,8 +10,11 @@ export default class PointView extends PointItemView {
   constructor(state) {
     super(state);
 
+    /** NOTE PointListPresenter - setMode(EDIT, getId) */
     this.#id = state.id;
-    this.id = `point-${state.id}`;
+
+    /** NOTE PointEditorPresenter - target(findById) */
+    this.id = `${this.constructor}-${state.id}`;
 
     this.setOffers(state.offers);
     this.addEventListener('click', this.onClick);
@@ -67,6 +70,11 @@ export default class PointView extends PointItemView {
     `;
   }
 
+  /** Получит #id из поля state.id */
+  getId() {
+    return this.#id;
+  }
+
   /**
    * Установит (выбранные) дополнительные опции
    * @param {PointOfferState[]} states
@@ -87,12 +95,17 @@ export default class PointView extends PointItemView {
       return;
     }
 
-    this.dispatchEvent(
-      new CustomEvent('point-edit', {
-        detail: {id: this.#id},
-        bubbles: true
-      })
-    );
+    this.dispatchEvent(new CustomEvent('point-edit', {bubbles: true}));
+  }
+
+  /**
+   * Найдет PointView по атрибуту id
+   * @param {number} id
+   * @param {Document | Element} rootView
+   * @return {PointView}
+   */
+  static findById(id, rootView = document) {
+    return rootView.querySelector(`#${this}-${id}`);
   }
 }
 

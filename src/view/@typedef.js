@@ -30,10 +30,3 @@
 /** @typedef {[text: string, value: string]} DestinationOptionState */
 /** @typedef {[id: number, title: string, price: number]} OfferOptionState */
 /** @typedef {[src: string, alt: string]} DestinationPictureState */
-
-/** @typedef {CustomEvent<PointEventData>} PointEvent */
-
-/**
- * @typedef PointEventData
- * @prop {number} id
- */

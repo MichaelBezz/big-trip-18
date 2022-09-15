@@ -19,6 +19,14 @@ export default class PointListView extends View {
 
     return this;
   }
+
+  /**
+   * Найдет PointView в PointListView по атрибуту id
+   * @param {number} id
+   */
+  findById(id) {
+    return PointView.findById(id, this);
+  }
 }
 
 customElements.define(String(PointListView), PointListView);

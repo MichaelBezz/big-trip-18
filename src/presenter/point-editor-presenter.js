@@ -1,5 +1,7 @@
 import PointCreatorPresenter from './point-creator-presenter.js';
 
+import PointView from '../view/point-view.js';
+
 /**
  * Презентор формы редактирования
  * @template {ApplicationModel} Model
@@ -64,8 +66,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
    * @override
    */
   onModelEdit() {
-    /** @type {PointView} */
-    const point = document.querySelector(`#point-${this.model.activePoint.id}`);
+    const pointView = PointView.findById(this.model.activePoint.id);
 
     this.view.close(true);
 
@@ -78,7 +79,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     this.updateDestinationView();
 
     this.view
-      .target(point)
+      .target(pointView)
       .open();
   }
 
