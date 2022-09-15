@@ -14,22 +14,22 @@ import PointListView from './view/point-list-view.js';
 import PointCreatorView from './view/point-creator-view.js';
 import PointEditorView from './view/point-editor-view.js';
 
+import CreateButtonPresenter from './presenter/create-button-presenter.js';
+import PlaceholderPresenter from './presenter/placeholder-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import SortPresenter from './presenter/sort-presenter.js';
 import PointListPresenter from './presenter/point-list-presenter.js';
 import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
-import CreateButtonPresenter from './presenter/create-button-presenter.js';
-import PlaceholderPresenter from './presenter/placeholder-presenter.js';
-import SortCompare from './enum/sort-compare.js';
 import FilterPredicate from './enum/filter-predicate.js';
+import SortCompare from './enum/sort-compare.js';
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
 const POINTS_URL = `${BASE_URL}/points`;
 const DESTINATIONS_URL = `${BASE_URL}/destinations`;
 const OFFERS_URL = `${BASE_URL}/offers`;
-const AUTH = 'Basic er883jda';
+const AUTH = 'Basic er883jde';
 
 /** @type {Store<Point>} */
 const pointStore = new Store(POINTS_URL, AUTH);
@@ -43,7 +43,9 @@ const offersStore = new Store(OFFERS_URL, AUTH);
 const points = new DataTableModel(pointStore, (point) => new PointAdapter(point))
   .setFilter(FilterPredicate.EVERYTHING)
   .setSort(SortCompare.DAY);
+
 const destinations = new CollectionModel(destinationsStore, (destination) => new DestinationAdapter(destination));
+
 const offerGroups = new CollectionModel(offersStore, (offerGroup) => new OfferGroupAdapter(offerGroup));
 
 const applicationModel = new ApplicationModel(points, destinations, offerGroups);
@@ -71,8 +73,8 @@ const pointEditorView = new PointEditorView();
 
 applicationModel.ready().then(() => {
   new CreateButtonPresenter(applicationModel, createButtonView);
-  new FilterPresenter(applicationModel, filterView);
   new PlaceholderPresenter(applicationModel, placeholderView);
+  new FilterPresenter(applicationModel, filterView);
   new SortPresenter(applicationModel, sortView);
   new PointListPresenter(applicationModel, pointListView);
   new PointCreatorPresenter(applicationModel, pointCreatorView);
