@@ -1,6 +1,8 @@
 import Model from './model.js';
 
 import Mode from '../enum/mode.js';
+import PointAdapter from '../adapter/point-adapter.js';
+import PointType from '../enum/point-type.js';
 
 /** Модель приложения */
 export default class ApplicationModel extends Model {
@@ -38,7 +40,26 @@ export default class ApplicationModel extends Model {
    */
   setMode(mode, activePointId = null) {
     this.#mode = mode;
-    this.activePoint = this.points.findById(activePointId);
+    this.activePoint = null;
+
+    if (mode === Mode.EDIT) {
+      this.activePoint = this.points.findById(activePointId);
+    }
+
+    else if (mode === Mode.CREATE) {
+      const point = new PointAdapter();
+      const [firstDestination] = this.destinations.listAll();
+
+      point.type = PointType.TAXI;
+      point.destinationId = firstDestination.id;
+      point.startDate = new Date().toJSON();
+      point.endDate = point.startDate;
+      point.basePrice = 0;
+      point.offerIds = [];
+      point.isFavorite = false;
+
+      this.activePoint = point;
+    }
 
     const eventType = Mode.findKey(mode).toLowerCase();
     this.dispatchEvent(new CustomEvent(eventType));
