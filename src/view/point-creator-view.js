@@ -7,7 +7,7 @@ import PriceInputView from './price-input-view.js';
 import OfferSelectView from './offer-select-view.js';
 import DestinationView from './destination-view.js';
 
-import ButtonState from '../enum/button-state.js';
+import SaveButtonLabel from '../enum/save-button-label.js';
 
 export * from './point-item-view.js';
 
@@ -36,12 +36,6 @@ export default class PointCreatorView extends PointItemView {
 
     /** @type {DestinationView} */
     this.destinationView = this.querySelector(String(DestinationView));
-
-    /** @type {HTMLButtonElement} */
-    this.submitButtonView = this.querySelector('.event__save-btn');
-
-    /** @type {HTMLButtonElement} */
-    this.resetButtonView = this.querySelector('.event__reset-btn');
   }
 
   /** @override */
@@ -66,8 +60,12 @@ export default class PointCreatorView extends PointItemView {
 
   createButtonsHtml() {
     return html`
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Cancel</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit">
+        ${SaveButtonLabel.DEFAULT}
+      </button>
+      <button class="event__reset-btn" type="reset">
+        Cancel
+      </button>
     `;
   }
 
@@ -121,14 +119,15 @@ export default class PointCreatorView extends PointItemView {
     return this;
   }
 
-  disableSubmitButton() {
-    this.submitButtonView.disabled = true;
-    this.submitButtonView.textContent = ButtonState.SUBMIT_PROCESS;
-  }
+  /**
+   * @param {boolean} flag
+   */
+  setSaveButtonPressed(flag) {
+    /** @type {HTMLButtonElement} */
+    const submitButtonView = this.querySelector('.event__save-btn');
 
-  enableSubmitButton() {
-    this.submitButtonView.disabled = false;
-    this.submitButtonView.textContent = ButtonState.SUBMIT_NORMAL;
+    submitButtonView.disabled = flag;
+    submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
   }
 
   /**

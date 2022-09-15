@@ -90,7 +90,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   async onViewSubmit(event) {
     event.preventDefault();
 
-    this.view.disableSubmitButton();
+    this.view.setSaveButtonPressed(true);
 
     try {
       await this.model.points.update(this.model.activePoint.id, this.getFormData());
@@ -100,7 +100,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
       // TODO shake
     }
 
-    this.view.enableSubmitButton();
+    this.view.setSaveButtonPressed(false);
   }
 
   /**
@@ -111,7 +111,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   async onViewReset(event) {
     event.preventDefault();
 
-    this.view.disableResetButton();
+    this.view.setDeleteButtonPressed(true);
 
     try {
       await this.model.points.remove(this.model.activePoint.id);
@@ -121,6 +121,6 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
       // TODO shake
     }
 
-    this.view.enableResetButton();
+    this.view.setDeleteButtonPressed(false);
   }
 }

@@ -1,14 +1,12 @@
 import PointCreatorView, {html} from './point-creator-view.js';
 
-import ButtonState from '../enum/button-state.js';
+import SaveButtonLabel from '../enum/save-button-label.js';
+import DeleteButtonLabel from '../enum/delete-button-label.js';
 
 /** Представление формы редактирования точки */
 export default class PointEditorView extends PointCreatorView {
   constructor() {
     super();
-
-    /** @type {HTMLButtonElement} */
-    this.closeButtonView = this.querySelector('.event__rollup-btn');
 
     this.addEventListener('click', this.onClick);
   }
@@ -16,8 +14,12 @@ export default class PointEditorView extends PointCreatorView {
   /** @override */
   createButtonsHtml() {
     return html`
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit">
+        ${SaveButtonLabel.DEFAULT}
+      </button>
+      <button class="event__reset-btn" type="reset">
+        ${DeleteButtonLabel.DEFAULT}
+      </button>
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
@@ -34,21 +36,22 @@ export default class PointEditorView extends PointCreatorView {
     this.replaceWith(this.targetView);
   }
 
-  disableResetButton() {
-    this.resetButtonView.disabled = true;
-    this.resetButtonView.textContent = ButtonState.RESET_PROCESS;
-  }
+  /**
+   * @param {boolean} flag
+   */
+  setDeleteButtonPressed(flag) {
+    /** @type {HTMLButtonElement} */
+    const resetButtonView = this.querySelector('.event__reset-btn');
 
-  enableResetButton() {
-    this.resetButtonView.disabled = false;
-    this.resetButtonView.textContent = ButtonState.RESET_NORMAL;
+    resetButtonView.disabled = flag;
+    resetButtonView.textContent = flag ? DeleteButtonLabel.PRESSED : DeleteButtonLabel.DEFAULT;
   }
 
   /**
    * @param {MouseEvent & {target: Element}} event
    */
   onClick(event) {
-    if (event.target === this.closeButtonView) {
+    if (event.target.closest('.event__rollup-btn')) {
       this.close();
     }
   }

@@ -155,7 +155,7 @@ export default class PointCreatorPresenter extends Presenter {
   async onViewSubmit(event) {
     event.preventDefault();
 
-    this.view.disableSubmitButton();
+    this.view.setSaveButtonPressed(true);
 
     try {
       await this.model.points.add(this.getFormData());
@@ -165,7 +165,7 @@ export default class PointCreatorPresenter extends Presenter {
       // TODO shake
     }
 
-    this.view.enableSubmitButton();
+    this.view.setSaveButtonPressed(false);
   }
 
   /**
