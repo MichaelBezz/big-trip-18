@@ -79,14 +79,11 @@ export default class CollectionModel extends Model {
    */
   async add(item) {
     const newItem = await this.#store.add(item.toJSON());
+    const detail = this.#adapt(newItem);
 
     this.#items.push(newItem);
 
-    this.dispatchEvent(
-      new CustomEvent('add', {
-        detail: this.#adapt(newItem)
-      })
-    );
+    this.dispatchEvent(new CustomEvent('add', {detail}));
   }
 
   /**
@@ -96,15 +93,12 @@ export default class CollectionModel extends Model {
    */
   async update(id, item) {
     const updatedItem = await this.#store.update(id, item.toJSON());
+    const detail = this.#adapt(updatedItem);
 
     const index = this.findIndexById(id);
     this.#items.splice(index, 1, updatedItem);
 
-    this.dispatchEvent(
-      new CustomEvent('update', {
-        detail: this.#adapt(updatedItem)
-      })
-    );
+    this.dispatchEvent(new CustomEvent('update', {detail}));
   }
 
   /**
@@ -115,12 +109,8 @@ export default class CollectionModel extends Model {
     await this.#store.remove(id);
 
     const index = this.findIndexById(id);
-    const [removedItem] = this.#items.splice(index, 1);
+    const [detail] = this.#items.splice(index, 1);
 
-    this.dispatchEvent(
-      new CustomEvent('remove', {
-        detail: this.#adapt(removedItem)
-      })
-    );
+    this.dispatchEvent(new CustomEvent('remove', {detail}));
   }
 }
