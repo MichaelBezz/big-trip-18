@@ -28,7 +28,7 @@ export default class PointTypeSelectView extends RadioGroupView {
   }
 
   /**
-   * @param  {TypeOptionState} state
+   * @param  {PointTypeOptionState} state
    */
   createOptionHtml(...state) {
     const [label, value] = state;
@@ -54,7 +54,7 @@ export default class PointTypeSelectView extends RadioGroupView {
 
   /**
    * Установит пункты меню
-   * @param {TypeOptionState[]} states
+   * @param {PointTypeOptionState[]} states
    */
   setOptions(states) {
     this.querySelector('.event__type-group').insertAdjacentHTML('beforeend', html`${

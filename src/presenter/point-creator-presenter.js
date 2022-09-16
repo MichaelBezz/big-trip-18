@@ -35,25 +35,16 @@ export default class PointCreatorPresenter extends Presenter {
 
   /** TypeSelect -> setOptions */
   buildPointTypeSelectView() {
-    /** @type {TypeOptionState[]} */
-    const optionStates = Object.values(PointType).map((type) => {
-      const key = PointType.findKey(type);
-      const label = PointLabel[key];
-
-      return [label, type];
-    });
+    /** @type {PointTypeOptionState[]} */
+    const optionStates = Object.keys(PointType).map((key) => [PointLabel[key], PointType[key]]);
 
     this.view.pointTypeSelectView.setOptions(optionStates);
   }
 
   /** DestinationSelect -> setOptions */
   buildDestinationSelectView() {
-    const destinationNames = this.model.destinations
-      .listAll()
-      .map((destination) => destination.name);
-
     /** @type {DestinationOptionState[]} */
-    const optionStates = [...new Set(destinationNames)].map((name) => ['', name]);
+    const optionStates = this.model.destinations.listAll().map((destination) => ['', destination.name]);
 
     this.view.destinationSelectView.setOptions(optionStates);
   }
@@ -70,8 +61,8 @@ export default class PointCreatorPresenter extends Presenter {
 
   /** OfferSelect -> set(hidden) -> setOptions */
   buildOfferSelectView() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const availableOffers = this.model.offerGroups.findById(selectedType).items;
+    const selectedPointType = this.view.pointTypeSelectView.getValue();
+    const availableOffers = this.model.offerGroups.findById(selectedPointType).items;
 
     /** @type {OfferOptionState[]} */
     const optionStates = availableOffers.map((offer) => [offer.id, offer.title, offer.price]);
@@ -93,7 +84,7 @@ export default class PointCreatorPresenter extends Presenter {
     const destination = this.model.destinations.findById(destinationId);
 
     this.view.destinationSelectView
-      .setLabel(type)
+      .setLabel(PointLabel[PointType.findKey(type)])
       .setDestination(destination.name);
   }
 
@@ -113,8 +104,8 @@ export default class PointCreatorPresenter extends Presenter {
 
   /** OfferSelect -> setCheckedOptions */
   updateOfferSelectView() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const availableOffers = this.model.offerGroups.findById(selectedType).items;
+    const selectedPointType = this.view.pointTypeSelectView.getValue();
+    const availableOffers = this.model.offerGroups.findById(selectedPointType).items;
 
     const checkedOptions = availableOffers.map((offer) =>
       this.model.activePoint.offerIds.includes(offer.id)
@@ -225,11 +216,10 @@ export default class PointCreatorPresenter extends Presenter {
    * Перерисует доступные опции
    */
   onViewPointTypeSelectChange() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const key = PointType.findKey(selectedType);
+    const selectedPointType = this.view.pointTypeSelectView.getValue();
+    const key = PointType.findKey(selectedPointType);
 
     this.view.destinationSelectView.setLabel(PointLabel[key]);
-
     this.buildOfferSelectView();
   }
 
