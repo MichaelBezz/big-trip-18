@@ -14,13 +14,17 @@ export default class CollectionModel extends Model {
 
   /**
    * @param {Store<Item>} store
-   * @param {(item: Item) => ItemAdapter} adapt
+   * @param {(item?: Item) => ItemAdapter} adapt
    */
   constructor(store, adapt) {
     super();
 
     this.#store = store;
     this.#adapt = adapt;
+  }
+
+  get blank() {
+    return this.#adapt();
   }
 
   /**

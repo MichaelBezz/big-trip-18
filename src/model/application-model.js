@@ -1,7 +1,6 @@
 import Model from './model.js';
 
 import Mode from '../enum/mode.js';
-import PointAdapter from '../adapter/point-adapter.js';
 import PointType from '../enum/point-type.js';
 
 /** Модель приложения */
@@ -34,7 +33,7 @@ export default class ApplicationModel extends Model {
   }
 
   get defaultPoint() {
-    const point = new PointAdapter();
+    const point = this.points.blank;
 
     point.type = PointType.TAXI;
     point.destinationId = this.destinations.item(0).id;
