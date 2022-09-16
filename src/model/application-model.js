@@ -35,10 +35,9 @@ export default class ApplicationModel extends Model {
 
   get defaultPoint() {
     const point = new PointAdapter();
-    const [firstDestination] = this.destinations.listAll();
 
     point.type = PointType.TAXI;
-    point.destinationId = firstDestination.id;
+    point.destinationId = this.destinations.item(0).id;
     point.startDate = new Date().toJSON();
     point.endDate = point.startDate;
     point.basePrice = 0;

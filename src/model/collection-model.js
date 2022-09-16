@@ -39,6 +39,16 @@ export default class CollectionModel extends Model {
   }
 
   /**
+   * Вернет ItemAdapter по индексу
+   * @param {number} index
+   */
+  item(index) {
+    const item = this.#items[index];
+
+    return item && this.#adapt(item);
+  }
+
+  /**
    * Найдет ItemAdapter по свойству key со значением value
    * @param {string} key
    * @param {*} value
