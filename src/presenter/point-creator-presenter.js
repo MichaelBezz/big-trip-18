@@ -34,7 +34,7 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.destinationSelectView.addEventListener('change', this.onViewDestinationSelectChange.bind(this));
   }
 
-  /** TypeSelect -> setOptions -> setValue (установит тип точки) */
+  /** TypeSelect -> setOptions */
   buildPointTypeSelectView() {
     /** @type {TypeOptionState[]} */
     const optionStates = Object.values(PointType).map((type) => {
@@ -44,12 +44,10 @@ export default class PointCreatorPresenter extends Presenter {
       return [label, type];
     });
 
-    this.view.pointTypeSelectView
-      .setOptions(optionStates)
-      .setValue(PointType.TAXI);
+    this.view.pointTypeSelectView.setOptions(optionStates);
   }
 
-  /** DestinationSelect -> setOptions -> setLabel (установит название типа точки) */
+  /** DestinationSelect -> setOptions */
   buildDestinationSelectView() {
     const destinationNames = this.model.destinations
       .listAll()
@@ -58,9 +56,7 @@ export default class PointCreatorPresenter extends Presenter {
     /** @type {DestinationOptionState[]} */
     const optionStates = [...new Set(destinationNames)].map((name) => ['', name]);
 
-    this.view.destinationSelectView
-      .setOptions(optionStates)
-      .setLabel(PointType.TAXI);
+    this.view.destinationSelectView.setOptions(optionStates);
   }
 
   /** DatePicker -> configure */

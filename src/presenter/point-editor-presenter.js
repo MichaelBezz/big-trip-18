@@ -1,5 +1,4 @@
 import PointCreatorPresenter from './point-creator-presenter.js';
-
 import PointView from '../view/point-view.js';
 
 /**
