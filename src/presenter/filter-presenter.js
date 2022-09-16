@@ -49,7 +49,7 @@ export default class FilterPresenter extends Presenter {
   }
 
   /**
-   * Блокирует фильтры, если mode !=== view
+   * Блокирует фильтры, если mode !== view
    * @param {CustomEvent} event
    */
   onModelChange(event) {
