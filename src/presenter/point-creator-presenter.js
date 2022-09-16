@@ -1,5 +1,4 @@
 import Presenter from './presenter.js';
-import PointAdapter from '../adapter/point-adapter.js';
 
 import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
@@ -150,7 +149,7 @@ export default class PointCreatorPresenter extends Presenter {
 
   /** Соберет данные с формы в PointAdapter */
   get activePoint() {
-    const point = new PointAdapter();
+    const point = this.model.activePoint;
 
     const destinationName = this.view.destinationSelectView.getDestination();
     const [startDate, endDate] = this.view.datePickerView.getDates();

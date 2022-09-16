@@ -33,6 +33,21 @@ export default class ApplicationModel extends Model {
     ]);
   }
 
+  get defaultPoint() {
+    const point = new PointAdapter();
+    const [firstDestination] = this.destinations.listAll();
+
+    point.type = PointType.TAXI;
+    point.destinationId = firstDestination.id;
+    point.startDate = new Date().toJSON();
+    point.endDate = point.startDate;
+    point.basePrice = 0;
+    point.offerIds = [];
+    point.isFavorite = false;
+
+    return point;
+  }
+
   /**
    * Установит режим модели
    * @param {number} mode
@@ -40,25 +55,19 @@ export default class ApplicationModel extends Model {
    */
   setMode(mode, activePointId = null) {
     this.#mode = mode;
-    this.activePoint = null;
 
-    if (mode === Mode.EDIT) {
-      this.activePoint = this.points.findById(activePointId);
-    }
-
-    else if (mode === Mode.CREATE) {
-      const point = new PointAdapter();
-      const [firstDestination] = this.destinations.listAll();
-
-      point.type = PointType.TAXI;
-      point.destinationId = firstDestination.id;
-      point.startDate = new Date().toJSON();
-      point.endDate = point.startDate;
-      point.basePrice = 0;
-      point.offerIds = [];
-      point.isFavorite = false;
-
-      this.activePoint = point;
+    switch(mode) {
+      case Mode.VIEW:
+        this.activePoint = null;
+        break;
+      case Mode.CREATE:
+        this.activePoint = this.defaultPoint;
+        break;
+      case Mode.EDIT:
+        this.activePoint = this.points.findById(activePointId);
+        break;
+      default:
+        throw new Error('Invalid mode');
     }
 
     const eventType = Mode.findKey(mode).toLowerCase();
