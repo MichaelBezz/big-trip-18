@@ -26,7 +26,7 @@ export default class SortPresenter extends Presenter {
     );
 
     this.model.points.addEventListener(
-      ['add', 'update', 'filter'],
+      ['add', 'update', 'remove', 'filter'],
       this.onModelPointsChange.bind(this)
     );
 
@@ -48,7 +48,7 @@ export default class SortPresenter extends Presenter {
   }
 
   /**
-   * Блокирует сортировку, если mode !=== view
+   * Блокирует сортировку, если mode !== view
    * @param {CustomEvent} event
    */
   onModelChange(event) {
@@ -64,7 +64,7 @@ export default class SortPresenter extends Presenter {
   /** Сбросит сортировку на тип DAY */
   onModelPointsChange() {
     this.view.setValue(SortType.DAY);
-    this.model.points.setSort(SortCompare[SortType.DAY]);
+    this.model.points.setSort(SortCompare.DAY);
   }
 
   /** Сортирует список с точками */
