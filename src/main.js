@@ -23,6 +23,7 @@ import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
 import SortCompare from './enum/sort-compare.js';
+import FilterPredicate from './enum/filter-predicate.js';
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
 const POINTS_URL = `${BASE_URL}/points`;
@@ -39,8 +40,12 @@ const destinationsStore = new Store(DESTINATIONS_URL, AUTH);
 /** @type {Store<OfferGroup>} */
 const offersStore = new Store(OFFERS_URL, AUTH);
 
-const points = new DataTableModel(pointStore, (point) => new PointAdapter(point)).setSort(SortCompare.DAY);
+const points = new DataTableModel(pointStore, (point) => new PointAdapter(point))
+  .setFilter(FilterPredicate.EVERYTHING)
+  .setSort(SortCompare.DAY);
+
 const destinations = new CollectionModel(destinationsStore, (destination) => new DestinationAdapter(destination));
+
 const offerGroups = new CollectionModel(offersStore, (offerGroup) => new OfferGroupAdapter(offerGroup));
 
 const applicationModel = new ApplicationModel(points, destinations, offerGroups);

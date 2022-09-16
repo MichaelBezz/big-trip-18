@@ -54,7 +54,7 @@ export default class SortPresenter extends Presenter {
   onModelChange(event) {
     const flags = this.getOptionsDisabled();
 
-    if (event.type !== 'view') {
+    if (event.type !== 'view' || !this.model.points.list().length) {
       flags.fill(true);
     }
 
@@ -63,7 +63,9 @@ export default class SortPresenter extends Presenter {
 
   /** Сбросит сортировку на тип DAY */
   onModelPointsChange() {
-    this.view.setValue(SortType.DAY);
+    this.view
+      .setValue(SortType.DAY)
+      .setOptionsDisabled(this.getOptionsDisabled());
     this.model.points.setSort(SortCompare.DAY);
   }
 
