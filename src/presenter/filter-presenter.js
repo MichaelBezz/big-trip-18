@@ -54,8 +54,9 @@ export default class FilterPresenter extends Presenter {
    */
   onModelChange(event) {
     const flags = this.getOptionsDisabled();
+    const isPointsExist = this.model.points.list().length;
 
-    if (event.type === 'create') {
+    if (event.type === 'create' && isPointsExist) {
       this.view.setValue(FilterType.EVERYTHING);
       this.model.points.setFilter(FilterPredicate.EVERYTHING);
     }
