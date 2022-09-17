@@ -34,11 +34,18 @@ export default class SortPresenter extends Presenter {
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
+  setViewHidden() {
+    const flag = Boolean(!this.model.points.list().length);
+    this.view.set('hidden', flag);
+  }
+
   getOptionsDisabled() {
     return Object.values(SortDisabled);
   }
 
   buildSortSelect() {
+    this.setViewHidden();
+
     /** @type {SortOptionState[]} */
     const optionStates = Object.keys(SortType).map((key) => [SortLabel[key], SortType[key]]);
 
@@ -63,10 +70,9 @@ export default class SortPresenter extends Presenter {
     this.view.setOptionsDisabled(flags);
   }
 
+  /** Скроет сортировку, если нет точек */
   onModelPointsChange() {
-    const flag = Boolean(!this.model.points.list().length);
-
-    this.view.set('hidden', flag);
+    this.setViewHidden();
   }
 
   /** Сбросит сортировку на тип DAY */
