@@ -25,7 +25,7 @@ export default class FilterPresenter extends Presenter {
     );
 
     this.model.points.addEventListener(
-      ['add', 'update', 'remove', 'sort'],
+      ['add', 'update', 'remove'],
       this.onModelPointsChange.bind(this)
     );
 
@@ -54,6 +54,11 @@ export default class FilterPresenter extends Presenter {
    */
   onModelChange(event) {
     const flags = this.getOptionsDisabled();
+
+    if (event.type === 'create') {
+      this.view.setValue(FilterType.EVERYTHING);
+      this.model.points.setFilter(FilterPredicate.EVERYTHING);
+    }
 
     if (event.type !== 'view') {
       flags.fill(true);
