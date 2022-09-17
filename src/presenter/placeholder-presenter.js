@@ -17,6 +17,11 @@ export default class PlaceholderPresenter extends Presenter {
 
     this.updateView();
 
+    this.model.addEventListener(
+      ['view', 'create', 'edit'],
+      this.onModelCreate.bind(this)
+    );
+
     this.model.points.addEventListener(
       ['add', 'remove', 'filter'],
       this.onModelPointsChange.bind(this)
@@ -29,6 +34,21 @@ export default class PlaceholderPresenter extends Presenter {
 
     this.view.textContent = length ? '' : Placeholder[key];
     this.view.hidden = Boolean(length);
+  }
+
+  /**
+   * @param {CustomEvent} event
+   */
+  onModelCreate(event) {
+    const isPointsExist = this.model.points.list().length;
+
+    if (event.type === 'create' && !isPointsExist) {
+      this.view.hidden = true;
+    }
+
+    if (event.type !== 'create' && !isPointsExist) {
+      this.view.hidden = false;
+    }
   }
 
   onModelPointsChange() {
