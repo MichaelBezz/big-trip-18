@@ -1,0 +1,11 @@
+.event__input--price {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  appearance: textfield;
+}
+
+.event__input--price::-webkit-outer-spin-button,
+.event__input--price::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
