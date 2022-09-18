@@ -72,8 +72,8 @@ export default class PointCreatorPresenter extends Presenter {
       .setOptions(optionStates);
   }
 
-  /** TypeSelect -> setValue */
-  updateTypeSelectView() {
+  /** PointTypeSelect -> setValue */
+  updatePointTypeSelectView() {
     this.view.pointTypeSelectView.setValue(this.model.activePoint.type);
   }
 
@@ -129,7 +129,7 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   updateView() {
-    this.updateTypeSelectView();
+    this.updatePointTypeSelectView();
     this.updateDestinationSelectView();
     this.updateDatePickerView();
     this.updatePriceInputView();
