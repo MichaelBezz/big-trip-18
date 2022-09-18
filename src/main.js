@@ -83,13 +83,12 @@ applicationModel.ready().then(() => {
 
 
 // TODO debug
-const {group, groupEnd, trace} = console;
+const {trace} = console;
 
 applicationModel.addEventListener(['view', 'create', 'edit'], (event) => {
-  groupEnd(); // уберет вложенность
-  group(event.type); // группировка
+  trace(`%c${event.type}`, 'font-size: large');
 });
 
 applicationModel.points.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
-  trace(event.type);
+  trace(`%c${event.type}`, 'font-weight: bold');
 });
