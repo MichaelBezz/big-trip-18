@@ -4,6 +4,14 @@ import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
 import PointLabel from '../enum/point-label.js';
 import UnitFormat from '../enum/unit-format.js';
+import DatePickerView from '../view/date-picker-view.js';
+
+DatePickerView.setDefaults({
+  'dateFormat': UnitFormat.DATE_WITH_TIME,
+  'enableTime': true,
+  'time_24hr': true,
+  'locale': {firstDayOfWeek: 1}
+});
 
 /**
  * Презентор формы создания
@@ -51,12 +59,13 @@ export default class PointCreatorPresenter extends Presenter {
 
   /** DatePicker -> configure */
   buildDatePickerView() {
-    const calendarOptions = {
-      dateFormat: UnitFormat.DATE_WITH_TIME,
-      locale: {firstDayOfWeek: 1}
-    };
+    this.view.datePickerView.configure({
+      onChange: [(dates) => {
+        const [minDate] = dates;
 
-    this.view.datePickerView.configure(calendarOptions);
+        this.view.datePickerView.configure({}, {minDate});
+      }]
+    }, {});
   }
 
   /** OfferSelect -> set(hidden) -> setOptions */

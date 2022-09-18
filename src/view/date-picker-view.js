@@ -14,26 +14,8 @@ export default class DatePickerView extends View {
   constructor() {
     super();
 
-    /** @type {HTMLInputElement} */
-    this.startTimeView = this.querySelector('[name="event-start-time"]');
-
-    /** @type {HTMLInputElement} */
-    this.endTimeView = this.querySelector('[name="event-end-time"]');
-
-    const calendarOptions = {
-      'enableTime': true,
-      'time_24hr': true
-    };
-
-    const onStartDateChange = ( /** @type {CalendarDate[]} */ dates) =>
-      this.#endDateCalendar.set('minDate', dates[0]);
-
-    this.#startDateCalendar = initCalendar(this.startTimeView, {
-      ...calendarOptions,
-      onChange: [onStartDateChange]
-    });
-
-    this.#endDateCalendar = initCalendar(this.endTimeView, calendarOptions);
+    this.#startDateCalendar = initCalendar(this.querySelector('[name="event-start-time"]'));
+    this.#endDateCalendar = initCalendar(this.querySelector('[name="event-end-time"]'));
 
     this.classList.add('event__field-group', 'event__field-group--time');
   }
@@ -76,6 +58,13 @@ export default class DatePickerView extends View {
       this.#startDateCalendar.selectedDates[0]?.toJSON(),
       this.#endDateCalendar.selectedDates[0]?.toJSON()
     ];
+  }
+
+  /**
+   * @param {CalendarOptions} options
+   */
+  static setDefaults(options) {
+    initCalendar.setDefaults(options);
   }
 }
 
