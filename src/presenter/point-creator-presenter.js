@@ -1,16 +1,14 @@
 import Presenter from './presenter.js';
+import DatePickerView from '../view/date-picker-view.js';
 
 import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
 import PointLabel from '../enum/point-label.js';
-import UnitFormat from '../enum/unit-format.js';
-import DatePickerView from '../view/date-picker-view.js';
 
 DatePickerView.setDefaults({
-  'dateFormat': UnitFormat.DATE_WITH_TIME,
-  'enableTime': true,
-  'time_24hr': true,
-  'locale': {firstDayOfWeek: 1}
+  dateFormat: 'd/m/y H:i',
+  enableTime: true,
+  locale: {firstDayOfWeek: 1, 'time_24hr': true}
 });
 
 /**
