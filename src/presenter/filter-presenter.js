@@ -1,5 +1,6 @@
 import Presenter from './presenter.js';
 
+import Mode from '../enum/mode.js';
 import FilterType from '../enum/filter-type.js';
 import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
@@ -19,16 +20,8 @@ export default class FilterPresenter extends Presenter {
 
     this.buildFilterSelect();
 
-    this.model.addEventListener(
-      ['view', 'create', 'edit'],
-      this.onModelChange.bind(this)
-    );
-
-    this.model.points.addEventListener(
-      ['add', 'update', 'remove'],
-      this.onModelPointsChange.bind(this)
-    );
-
+    this.model.addEventListener('mode', this.onModelChange.bind(this));
+    this.model.points.addEventListener(['add', 'update', 'remove'], this.onModelPointsChange.bind(this));
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
@@ -48,32 +41,26 @@ export default class FilterPresenter extends Presenter {
       .setValue(FilterType.EVERYTHING);
   }
 
-  /**
-   * Блокирует фильтры, если mode !== view
-   * @param {CustomEvent} event
-   */
-  onModelChange(event) {
+  onModelChange() {
     const flags = this.getOptionsDisabled();
     const isPointsExist = this.model.points.list().length;
 
-    if (event.type === 'create' && isPointsExist) {
+    if (this.model.getMode() === Mode.CREATE && isPointsExist) {
       this.view.setValue(FilterType.EVERYTHING);
       this.model.points.setFilter(FilterPredicate.EVERYTHING);
     }
 
-    if (event.type !== 'view') {
+    if (this.model.getMode() !== Mode.VIEW) {
       flags.fill(true);
     }
 
     this.view.setOptionsDisabled(flags);
   }
 
-  /** Блокирует фильтры, если в списке нет точек */
   onModelPointsChange() {
     this.view.setOptionsDisabled(this.getOptionsDisabled());
   }
 
-  /** Фильтрует список с точками */
   onViewChange() {
     const checkedFilter = FilterType.findKey(this.view.getValue());
     const filterPredicate = FilterPredicate[checkedFilter];

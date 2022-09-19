@@ -1,5 +1,6 @@
 import Presenter from './presenter.js';
 
+import Mode from '../enum/mode.js';
 import SortType from '../enum/sort-type.js';
 import SortLabel from '../enum/sort-label.js';
 import SortDisabled from '../enum/sort-disabled.js';
@@ -20,16 +21,8 @@ export default class SortPresenter extends Presenter {
 
     this.buildSortSelect();
 
-    this.model.addEventListener(
-      ['view', 'create', 'edit'],
-      this.onModelChange.bind(this)
-    );
-
-    this.model.points.addEventListener(
-      ['add', 'update', 'remove'],
-      this.onModelPointsChange.bind(this)
-    );
-
+    this.model.addEventListener('mode', this.onModelChange.bind(this));
+    this.model.points.addEventListener(['add', 'update', 'remove'], this.onModelPointsChange.bind(this));
     this.model.points.addEventListener('filter', this.onModelPointsFilter.bind(this));
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
@@ -58,12 +51,11 @@ export default class SortPresenter extends Presenter {
   /**
    * Блокирует сортировку, если mode !== view
    * NOTE при create не нужно сбрасывать сортировку
-   * @param {CustomEvent} event
    */
-  onModelChange(event) {
+  onModelChange() {
     const flags = this.getOptionsDisabled();
 
-    if (event.type !== 'view') {
+    if (this.model.getMode() !== Mode.VIEW) {
       flags.fill(true);
     }
 

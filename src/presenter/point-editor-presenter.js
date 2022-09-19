@@ -1,6 +1,8 @@
 import PointCreatorPresenter from './point-creator-presenter.js';
 import PointView from '../view/point-view.js';
 
+import Mode from '../enum/mode.js';
+
 /**
  * Презентор формы редактирования
  * @template {ApplicationModel} Model
@@ -23,28 +25,27 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   }
 
   /**
+   * @override
    * Обработает событие CREATE
    * Закроет editor-view, если модель в режиме create
-   * @override
-   */
-  onModelCreate() {
-    this.view.close(true);
-  }
-
-  /**
    * Обработает событие EDIT
-   * @override
    */
-  onModelEdit() {
-    const pointView = PointView.findById(this.model.activePoint.id);
+  onModelChange() {
+    if (this.model.getMode() === Mode.CREATE) {
+      this.view.close(true);
+    }
 
-    this.view.close(true);
+    if (this.model.getMode() === Mode.EDIT) {
+      const pointView = PointView.findById(this.model.activePoint.id);
 
-    this.updateView();
+      this.view.close(true);
 
-    this.view
-      .target(pointView)
-      .open();
+      this.updateView();
+
+      this.view
+        .target(pointView)
+        .open();
+    }
   }
 
   /**

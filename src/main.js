@@ -22,6 +22,7 @@ import PointListPresenter from './presenter/point-list-presenter.js';
 import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
+import Mode from './enum/mode.js';
 import SortCompare from './enum/sort-compare.js';
 import FilterPredicate from './enum/filter-predicate.js';
 
@@ -85,10 +86,10 @@ applicationModel.ready().then(() => {
 // TODO debug
 const {trace} = console;
 
-applicationModel.addEventListener(['view', 'create', 'edit'], (event) => {
-  trace(`%c${event.type}`, 'font-size: large');
+applicationModel.addEventListener('mode', () => {
+  trace(`%cMode.${Mode.findKey(applicationModel.getMode())}`, 'font-size: large');
 });
 
-applicationModel.points.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
+points.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
   trace(`%c${event.type}`, 'font-weight: bold');
 });

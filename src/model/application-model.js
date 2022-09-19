@@ -68,8 +68,7 @@ export default class ApplicationModel extends Model {
         throw new Error('Invalid mode');
     }
 
-    const eventType = Mode.findKey(mode).toLowerCase();
-    this.dispatchEvent(new CustomEvent(eventType));
+    this.dispatchEvent(new CustomEvent('mode'));
   }
 
   /** Получит режим модели */
