@@ -79,14 +79,18 @@ export default class PointCreatorView extends PointItemView {
     return this;
   }
 
-  /** Метод подключения view */
-  connect() {
-    this.targetView?.prepend(this);
-  }
+  /**
+   * @override
+   * @param {boolean} flag
+   */
+  display(flag) {
+    if (flag) {
+      this.targetView?.prepend(this);
+    } else {
+      this.remove();
+    }
 
-  /** Метод отключения view */
-  disconnect() {
-    this.remove();
+    return this;
   }
 
   /**
@@ -94,7 +98,7 @@ export default class PointCreatorView extends PointItemView {
    * Обработает события по Esc
    */
   open() {
-    this.connect();
+    this.display(true);
 
     document.addEventListener('keydown', this);
 
@@ -108,7 +112,7 @@ export default class PointCreatorView extends PointItemView {
    * @param {boolean} dispatch
    */
   close(dispatch = false) {
-    this.disconnect();
+    this.display(false);
 
     document.removeEventListener('keydown', this);
 

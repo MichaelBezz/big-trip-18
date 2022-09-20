@@ -26,14 +26,14 @@ export default class PointEditorView extends PointCreatorView {
     `;
   }
 
-  /** @override */
-  connect() {
-    this.targetView?.replaceWith(this);
-  }
+  /**
+   * @override
+   * @param {boolean} flag
+   */
+  display(flag) {
+    (flag ? this.targetView : this).replaceWith(flag ? this : this.targetView);
 
-  /** @override */
-  disconnect() {
-    this.replaceWith(this.targetView);
+    return this;
   }
 
   /**

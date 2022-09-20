@@ -49,12 +49,11 @@ export default class View extends HTMLElement {
   }
 
   /**
-   * Установит свойства
-   * @param {string} key
-   * @param {*} value
+   * Переключит свойство hidden
+   * @param {boolean} flag
    */
-  set(key, value) {
-    this[key] = value;
+  display(flag) {
+    this.hidden = !flag;
 
     return this;
   }

@@ -28,8 +28,9 @@ export default class SortPresenter extends Presenter {
   }
 
   setViewHidden() {
-    const flag = Boolean(!this.model.pointsModel.list().length);
-    this.view.set('hidden', flag);
+    const {length} = this.model.pointsModel.list();
+
+    this.view.display(Boolean(length));
   }
 
   getOptionsDisabled() {

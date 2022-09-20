@@ -74,7 +74,7 @@ export default class PointCreatorPresenter extends Presenter {
     const optionStates = availableOffers.map((offer) => [offer.id, offer.title, offer.price]);
 
     this.view.offerSelectView
-      .set('hidden', !availableOffers.length)
+      .display(Boolean(availableOffers.length))
       .setOptions(optionStates);
   }
 
@@ -129,7 +129,7 @@ export default class PointCreatorPresenter extends Presenter {
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
 
     this.view.destinationView
-      .set('hidden', !destination)
+      .display(Boolean(destination))
       .setDescription(destination.description)
       .setPictures(pictureStates);
   }
