@@ -18,53 +18,55 @@ export default class FilterPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
-    this.buildFilterSelect();
+    this.buildView();
 
     this.model.addEventListener('mode', this.onModelChange.bind(this));
     this.model.pointsModel.addEventListener(['add', 'update', 'remove'], this.onPointsModelChange.bind(this));
+
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
-  getOptionsDisabled() {
-    return Object.values(FilterPredicate).map((predicate) =>
-      !this.model.pointsModel.list(predicate).length
-    );
-  }
-
-  buildFilterSelect() {
+  buildView() {
     /** @type {FilterOptionState[]} */
     const optionStates = Object.keys(FilterType).map((key) => [FilterLabel[key], FilterType[key]]);
 
-    this.view
-      .setOptions(optionStates)
-      .setOptionsDisabled(this.getOptionsDisabled())
-      .setValue(FilterType.EVERYTHING);
+    this.view.setOptions(optionStates);
+
+    this.updateViewValue();
+    this.updateViewOptionsDisabled();
+  }
+
+  updateViewValue() {
+    const predicate = this.model.pointsModel.getFilter();
+    const type = FilterType[FilterPredicate.findKey(predicate)];
+
+    this.view.setValue(type);
+  }
+
+  updateViewOptionsDisabled() {
+    const predicates = Object.values(FilterPredicate);
+    const states = predicates.map((predicate) => !this.model.pointsModel.list(predicate).length);
+
+    this.view.setOptionsDisabled(states);
   }
 
   onModelChange() {
-    const flags = this.getOptionsDisabled();
-    const isPointsExist = this.model.pointsModel.list().length;
-
-    if (this.model.getMode() === Mode.CREATE && isPointsExist) {
-      this.view.setValue(FilterType.EVERYTHING);
+    if (this.model.getMode() === Mode.CREATE) {
       this.model.pointsModel.setFilter(FilterPredicate.EVERYTHING);
-    }
 
-    if (this.model.getMode() !== Mode.VIEW) {
-      flags.fill(true);
+      this.updateViewValue();
     }
-
-    this.view.setOptionsDisabled(flags);
   }
 
   onPointsModelChange() {
-    this.view.setOptionsDisabled(this.getOptionsDisabled());
+    this.updateViewOptionsDisabled();
   }
 
   onViewChange() {
-    const checkedFilter = FilterType.findKey(this.view.getValue());
-    const filterPredicate = FilterPredicate[checkedFilter];
+    const value = this.view.getValue();
+    const predicate = FilterPredicate[FilterType.findKey(value)];
 
-    this.model.pointsModel.setFilter(filterPredicate);
+    this.model.setMode(Mode.VIEW);
+    this.model.pointsModel.setFilter(predicate);
   }
 }
