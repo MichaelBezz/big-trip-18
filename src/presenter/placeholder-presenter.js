@@ -24,22 +24,16 @@ export default class PlaceholderPresenter extends Presenter {
 
   updateView() {
     const {length} = this.model.pointsModel.list();
+    const isHidden = this.model.getMode() === Mode.CREATE || Boolean(length);
+
     const key = FilterPredicate.findKey(this.model.pointsModel.getFilter());
 
-    this.view.textContent = length ? '' : Placeholder[key];
-    this.view.hidden = Boolean(length);
+    this.view.textContent = isHidden ? '' : Placeholder[key];
+    this.view.hidden = isHidden;
   }
 
   onModelChange() {
-    const isPointsExist = this.model.pointsModel.list().length;
-
-    if (this.model.getMode() === Mode.CREATE && !isPointsExist) {
-      this.view.hidden = true;
-    }
-
-    if (this.model.getMode() !== Mode.CREATE && !isPointsExist) {
-      this.view.hidden = false;
-    }
+    this.updateView();
   }
 
   onPointsModelChange() {
