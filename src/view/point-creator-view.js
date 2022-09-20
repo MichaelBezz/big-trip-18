@@ -113,14 +113,14 @@ export default class PointCreatorView extends PointItemView {
    * Отключит view
    * Удалит события по Esc
    * При необходимости создаст событие close
-   * @param {boolean} dispatch
+   * @param {boolean} notify
    */
-  close(dispatch = false) {
+  close(notify = false) {
     this.display(false);
 
     document.removeEventListener('keydown', this);
 
-    if (!dispatch) {
+    if (!notify) {
       this.dispatchEvent(new CustomEvent('close'));
     }
 
