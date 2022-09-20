@@ -20,7 +20,7 @@ export default class PointListPresenter extends Presenter {
 
     this.model.pointsModel.addEventListener(
       ['add', 'update', 'remove', 'filter', 'sort'],
-      this.onModelPointsChange.bind(this)
+      this.onPointsModelChange.bind(this)
     );
 
     this.view.addEventListener('point-edit', this.onViewPointEdit.bind(this));
@@ -72,7 +72,7 @@ export default class PointListPresenter extends Presenter {
     }
   */
 
-  onModelPointsChange() {
+  onPointsModelChange() {
     this.updateView();
   }
 

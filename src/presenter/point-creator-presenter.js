@@ -34,8 +34,8 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.addEventListener('reset', this.onViewReset.bind(this));
     this.view.addEventListener('close', this.onViewClose.bind(this));
 
-    this.view.pointTypeSelectView.addEventListener('change', this.onViewPointTypeSelectChange.bind(this));
-    this.view.destinationSelectView.addEventListener('change', this.onViewDestinationSelectChange.bind(this));
+    this.view.pointTypeSelectView.addEventListener('change', this.onPointTypeSelectViewChange.bind(this));
+    this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectViewChange.bind(this));
   }
 
   /** TypeSelect -> setOptions */
@@ -223,7 +223,7 @@ export default class PointCreatorPresenter extends Presenter {
    * Обновит название типа точки (перед пунктом назначения)
    * Перерисует доступные опции
    */
-  onViewPointTypeSelectChange() {
+  onPointTypeSelectViewChange() {
     const selectedPointType = this.view.pointTypeSelectView.getValue();
     const key = PointType.findKey(selectedPointType);
 
@@ -235,7 +235,7 @@ export default class PointCreatorPresenter extends Presenter {
    * Обработает событие CHANGE на DestinationSelect
    * Перерисует блок с описанием и картинками пункта назначения
    */
-  onViewDestinationSelectChange() {
+  onDestinationSelectViewChange() {
     this.updateDestinationView();
   }
 }
