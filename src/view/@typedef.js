@@ -28,5 +28,5 @@
 /** @typedef {[title: string, price: number]} PointOfferState */
 /** @typedef {[label: string, value: string]} PointTypeOptionState */
 /** @typedef {[text: string, value: string]} DestinationOptionState */
-/** @typedef {[id: number, title: string, price: number]} OfferOptionState */
+/** @typedef {[id: number, title: string, price: number, isChecked: boolean]} OfferOptionState */
 /** @typedef {[src: string, alt: string]} DestinationPictureState */

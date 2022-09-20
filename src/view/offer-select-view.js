@@ -23,7 +23,7 @@ export default class OfferSelectView extends View {
    * @param  {OfferOptionState} state
    */
   createOptionHtml(...state) {
-    const [id, title, price] = state;
+    const [id, title, price, isChecked] = state;
 
     return html`
       <div class="event__offer-selector">
@@ -33,6 +33,7 @@ export default class OfferSelectView extends View {
           type="checkbox"
           name="event-offer"
           value="${id}"
+          ${isChecked ? 'checked' : ''}
         >
         <label class="event__offer-label" for="event-offer-${id}">
           <span class="event__offer-title">${title}</span>
@@ -51,19 +52,6 @@ export default class OfferSelectView extends View {
     this.querySelector('.event__available-offers').innerHTML = html`${
       states.map((state) => this.createOptionHtml(...state))
     }`;
-
-    return this;
-  }
-
-  /**
-   * @param {boolean[]} flags
-   */
-  setCheckedOptions(flags) {
-    const inputViews = this.querySelectorAll('input');
-
-    flags.forEach((flag, index) => {
-      inputViews[index].checked = flag;
-    });
 
     return this;
   }
