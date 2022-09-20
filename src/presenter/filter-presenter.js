@@ -21,13 +21,13 @@ export default class FilterPresenter extends Presenter {
     this.buildFilterSelect();
 
     this.model.addEventListener('mode', this.onModelChange.bind(this));
-    this.model.points.addEventListener(['add', 'update', 'remove'], this.onModelPointsChange.bind(this));
+    this.model.pointsModel.addEventListener(['add', 'update', 'remove'], this.onModelPointsChange.bind(this));
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
   getOptionsDisabled() {
     return Object.values(FilterPredicate).map((predicate) =>
-      !this.model.points.list(predicate).length
+      !this.model.pointsModel.list(predicate).length
     );
   }
 
@@ -43,11 +43,11 @@ export default class FilterPresenter extends Presenter {
 
   onModelChange() {
     const flags = this.getOptionsDisabled();
-    const isPointsExist = this.model.points.list().length;
+    const isPointsExist = this.model.pointsModel.list().length;
 
     if (this.model.getMode() === Mode.CREATE && isPointsExist) {
       this.view.setValue(FilterType.EVERYTHING);
-      this.model.points.setFilter(FilterPredicate.EVERYTHING);
+      this.model.pointsModel.setFilter(FilterPredicate.EVERYTHING);
     }
 
     if (this.model.getMode() !== Mode.VIEW) {
@@ -65,6 +65,6 @@ export default class FilterPresenter extends Presenter {
     const checkedFilter = FilterType.findKey(this.view.getValue());
     const filterPredicate = FilterPredicate[checkedFilter];
 
-    this.model.points.setFilter(filterPredicate);
+    this.model.pointsModel.setFilter(filterPredicate);
   }
 }

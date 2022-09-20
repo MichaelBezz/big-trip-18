@@ -18,7 +18,7 @@ export default class PointListPresenter extends Presenter {
 
     this.updateView();
 
-    this.model.points.addEventListener(
+    this.model.pointsModel.addEventListener(
       ['add', 'update', 'remove', 'filter', 'sort'],
       this.onModelPointsChange.bind(this)
     );
@@ -27,14 +27,14 @@ export default class PointListPresenter extends Presenter {
   }
 
   updateView() {
-    const points = this.model.points.list();
+    const points = this.model.pointsModel.list();
 
     /** @type {PointState[]} */
     const states = points.map((point) => {
       const {id, type, destinationId, startDate, endDate, basePrice, offerIds} = point;
 
-      const destination = this.model.destinations.findById(destinationId);
-      const offerGroup = this.model.offerGroups.findById(type);
+      const destination = this.model.destinationsModel.findById(destinationId);
+      const offerGroup = this.model.offerGroupsModel.findById(type);
 
       const compositeTitle = `${type} ${destination.name}`;
 

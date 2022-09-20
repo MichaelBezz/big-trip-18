@@ -19,19 +19,19 @@ export default class PlaceholderPresenter extends Presenter {
     this.updateView();
 
     this.model.addEventListener('mode', this.onModelChange.bind(this));
-    this.model.points.addEventListener(['add', 'remove', 'filter'], this.onModelPointsChange.bind(this));
+    this.model.pointsModel.addEventListener(['add', 'remove', 'filter'], this.onModelPointsChange.bind(this));
   }
 
   updateView() {
-    const {length} = this.model.points.list();
-    const key = FilterPredicate.findKey(this.model.points.getFilter());
+    const {length} = this.model.pointsModel.list();
+    const key = FilterPredicate.findKey(this.model.pointsModel.getFilter());
 
     this.view.textContent = length ? '' : Placeholder[key];
     this.view.hidden = Boolean(length);
   }
 
   onModelChange() {
-    const isPointsExist = this.model.points.list().length;
+    const isPointsExist = this.model.pointsModel.list().length;
 
     if (this.model.getMode() === Mode.CREATE && !isPointsExist) {
       this.view.hidden = true;

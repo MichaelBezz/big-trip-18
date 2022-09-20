@@ -16,12 +16,12 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
    * Обновит activePoint в модели
    */
   saveActivePoint() {
-    return this.model.points.update(this.model.activePoint.id, this.activePoint);
+    return this.model.pointsModel.update(this.model.activePoint.id, this.activePoint);
   }
 
   /** Удалит activePoint из модели */
   deleteActivePoint() {
-    return this.model.points.remove(this.model.activePoint.id);
+    return this.model.pointsModel.remove(this.model.activePoint.id);
   }
 
   /**

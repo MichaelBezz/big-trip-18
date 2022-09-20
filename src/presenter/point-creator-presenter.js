@@ -49,7 +49,7 @@ export default class PointCreatorPresenter extends Presenter {
   /** DestinationSelect -> setOptions */
   buildDestinationSelectView() {
     /** @type {DestinationOptionState[]} */
-    const optionStates = this.model.destinations.listAll().map((destination) => ['', destination.name]);
+    const optionStates = this.model.destinationsModel.listAll().map((destination) => ['', destination.name]);
 
     this.view.destinationSelectView.setOptions(optionStates);
   }
@@ -68,7 +68,7 @@ export default class PointCreatorPresenter extends Presenter {
   /** OfferSelect -> set(hidden) -> setOptions */
   buildOfferSelectView() {
     const selectedPointType = this.view.pointTypeSelectView.getValue();
-    const availableOffers = this.model.offerGroups.findById(selectedPointType).items;
+    const availableOffers = this.model.offerGroupsModel.findById(selectedPointType).items;
 
     /** @type {OfferOptionState[]} */
     const optionStates = availableOffers.map((offer) => [offer.id, offer.title, offer.price]);
@@ -87,7 +87,7 @@ export default class PointCreatorPresenter extends Presenter {
   updateDestinationSelectView() {
     const {type, destinationId} = this.model.activePoint;
 
-    const destination = this.model.destinations.findById(destinationId);
+    const destination = this.model.destinationsModel.findById(destinationId);
 
     this.view.destinationSelectView
       .setLabel(PointLabel[PointType.findKey(type)])
@@ -111,7 +111,7 @@ export default class PointCreatorPresenter extends Presenter {
   /** OfferSelect -> setCheckedOptions */
   updateOfferSelectView() {
     const selectedPointType = this.view.pointTypeSelectView.getValue();
-    const availableOffers = this.model.offerGroups.findById(selectedPointType).items;
+    const availableOffers = this.model.offerGroupsModel.findById(selectedPointType).items;
 
     const checkedOptions = availableOffers.map((offer) =>
       this.model.activePoint.offerIds.includes(offer.id)
@@ -123,7 +123,7 @@ export default class PointCreatorPresenter extends Presenter {
   /** Destination -> set(hidden) -> setDescription -> setPictures */
   updateDestinationView() {
     const selectedDestination = this.view.destinationSelectView.getDestination();
-    const destination = this.model.destinations.findBy('name', selectedDestination);
+    const destination = this.model.destinationsModel.findBy('name', selectedDestination);
 
     /** @type {DestinationPictureState[]} */
     const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
@@ -152,7 +152,7 @@ export default class PointCreatorPresenter extends Presenter {
     const [startDate, endDate] = this.view.datePickerView.getDates();
 
     point.type = this.view.pointTypeSelectView.getValue();
-    point.destinationId = this.model.destinations.findBy('name', destinationName)?.id;
+    point.destinationId = this.model.destinationsModel.findBy('name', destinationName)?.id;
     point.startDate = startDate;
     point.endDate = endDate;
     point.basePrice = Number(this.view.priceInputView.getPrice());
@@ -164,7 +164,7 @@ export default class PointCreatorPresenter extends Presenter {
 
   /** Добавит activePoint в модель */
   saveActivePoint() {
-    return this.model.points.add(this.activePoint);
+    return this.model.pointsModel.add(this.activePoint);
   }
 
   /**

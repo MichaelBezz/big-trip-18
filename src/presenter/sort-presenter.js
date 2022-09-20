@@ -22,13 +22,13 @@ export default class SortPresenter extends Presenter {
     this.buildSortSelect();
 
     this.model.addEventListener('mode', this.onModelChange.bind(this));
-    this.model.points.addEventListener(['add', 'update', 'remove'], this.onModelPointsChange.bind(this));
-    this.model.points.addEventListener('filter', this.onModelPointsFilter.bind(this));
+    this.model.pointsModel.addEventListener(['add', 'update', 'remove'], this.onModelPointsChange.bind(this));
+    this.model.pointsModel.addEventListener('filter', this.onModelPointsFilter.bind(this));
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
   setViewHidden() {
-    const flag = Boolean(!this.model.points.list().length);
+    const flag = Boolean(!this.model.pointsModel.list().length);
     this.view.set('hidden', flag);
   }
 
@@ -70,7 +70,7 @@ export default class SortPresenter extends Presenter {
   /** Сбросит сортировку на тип DAY */
   onModelPointsFilter() {
     this.view.setValue(SortType.DAY);
-    this.model.points.setSort(SortCompare.DAY);
+    this.model.pointsModel.setSort(SortCompare.DAY);
   }
 
   /** Сортирует список с точками */
@@ -78,6 +78,6 @@ export default class SortPresenter extends Presenter {
     const checkedSort = SortType.findKey(this.view.getValue());
     const sortCompare = SortCompare[checkedSort];
 
-    this.model.points.setSort(sortCompare);
+    this.model.pointsModel.setSort(sortCompare);
   }
 }

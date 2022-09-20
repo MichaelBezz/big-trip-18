@@ -17,26 +17,26 @@ export default class ApplicationModel extends Model {
   constructor(points, destinations, offerGroups) {
     super();
 
-    this.points = points;
+    this.pointsModel = points;
     this.activePoint = null;
-    this.destinations = destinations;
-    this.offerGroups = offerGroups;
+    this.destinationsModel = destinations;
+    this.offerGroupsModel = offerGroups;
   }
 
   /** override */
   async ready() {
     await Promise.all([
-      this.points.ready(),
-      this.destinations.ready(),
-      this.offerGroups.ready()
+      this.pointsModel.ready(),
+      this.destinationsModel.ready(),
+      this.offerGroupsModel.ready()
     ]);
   }
 
   get defaultPoint() {
-    const point = this.points.blank;
+    const point = this.pointsModel.blank;
 
     point.type = PointType.TAXI;
-    point.destinationId = this.destinations.item(0).id;
+    point.destinationId = this.destinationsModel.item(0).id;
     point.startDate = new Date().toJSON();
     point.endDate = point.startDate;
     point.basePrice = 0;
@@ -62,7 +62,7 @@ export default class ApplicationModel extends Model {
         this.activePoint = this.defaultPoint;
         break;
       case Mode.EDIT:
-        this.activePoint = this.points.findById(activePointId);
+        this.activePoint = this.pointsModel.findById(activePointId);
         break;
       default:
         throw new Error('Invalid mode');
