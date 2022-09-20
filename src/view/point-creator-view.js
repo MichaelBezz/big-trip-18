@@ -40,6 +40,9 @@ export default class PointCreatorView extends PointItemView {
 
     /** @type {DestinationView} */
     this.destinationView = this.querySelector(String(DestinationView));
+
+    /** @type {HTMLFormElement} */
+    this.formView = this.querySelector('form');
   }
 
   /** @override */

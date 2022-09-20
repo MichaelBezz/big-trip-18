@@ -190,6 +190,13 @@ export default class PointCreatorPresenter extends Presenter {
 
     } catch (exception) {
       this.view.shake();
+
+      if (Array.isArray(exception.cause)) {
+        const [{fieldName}] = exception.cause;
+
+        /** @type {HTMLInputElement} */
+        (this.view.formView[fieldName])?.focus();
+      }
     }
 
     this.view.setSavingState(false);

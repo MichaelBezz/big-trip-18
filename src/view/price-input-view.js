@@ -26,7 +26,7 @@ export default class PriceInputView extends View {
         id="event-price-1"
         type="number"
         pattern="/^([1-9]\d*)$/"
-        name="event-price"
+        name="base_price"
         value=""
       >
     `;
