@@ -1,5 +1,6 @@
 import PointItemView, {html} from './point-item-view.js';
 
+import LoaderView from './loader-view.js';
 import PointTypeSelectView from './point-type-select-view.js';
 import DestinationSelectView from './destination-select-view.js';
 import DatePickerView from './date-picker-view.js';
@@ -18,6 +19,9 @@ export default class PointCreatorView extends PointItemView {
 
     /** @type {Element} */
     this.targetView = null;
+
+    /** @type {LoaderView} */
+    this.loaderView = new LoaderView();
 
     /** @type {PointTypeSelectView} */
     this.pointTypeSelectView = this.querySelector(String(PointTypeSelectView));
@@ -126,12 +130,14 @@ export default class PointCreatorView extends PointItemView {
   /**
    * @param {boolean} flag
    */
-  setSaveButtonPressed(flag) {
+  setSavingState(flag) {
     /** @type {HTMLButtonElement} */
     const submitButtonView = this.querySelector('.event__save-btn');
 
     submitButtonView.disabled = flag;
     submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
+
+    this.loaderView.display(flag);
   }
 
   /**

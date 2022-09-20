@@ -190,7 +190,7 @@ export default class PointCreatorPresenter extends Presenter {
   async onViewSubmit(event) {
     event.preventDefault();
 
-    this.view.setSaveButtonPressed(true);
+    this.view.setSavingState(true);
 
     try {
       await this.saveActivePoint();
@@ -200,7 +200,7 @@ export default class PointCreatorPresenter extends Presenter {
       this.view.shake();
     }
 
-    this.view.setSaveButtonPressed(false);
+    this.view.setSavingState(false);
   }
 
   /**
