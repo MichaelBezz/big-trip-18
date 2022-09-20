@@ -19,66 +19,56 @@ export default class SortPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
-    this.buildSortSelect();
+    this.buildView();
 
-    this.model.addEventListener('mode', this.onModelChange.bind(this));
-    this.model.pointsModel.addEventListener(['add', 'update', 'remove'], this.onPointsModelChange.bind(this));
-    this.model.pointsModel.addEventListener('filter', this.onPointsModelFilter.bind(this));
+    this.model.pointsModel.addEventListener(['add', 'remove', 'filter'], this.onPointsModelChange.bind(this));
+
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
-  setViewHidden() {
-    const {length} = this.model.pointsModel.list();
-
-    this.view.display(Boolean(length));
-  }
-
-  getOptionsDisabled() {
-    return Object.values(SortDisabled);
-  }
-
-  buildSortSelect() {
-    this.setViewHidden();
-
+  buildView() {
     /** @type {SortOptionState[]} */
     const optionStates = Object.keys(SortType).map((key) => [SortLabel[key], SortType[key]]);
 
     this.view
       .setOptions(optionStates)
-      .setOptionsDisabled(this.getOptionsDisabled())
-      .setValue(SortType.DAY);
+      .setOptionsDisabled(Object.values(SortDisabled));
+
+    this.updateViewValue();
+    this.updateViewDisplay();
+  }
+
+  updateViewValue() {
+    const compare = this.model.pointsModel.getSort();
+    const type = SortType[SortCompare.findKey(compare)];
+
+    this.view.setValue(type);
+  }
+
+  updateViewDisplay() {
+    const flag = Boolean(this.model.pointsModel.list().length);
+
+    this.view.display(flag);
   }
 
   /**
-   * Блокирует сортировку, если mode !== view
-   * NOTE при create не нужно сбрасывать сортировку
+   * @param {CustomEvent} event
    */
-  onModelChange() {
-    const flags = this.getOptionsDisabled();
+  onPointsModelChange(event) {
+    if (event.type === 'filter') {
+      this.model.pointsModel.setSort(SortCompare.DAY, false);
 
-    if (this.model.getMode() !== Mode.VIEW) {
-      flags.fill(true);
+      this.updateViewValue();
     }
 
-    this.view.setOptionsDisabled(flags);
+    this.updateViewDisplay();
   }
 
-  /** Скроет сортировку, если нет точек */
-  onPointsModelChange() {
-    this.setViewHidden();
-  }
-
-  /** Сбросит сортировку на тип DAY */
-  onPointsModelFilter() {
-    this.view.setValue(SortType.DAY);
-    this.model.pointsModel.setSort(SortCompare.DAY);
-  }
-
-  /** Сортирует список с точками */
   onViewChange() {
-    const checkedSort = SortType.findKey(this.view.getValue());
-    const sortCompare = SortCompare[checkedSort];
+    const value = this.view.getValue();
+    const compare = SortCompare[SortType.findKey(value)];
 
-    this.model.pointsModel.setSort(sortCompare);
+    this.model.setMode(Mode.VIEW);
+    this.model.pointsModel.setSort(compare);
   }
 }
