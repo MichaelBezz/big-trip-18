@@ -182,7 +182,7 @@ export default class PointCreatorPresenter extends Presenter {
   async onViewSubmit(event) {
     event.preventDefault();
 
-    this.view.setSavingState(true);
+    this.view.setSaving(true);
 
     try {
       await this.saveActivePoint();
@@ -199,7 +199,7 @@ export default class PointCreatorPresenter extends Presenter {
       }
     }
 
-    this.view.setSavingState(false);
+    this.view.setSaving(false);
   }
 
   /**

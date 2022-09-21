@@ -56,7 +56,7 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   async onViewReset(event) {
     event.preventDefault();
 
-    this.view.setDeletingState(true);
+    this.view.setDeleting(true);
 
     try {
       await this.deleteActivePoint();
@@ -66,6 +66,6 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
       this.view.shake();
     }
 
-    this.view.setDeletingState(false);
+    this.view.setDeleting(false);
   }
 }

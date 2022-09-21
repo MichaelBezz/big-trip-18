@@ -39,7 +39,7 @@ export default class PointEditorView extends PointCreatorView {
   /**
    * @param {boolean} flag
    */
-  setDeletingState(flag) {
+  setDeleting(flag) {
     /** @type {HTMLButtonElement} */
     const resetButtonView = this.querySelector('.event__reset-btn');
     resetButtonView.textContent = flag ? DeleteButtonLabel.PRESSED : DeleteButtonLabel.DEFAULT;

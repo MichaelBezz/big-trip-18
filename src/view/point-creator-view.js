@@ -144,7 +144,7 @@ export default class PointCreatorView extends PointItemView {
   /**
    * @param {boolean} flag
    */
-  setSavingState(flag) {
+  setSaving(flag) {
     /** @type {HTMLButtonElement} */
     const submitButtonView = this.querySelector('.event__save-btn');
     submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
