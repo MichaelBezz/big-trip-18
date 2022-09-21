@@ -44,8 +44,7 @@ export default class PointEditorView extends PointCreatorView {
     const resetButtonView = this.querySelector('.event__reset-btn');
     resetButtonView.textContent = flag ? DeleteButtonLabel.PRESSED : DeleteButtonLabel.DEFAULT;
 
-    this.setDisabled(flag);
-    this.loaderView.display(flag);
+    this.setLoading(flag);
   }
 
   /**

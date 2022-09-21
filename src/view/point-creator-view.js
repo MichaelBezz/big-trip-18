@@ -133,7 +133,9 @@ export default class PointCreatorView extends PointItemView {
   /**
    * @param {boolean} flag
    */
-  setDisabled(flag) {
+  setLoading(flag) {
+    this.loaderView.display(flag);
+
     [...this.formView].forEach((/** @type {HTMLFormElement} */view) => {
       view.disabled = flag;
     });
@@ -147,8 +149,7 @@ export default class PointCreatorView extends PointItemView {
     const submitButtonView = this.querySelector('.event__save-btn');
     submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
 
-    this.setDisabled(flag);
-    this.loaderView.display(flag);
+    this.setLoading(flag);
   }
 
   get closeKeys() {
