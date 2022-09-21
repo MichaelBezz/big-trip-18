@@ -16,11 +16,13 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     return this.model.pointsModel.update(this.model.activePoint.id, this.activePoint);
   }
 
+  deleteActivePoint() {
+    return this.model.pointsModel.remove(this.model.activePoint.id);
+  }
+
   /** @override */
   onModelChange() {
-    if (this.model.getMode() === Mode.CREATE) {
-      this.view.close(true);
-    }
+    this.view.close(true);
 
     if (this.model.getMode() === Mode.EDIT) {
       const pointView = PointView.findById(this.model.activePoint.id);
@@ -53,9 +55,5 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     }
 
     this.view.setDeleting(false);
-  }
-
-  deleteActivePoint() {
-    return this.model.pointsModel.remove(this.model.activePoint.id);
   }
 }

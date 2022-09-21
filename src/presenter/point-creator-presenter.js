@@ -164,13 +164,11 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   onModelChange() {
+    this.view.close(true);
+
     if (this.model.getMode() === Mode.CREATE) {
       this.updateView();
       this.view.open();
-    }
-
-    if (this.model.getMode() === Mode.EDIT) {
-      this.view.close(true);
     }
   }
 
