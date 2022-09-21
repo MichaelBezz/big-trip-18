@@ -1,8 +1,9 @@
 import Presenter from './presenter.js';
 
+import Mode from '../enum/mode.js';
 import SortType from '../enum/sort-type.js';
 import SortLabel from '../enum/sort-label.js';
-import SortDisabled from '../enum/sort-disabled.js';
+import SortDisabledOption from '../enum/sort-disabled-option.js';
 import SortCompare from '../enum/sort-compare.js';
 
 /**
@@ -18,60 +19,56 @@ export default class SortPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
-    this.buildSortSelect();
+    this.buildView();
 
-    this.model.addEventListener(
-      ['view', 'create', 'edit'],
-      this.onModelChange.bind(this)
-    );
-
-    this.model.points.addEventListener(
-      ['add', 'update', 'filter'],
-      this.onModelPointsChange.bind(this)
-    );
+    this.model.pointsModel.addEventListener(['add', 'remove', 'filter'], this.onPointsModelChange.bind(this));
 
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
-  getOptionsDisabled() {
-    return Object.values(SortDisabled);
-  }
-
-  buildSortSelect() {
+  buildView() {
     /** @type {SortOptionState[]} */
     const optionStates = Object.keys(SortType).map((key) => [SortLabel[key], SortType[key]]);
 
     this.view
       .setOptions(optionStates)
-      .setOptionsDisabled(this.getOptionsDisabled())
-      .setValue(SortType.DAY);
+      .setOptionsDisabled(Object.values(SortDisabledOption));
+
+    this.updateViewValue();
+    this.updateViewDisplay();
+  }
+
+  updateViewValue() {
+    const compare = this.model.pointsModel.getSort();
+    const type = SortType[SortCompare.findKey(compare)];
+
+    this.view.setValue(type);
+  }
+
+  updateViewDisplay() {
+    const flag = Boolean(this.model.pointsModel.list().length);
+
+    this.view.display(flag);
   }
 
   /**
-   * Блокирует сортировку, если mode !=== view
    * @param {CustomEvent} event
    */
-  onModelChange(event) {
-    const flags = this.getOptionsDisabled();
+  onPointsModelChange(event) {
+    if (event.type === 'filter') {
+      this.model.pointsModel.setSort(SortCompare.DAY, false);
 
-    if (event.type !== 'view') {
-      flags.fill(true);
+      this.updateViewValue();
     }
 
-    this.view.setOptionsDisabled(flags);
+    this.updateViewDisplay();
   }
 
-  /** Сбросит сортировку на тип DAY */
-  onModelPointsChange() {
-    this.view.setValue(SortType.DAY);
-    this.model.points.setSort(SortCompare[SortType.DAY]);
-  }
-
-  /** Сортирует список с точками */
   onViewChange() {
-    const checkedSort = SortType.findKey(this.view.getValue());
-    const sortCompare = SortCompare[checkedSort];
+    const value = this.view.getValue();
+    const compare = SortCompare[SortType.findKey(value)];
 
-    this.model.points.setSort(sortCompare);
+    this.model.setMode(Mode.VIEW);
+    this.model.pointsModel.setSort(compare);
   }
 }

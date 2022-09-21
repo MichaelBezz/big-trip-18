@@ -1,8 +1,7 @@
-import StoreError from './store-error.js';
+const BAD_REQUEST = 400;
 
 /**
- * Generic Store
- * Интерфейс для работы с сервером
+ * Generic Store - интерфейс для работы с сервером
  * @template Item
  */
 export default class Store {
@@ -19,37 +18,11 @@ export default class Store {
   }
 
   /**
-   * @param {string} path
-   * @param {RequestInit} options
-   */
-  #request(path, options = {}) {
-    const url = this.#baseUrl + path;
-
-    const headers = {
-      'authorization': this.#auth,
-      'content-type': 'application/json',
-      ...options.headers
-    };
-
-    return fetch(url, {...options, headers}).then((response) => {
-      if (!response.ok) {
-        throw new StoreError(response);
-      }
-
-      if (response.headers.get('content-type').startsWith('text/plain')) {
-        return response.text();
-      }
-
-      return response.json();
-    });
-  }
-
-  /**
    * Получит список Item
    * @return {Promise<Item[]>}
    */
   list() {
-    return this.#request('/', {
+    return this.request('/', {
       method: 'get'
     });
   }
@@ -60,7 +33,7 @@ export default class Store {
    * @return {Promise<Item>}
    */
   add(item) {
-    return this.#request('/', {
+    return this.request('/', {
       method: 'post',
       body: JSON.stringify(item)
     });
@@ -73,7 +46,7 @@ export default class Store {
    * @return {Promise<Item>}
    */
   update(id, item) {
-    return this.#request(`/${id}`, {
+    return this.request(`/${id}`, {
       method: 'put',
       body: JSON.stringify(item)
     });
@@ -85,8 +58,60 @@ export default class Store {
    * @return {Promise<Item>}
    */
   remove(id) {
-    return this.#request(`/${id}`, {
+    return this.request(`/${id}`, {
       method: 'delete'
     });
+  }
+
+  /**
+   * @param {string} path
+   * @param {RequestInit} options
+   */
+  async request(path, options = {}) {
+    const url = this.#baseUrl + path;
+
+    const headers = {
+      'authorization': this.#auth,
+      'content-type': 'application/json',
+      ...options.headers
+    };
+
+    const response = await fetch(url, {...options, headers});
+
+    const {assert, parse} = /** @type {typeof Store} */(this.constructor);
+
+    await assert(response);
+
+    return parse(response);
+  }
+
+  /**
+   * @param {Response} response
+   */
+  static async assert(response) {
+    if (response.status === BAD_REQUEST) {
+
+      /** @type {BadRequestErrorCause} */
+      const data = await response.json();
+
+      throw new Error(data.message, {
+        cause: data.error ?? data.errors
+      });
+    }
+
+    if (!response.ok) {
+      throw new Error(`${response.status}: ${response.statusText}`);
+    }
+  }
+
+  /**
+   * @param {Response} response
+   */
+  static parse(response) {
+    if (response.headers.get('content-type').startsWith('application/json')) {
+      return response.json();
+    }
+
+    return response.text();
   }
 }

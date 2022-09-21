@@ -1,7 +1,12 @@
+import he from 'he';
+
 import Presenter from './presenter.js';
 
+import {formatDate, formatNumber} from '../format.js';
 import Mode from '../enum/mode.js';
-import {formatDate, formatTime} from '../utils.js';
+
+const DATE_FORMAT = 'MMM D';
+const TIME_FORMAT = 'HH:mm';
 
 /**
  * Презентор списка точек
@@ -18,23 +23,23 @@ export default class PointListPresenter extends Presenter {
 
     this.updateView();
 
-    this.model.points.addEventListener(
+    this.model.pointsModel.addEventListener(
       ['add', 'update', 'remove', 'filter', 'sort'],
-      this.onModelPointsChange.bind(this)
+      this.onPointsModelChange.bind(this)
     );
 
     this.view.addEventListener('point-edit', this.onViewPointEdit.bind(this));
   }
 
   updateView() {
-    const points = this.model.points.list();
+    const points = this.model.pointsModel.list();
 
     /** @type {PointState[]} */
     const states = points.map((point) => {
       const {id, type, destinationId, startDate, endDate, basePrice, offerIds} = point;
 
-      const destination = this.model.destinations.findById(destinationId);
-      const offerGroup = this.model.offerGroups.findById(type);
+      const destination = this.model.destinationsModel.findById(destinationId);
+      const offerGroup = this.model.offerGroupsModel.findById(type);
 
       const compositeTitle = `${type} ${destination.name}`;
 
@@ -50,12 +55,12 @@ export default class PointListPresenter extends Presenter {
         id,
         startIsoDate: startDate,
         endIsoDate: endDate,
-        date: formatDate(startDate),
-        startTime: formatTime(startDate),
-        endTime: formatTime(endDate),
+        date: formatDate(startDate, DATE_FORMAT),
+        startTime: formatDate(startDate, TIME_FORMAT),
+        endTime: formatDate(endDate, TIME_FORMAT),
         icon: type,
         title: compositeTitle,
-        price: basePrice,
+        price: he.encode(formatNumber(basePrice)),
         offers: offerStates
       };
     });
@@ -63,16 +68,16 @@ export default class PointListPresenter extends Presenter {
     this.view.setPoints(states);
   }
 
-  /*
-  TODO Реализовать удаление point-view без полной перерисовки списка
-    @param {CollectionModelEvent<PointAdapter>} event
+  /**
+   * @param {CollectionModelEvent<PointAdapter>} event
+   */
+  onPointsModelChange(event) {
     if (event.type === 'remove') {
       this.view.findById(event.detail.id).remove();
+
       return;
     }
-  */
 
-  onModelPointsChange() {
     this.updateView();
   }
 

@@ -1,5 +1,6 @@
 import Presenter from './presenter.js';
 
+import Mode from '../enum/mode.js';
 import FilterType from '../enum/filter-type.js';
 import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
@@ -17,61 +18,55 @@ export default class FilterPresenter extends Presenter {
   constructor(...init) {
     super(...init);
 
-    this.buildFilterSelect();
+    this.buildView();
 
-    this.model.addEventListener(
-      ['view', 'create', 'edit'],
-      this.onModelChange.bind(this)
-    );
-
-    this.model.points.addEventListener(
-      ['add', 'update', 'remove', 'sort'],
-      this.onModelPointsChange.bind(this)
-    );
+    this.model.addEventListener('mode', this.onModelChange.bind(this));
+    this.model.pointsModel.addEventListener(['add', 'update', 'remove'], this.onPointsModelChange.bind(this));
 
     this.view.addEventListener('change', this.onViewChange.bind(this));
   }
 
-  getOptionsDisabled() {
-    return Object.values(FilterPredicate).map((predicate) =>
-      !this.model.points.list(predicate).length
-    );
-  }
-
-  buildFilterSelect() {
+  buildView() {
     /** @type {FilterOptionState[]} */
     const optionStates = Object.keys(FilterType).map((key) => [FilterLabel[key], FilterType[key]]);
 
-    this.view
-      .setOptions(optionStates)
-      .setOptionsDisabled(this.getOptionsDisabled())
-      .setValue(FilterType.EVERYTHING);
+    this.view.setOptions(optionStates);
+
+    this.updateViewValue();
+    this.updateViewOptionsDisabled();
   }
 
-  /**
-   * Блокирует фильтры, если mode !=== view
-   * @param {CustomEvent} event
-   */
-  onModelChange(event) {
-    const flags = this.getOptionsDisabled();
+  updateViewValue() {
+    const predicate = this.model.pointsModel.getFilter();
+    const type = FilterType[FilterPredicate.findKey(predicate)];
 
-    if (event.type !== 'view') {
-      flags.fill(true);
+    this.view.setValue(type);
+  }
+
+  updateViewOptionsDisabled() {
+    const predicates = Object.values(FilterPredicate);
+    const states = predicates.map((predicate) => !this.model.pointsModel.list(predicate).length);
+
+    this.view.setOptionsDisabled(states);
+  }
+
+  onModelChange() {
+    if (this.model.getMode() === Mode.CREATE) {
+      this.model.pointsModel.setFilter(FilterPredicate.EVERYTHING);
+
+      this.updateViewValue();
     }
-
-    this.view.setOptionsDisabled(flags);
   }
 
-  /** Блокирует фильтры, если в списке нет точек */
-  onModelPointsChange() {
-    this.view.setOptionsDisabled(this.getOptionsDisabled());
+  onPointsModelChange() {
+    this.updateViewOptionsDisabled();
   }
 
-  /** Фильтрует список с точками */
   onViewChange() {
-    const checkedFilter = FilterType.findKey(this.view.getValue());
-    const filterPredicate = FilterPredicate[checkedFilter];
+    const value = this.view.getValue();
+    const predicate = FilterPredicate[FilterType.findKey(value)];
 
-    this.model.points.setFilter(filterPredicate);
+    this.model.setMode(Mode.VIEW);
+    this.model.pointsModel.setFilter(predicate);
   }
 }

@@ -1,5 +1,6 @@
 import PointItemView, {html} from './point-item-view.js';
 
+import LoaderView from './loader-view.js';
 import PointTypeSelectView from './point-type-select-view.js';
 import DestinationSelectView from './destination-select-view.js';
 import DatePickerView from './date-picker-view.js';
@@ -19,6 +20,9 @@ export default class PointCreatorView extends PointItemView {
     /** @type {Element} */
     this.targetView = null;
 
+    /** @type {LoaderView} */
+    this.loaderView = new LoaderView();
+
     /** @type {PointTypeSelectView} */
     this.pointTypeSelectView = this.querySelector(String(PointTypeSelectView));
 
@@ -36,6 +40,27 @@ export default class PointCreatorView extends PointItemView {
 
     /** @type {DestinationView} */
     this.destinationView = this.querySelector(String(DestinationView));
+
+    /** @type {HTMLFormElement} */
+    this.formView = this.querySelector('form');
+  }
+
+  get closeKeys() {
+    return ['Escape', 'Esc'];
+  }
+
+  /**
+   * @override
+   * @param {boolean} flag
+   */
+  display(flag) {
+    if (flag) {
+      this.targetView?.prepend(this);
+    } else {
+      this.remove();
+    }
+
+    return this;
   }
 
   /** @override */
@@ -70,7 +95,6 @@ export default class PointCreatorView extends PointItemView {
   }
 
   /**
-   * Назначит целевой элемент
    * @param {Element} view
    */
   target(view) {
@@ -79,22 +103,8 @@ export default class PointCreatorView extends PointItemView {
     return this;
   }
 
-  /** Метод подключения view */
-  connect() {
-    this.targetView?.prepend(this);
-  }
-
-  /** Метод отключения view */
-  disconnect() {
-    this.remove();
-  }
-
-  /**
-   * Подключит view
-   * Обработает события по Esc
-   */
   open() {
-    this.connect();
+    this.display(true);
 
     document.addEventListener('keydown', this);
 
@@ -102,17 +112,14 @@ export default class PointCreatorView extends PointItemView {
   }
 
   /**
-   * Отключит view
-   * Удалит события по Esc
-   * При необходимости создаст событие close
-   * @param {boolean} dispatch
+   * @param {boolean} notify
    */
-  close(dispatch = false) {
-    this.disconnect();
+  close(notify = false) {
+    this.display(false);
 
     document.removeEventListener('keydown', this);
 
-    if (!dispatch) {
+    if (!notify) {
       this.dispatchEvent(new CustomEvent('close'));
     }
 
@@ -122,21 +129,30 @@ export default class PointCreatorView extends PointItemView {
   /**
    * @param {boolean} flag
    */
-  setSaveButtonPressed(flag) {
-    /** @type {HTMLButtonElement} */
-    const submitButtonView = this.querySelector('.event__save-btn');
+  setLoading(flag) {
+    this.loaderView.display(flag);
 
-    submitButtonView.disabled = flag;
-    submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
+    [...this.formView].forEach((/** @type {HTMLFormElement} */view) => {
+      view.disabled = flag;
+    });
   }
 
   /**
-   * NOTE Стандартный метод обработки события на объекте
-   * NOTE Событие без key при выборе опции в PointTypeSelectView
+   * @param {boolean} flag
+   */
+  setSaving(flag) {
+    /** @type {HTMLButtonElement} */
+    const submitButtonView = this.querySelector('.event__save-btn');
+    submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
+
+    this.setLoading(flag);
+  }
+
+  /**
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
-    if (!event.key?.startsWith('Esc')) {
+    if (!this.closeKeys.includes(event.key)) {
       return;
     }
 

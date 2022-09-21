@@ -1,6 +1,7 @@
 import PointCreatorPresenter from './point-creator-presenter.js';
-
 import PointView from '../view/point-view.js';
+
+import Mode from '../enum/mode.js';
 
 /**
  * Презентор формы редактирования
@@ -10,53 +11,38 @@ import PointView from '../view/point-view.js';
  */
 export default class PointEditorPresenter extends PointCreatorPresenter {
 
-  /**
-   * @override
-   * Обновит activePoint в модели
-   */
+  /** @override */
   saveActivePoint() {
-    return this.model.points.update(this.model.activePoint.id, this.activePoint);
+    return this.model.pointsModel.update(this.model.activePoint.id, this.activePoint);
   }
 
-  /** Удалит activePoint из модели */
-  deleteActivePoint() {
-    return this.model.points.remove(this.model.activePoint.id);
-  }
+  /** @override */
+  onModelChange() {
+    if (this.model.getMode() === Mode.CREATE) {
+      this.view.close(true);
+    }
 
-  /**
-   * Обработает событие CREATE
-   * Закроет editor-view, если модель в режиме create
-   * @override
-   */
-  onModelCreate() {
-    this.view.close(true);
-  }
+    if (this.model.getMode() === Mode.EDIT) {
+      const pointView = PointView.findById(this.model.activePoint.id);
 
-  /**
-   * Обработает событие EDIT
-   * @override
-   */
-  onModelEdit() {
-    const pointView = PointView.findById(this.model.activePoint.id);
+      this.view.close(true);
 
-    this.view.close(true);
+      this.updateView();
 
-    this.updateView();
-
-    this.view
-      .target(pointView)
-      .open();
+      this.view
+        .target(pointView)
+        .open();
+    }
   }
 
   /**
-   * Обработает событие RESET(button DELETE)
    * @override
    * @param {Event} event
    */
   async onViewReset(event) {
     event.preventDefault();
 
-    this.view.setDeleteButtonPressed(true);
+    this.view.setDeleting(true);
 
     try {
       await this.deleteActivePoint();
@@ -66,6 +52,10 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
       this.view.shake();
     }
 
-    this.view.setDeleteButtonPressed(false);
+    this.view.setDeleting(false);
+  }
+
+  deleteActivePoint() {
+    return this.model.pointsModel.remove(this.model.activePoint.id);
   }
 }

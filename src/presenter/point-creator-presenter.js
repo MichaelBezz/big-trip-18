@@ -1,10 +1,15 @@
 import Presenter from './presenter.js';
-import PointAdapter from '../adapter/point-adapter.js';
+import DatePickerView from '../view/date-picker-view.js';
 
 import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
 import PointLabel from '../enum/point-label.js';
-import UnitFormat from '../enum/unit-format.js';
+
+DatePickerView.setDefaults({
+  dateFormat: 'd/m/y H:i',
+  enableTime: true,
+  locale: {firstDayOfWeek: 1, 'time_24hr': true}
+});
 
 /**
  * Презентор формы создания
@@ -23,144 +28,24 @@ export default class PointCreatorPresenter extends Presenter {
     this.buildDestinationSelectView();
     this.buildDatePickerView();
 
-    this.model.addEventListener('create', this.onModelCreate.bind(this));
-    this.model.addEventListener('edit', this.onModelEdit.bind(this));
+    this.model.addEventListener('mode', this.onModelChange.bind(this));
 
     this.view.addEventListener('submit', this.onViewSubmit.bind(this));
     this.view.addEventListener('reset', this.onViewReset.bind(this));
     this.view.addEventListener('close', this.onViewClose.bind(this));
 
-    this.view.pointTypeSelectView.addEventListener('change', this.onViewPointTypeSelectChange.bind(this));
-    this.view.destinationSelectView.addEventListener('change', this.onViewDestinationSelectChange.bind(this));
+    this.view.pointTypeSelectView.addEventListener('change', this.onPointTypeSelectViewChange.bind(this));
+    this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectViewChange.bind(this));
   }
 
-  /** TypeSelect -> setOptions -> setValue (установит тип точки) */
-  buildPointTypeSelectView() {
-    /** @type {TypeOptionState[]} */
-    const optionStates = Object.values(PointType).map((type) => {
-      const key = PointType.findKey(type);
-      const label = PointLabel[key];
-
-      return [label, type];
-    });
-
-    this.view.pointTypeSelectView
-      .setOptions(optionStates)
-      .setValue(PointType.TAXI);
-  }
-
-  /** DestinationSelect -> setOptions -> setLabel (установит название типа точки) */
-  buildDestinationSelectView() {
-    const destinationNames = this.model.destinations
-      .listAll()
-      .map((destination) => destination.name);
-
-    /** @type {DestinationOptionState[]} */
-    const optionStates = [...new Set(destinationNames)].map((name) => ['', name]);
-
-    this.view.destinationSelectView
-      .setOptions(optionStates)
-      .setLabel(PointType.TAXI);
-  }
-
-  /** DatePicker -> configure */
-  buildDatePickerView() {
-    const calendarOptions = {
-      dateFormat: UnitFormat.DATE_WITH_TIME,
-      locale: {firstDayOfWeek: 1}
-    };
-
-    this.view.datePickerView.configure(calendarOptions);
-  }
-
-  /** OfferSelect -> set(hidden) -> setOptions */
-  buildOfferSelectView() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const availableOffers = this.model.offerGroups.findById(selectedType).items;
-
-    /** @type {OfferOptionState[]} */
-    const optionStates = availableOffers.map((offer) => [offer.id, offer.title, offer.price]);
-
-    this.view.offerSelectView
-      .set('hidden', !availableOffers.length)
-      .setOptions(optionStates);
-  }
-
-  /** TypeSelect -> setValue */
-  updateTypeSelectView() {
-    this.view.pointTypeSelectView.setValue(this.model.activePoint.type);
-  }
-
-  /** DestinationSelect -> setLabel -> setDestination */
-  updateDestinationSelectView() {
-    const {type, destinationId} = this.model.activePoint;
-
-    const destination = this.model.destinations.findById(destinationId);
-
-    this.view.destinationSelectView
-      .setLabel(type)
-      .setDestination(destination.name);
-  }
-
-  /** DatePicker -> setDate */
-  updateDatePickerView() {
-    const {startDate, endDate} = this.model.activePoint;
-
-    this.view.datePickerView.setDate(startDate, endDate);
-  }
-
-  /** PriceInput -> setPrice */
-  updatePriceInputView() {
-    const {basePrice} = this.model.activePoint;
-
-    this.view.priceInputView.setPrice(String(basePrice));
-  }
-
-  /** OfferSelect -> setCheckedOptions */
-  updateOfferSelectView() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const availableOffers = this.model.offerGroups.findById(selectedType).items;
-
-    const checkedOptions = availableOffers.map((offer) =>
-      this.model.activePoint.offerIds.includes(offer.id)
-    );
-
-    this.view.offerSelectView.setCheckedOptions(checkedOptions);
-  }
-
-  /** Destination -> set(hidden) -> setDescription -> setPictures */
-  updateDestinationView() {
-    const selectedDestination = this.view.destinationSelectView.getDestination();
-    const destination = this.model.destinations.findBy('name', selectedDestination);
-
-    /** @type {DestinationPictureState[]} */
-    const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
-
-    this.view.destinationView
-      .set('hidden', !destination)
-      .setDescription(destination.description)
-      .setPictures(pictureStates);
-  }
-
-  updateView() {
-    this.updateTypeSelectView();
-    this.updateDestinationSelectView();
-    this.updateDatePickerView();
-    this.updatePriceInputView();
-    this.buildOfferSelectView();
-    this.updateOfferSelectView();
-    this.updateDestinationView();
-  }
-
-  /** Соберет данные с формы в PointAdapter */
   get activePoint() {
-    const point = new PointAdapter();
+    const point = this.model.activePoint;
 
     const destinationName = this.view.destinationSelectView.getDestination();
     const [startDate, endDate] = this.view.datePickerView.getDates();
 
     point.type = this.view.pointTypeSelectView.getValue();
-    point.destinationId = this.model.destinations.findBy('name', destinationName)?.id;
+    point.destinationId = this.model.destinationsModel.findBy('name', destinationName)?.id;
     point.startDate = startDate;
     point.endDate = endDate;
     point.basePrice = Number(this.view.priceInputView.getPrice());
@@ -170,33 +55,132 @@ export default class PointCreatorPresenter extends Presenter {
     return point;
   }
 
-  /** Добавит activePoint в модель */
+  /** TypeSelect -> setOptions */
+  buildPointTypeSelectView() {
+    /** @type {PointTypeOptionState[]} */
+    const optionStates = Object.keys(PointType).map((key) => [PointLabel[key], PointType[key]]);
+
+    this.view.pointTypeSelectView.setOptions(optionStates);
+  }
+
+  /** DestinationSelect -> setOptions */
+  buildDestinationSelectView() {
+    /** @type {DestinationOptionState[]} */
+    const optionStates = this.model.destinationsModel.listAll().map((destination) => ['', destination.name]);
+
+    this.view.destinationSelectView.setOptions(optionStates);
+  }
+
+  /** DatePicker -> configure */
+  buildDatePickerView() {
+    this.view.datePickerView.configure({
+      onChange: [(dates) => {
+        const [minDate] = dates;
+
+        this.view.datePickerView.configure({}, {minDate});
+      }]
+    }, {
+      onValueUpdate: [() => {
+        const [startDate, endDate = startDate] = this.view.datePickerView.getDates();
+
+        this.view.datePickerView.setDates(startDate, endDate, false);
+      }]
+    });
+  }
+
+  /** PointTypeSelect -> setValue */
+  updatePointTypeSelectView() {
+    this.view.pointTypeSelectView.setValue(this.model.activePoint.type);
+  }
+
+  /** DestinationSelect -> setLabel -> setDestination */
+  updateDestinationSelectView() {
+    const {type, destinationId} = this.model.activePoint;
+
+    const destination = this.model.destinationsModel.findById(destinationId);
+
+    this.view.destinationSelectView
+      .setLabel(PointLabel[PointType.findKey(type)])
+      .setDestination(destination.name);
+  }
+
+  /** DatePicker -> setDate */
+  updateDatePickerView() {
+    const {startDate, endDate} = this.model.activePoint;
+
+    this.view.datePickerView.setDates(startDate, endDate);
+  }
+
+  /** PriceInput -> setPrice */
+  updatePriceInputView() {
+    const {basePrice} = this.model.activePoint;
+
+    this.view.priceInputView.setPrice(String(basePrice));
+  }
+
+  /** OfferSelect -> display -> setOptions */
+  updateOfferSelectView(check = false) {
+    const selectedPointType = this.view.pointTypeSelectView.getValue();
+    const availableOffers = this.model.offerGroupsModel.findById(selectedPointType).items;
+
+    /** @type {OfferOptionState[]} */
+    const optionStates = availableOffers.map((offer) => [
+      offer.id,
+      offer.title,
+      offer.price,
+      check && this.model.activePoint.offerIds.includes(offer.id)
+    ]);
+
+    this.view.offerSelectView
+      .display(Boolean(availableOffers.length))
+      .setOptions(optionStates);
+  }
+
+  /** Destination -> display -> setDescription -> setPictures */
+  updateDestinationView() {
+    const selectedDestination = this.view.destinationSelectView.getDestination();
+    const destination = this.model.destinationsModel.findBy('name', selectedDestination);
+
+    /** @type {DestinationPictureState[]} */
+    const pictureStates = destination.pictures.map((picture) => [picture.src, picture.description]);
+
+    this.view.destinationView
+      .display(Boolean(destination))
+      .setDescription(destination.description)
+      .setPictures(pictureStates);
+  }
+
+  updateView() {
+    this.updatePointTypeSelectView();
+    this.updateDestinationSelectView();
+    this.updateDatePickerView();
+    this.updatePriceInputView();
+    this.updateOfferSelectView(true);
+    this.updateDestinationView();
+  }
+
   saveActivePoint() {
-    return this.model.points.add(this.activePoint);
+    return this.model.pointsModel.add(this.activePoint);
   }
 
-  /** Обработает событие CREATE */
-  onModelCreate() {
-    this.updateView();
-    this.view.open();
-  }
+  onModelChange() {
+    if (this.model.getMode() === Mode.CREATE) {
+      this.updateView();
+      this.view.open();
+    }
 
-  /**
-   * Обработает событие EDIT
-   * Закроет creator-view, если модель в режиме edit
-   */
-  onModelEdit() {
-    this.view.close(true);
+    if (this.model.getMode() === Mode.EDIT) {
+      this.view.close(true);
+    }
   }
 
   /**
-   * Обработает событие SUBMIT(button SAVE)
    * @param {Event} event
    */
   async onViewSubmit(event) {
     event.preventDefault();
 
-    this.view.setSaveButtonPressed(true);
+    this.view.setSaving(true);
 
     try {
       await this.saveActivePoint();
@@ -204,13 +188,19 @@ export default class PointCreatorPresenter extends Presenter {
 
     } catch (exception) {
       this.view.shake();
+
+      if (Array.isArray(exception.cause)) {
+        const [{fieldName}] = exception.cause;
+
+        /** @type {HTMLInputElement} */
+        (this.view.formView[fieldName])?.focus();
+      }
     }
 
-    this.view.setSaveButtonPressed(false);
+    this.view.setSaving(false);
   }
 
   /**
-   * Обработает событие RESET(button CLOSE)
    * @param {Event} event
    */
   onViewReset(event) {
@@ -219,30 +209,19 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.close();
   }
 
-  /** Обработает событие CLOSE */
   onViewClose() {
     this.model.setMode(Mode.VIEW);
   }
 
-  /**
-   * Обработает событие CHANGE на PointTypeSelect
-   * Обновит название типа точки (перед пунктом назначения)
-   * Перерисует доступные опции
-   */
-  onViewPointTypeSelectChange() {
-    const selectedType = this.view.pointTypeSelectView.getValue();
-    const key = PointType.findKey(selectedType);
+  onPointTypeSelectViewChange() {
+    const selectedPointType = this.view.pointTypeSelectView.getValue();
+    const key = PointType.findKey(selectedPointType);
 
     this.view.destinationSelectView.setLabel(PointLabel[key]);
-
-    this.buildOfferSelectView();
+    this.updateOfferSelectView();
   }
 
-  /**
-   * Обработает событие CHANGE на DestinationSelect
-   * Перерисует блок с описанием и картинками пункта назначения
-   */
-  onViewDestinationSelectChange() {
+  onDestinationSelectViewChange() {
     this.updateDestinationView();
   }
 }

@@ -1,4 +1,5 @@
 import View, {html} from './view.js';
+import './price-input-view.css';
 
 /** Представление цены */
 export default class PriceInputView extends View {
@@ -18,7 +19,17 @@ export default class PriceInputView extends View {
         <span class="visually-hidden">Price</span>
         &euro;
       </label>
-      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+      <input
+        class="event__input  event__input--price"
+        id="event-price-1"
+        type="number"
+        min="1"
+        max="1000000"
+        step="1"
+        name="base_price"
+        value=""
+        required
+      >
     `;
   }
 

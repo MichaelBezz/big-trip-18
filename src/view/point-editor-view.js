@@ -26,25 +26,27 @@ export default class PointEditorView extends PointCreatorView {
     `;
   }
 
-  /** @override */
-  connect() {
-    this.targetView?.replaceWith(this);
-  }
+  /**
+   * @override
+   * @param {boolean} flag
+   */
+  display(flag) {
+    this.id = this.targetView?.id;
 
-  /** @override */
-  disconnect() {
-    this.replaceWith(this.targetView);
+    (flag ? this.targetView : this).replaceWith(flag ? this : this.targetView);
+
+    return this;
   }
 
   /**
    * @param {boolean} flag
    */
-  setDeleteButtonPressed(flag) {
+  setDeleting(flag) {
     /** @type {HTMLButtonElement} */
     const resetButtonView = this.querySelector('.event__reset-btn');
-
-    resetButtonView.disabled = flag;
     resetButtonView.textContent = flag ? DeleteButtonLabel.PRESSED : DeleteButtonLabel.DEFAULT;
+
+    this.setLoading(flag);
   }
 
   /**

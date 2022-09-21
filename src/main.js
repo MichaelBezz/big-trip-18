@@ -22,8 +22,9 @@ import PointListPresenter from './presenter/point-list-presenter.js';
 import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
-import FilterPredicate from './enum/filter-predicate.js';
+import Mode from './enum/mode.js';
 import SortCompare from './enum/sort-compare.js';
+import FilterPredicate from './enum/filter-predicate.js';
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
 const POINTS_URL = `${BASE_URL}/points`;
@@ -32,23 +33,23 @@ const OFFERS_URL = `${BASE_URL}/offers`;
 const AUTH = 'Basic er883jde';
 
 /** @type {Store<Point>} */
-const pointStore = new Store(POINTS_URL, AUTH);
+const pointsStore = new Store(POINTS_URL, AUTH);
 
 /** @type {Store<Destination>} */
 const destinationsStore = new Store(DESTINATIONS_URL, AUTH);
 
 /** @type {Store<OfferGroup>} */
-const offersStore = new Store(OFFERS_URL, AUTH);
+const offerGroupsStore = new Store(OFFERS_URL, AUTH);
 
-const points = new DataTableModel(pointStore, (point) => new PointAdapter(point))
+const pointsModel = new DataTableModel(pointsStore, (point) => new PointAdapter(point))
   .setFilter(FilterPredicate.EVERYTHING)
   .setSort(SortCompare.DAY);
 
-const destinations = new CollectionModel(destinationsStore, (destination) => new DestinationAdapter(destination));
+const destinationsModel = new CollectionModel(destinationsStore, (destination) => new DestinationAdapter(destination));
 
-const offerGroups = new CollectionModel(offersStore, (offerGroup) => new OfferGroupAdapter(offerGroup));
+const offerGroupsModel = new CollectionModel(offerGroupsStore, (offerGroup) => new OfferGroupAdapter(offerGroup));
 
-const applicationModel = new ApplicationModel(points, destinations, offerGroups);
+const applicationModel = new ApplicationModel(pointsModel, destinationsModel, offerGroupsModel);
 
 /** @type {HTMLButtonElement} */
 const createButtonView = document.querySelector('.trip-main__event-add-btn');
@@ -83,13 +84,12 @@ applicationModel.ready().then(() => {
 
 
 // TODO debug
-const {group, groupEnd, trace} = console;
+const {trace} = console;
 
-applicationModel.addEventListener(['view', 'create', 'edit'], (event) => {
-  groupEnd(); // уберет вложенность
-  group(event.type); // группировка
+applicationModel.addEventListener('mode', () => {
+  trace(`%cMode.${Mode.findKey(applicationModel.getMode())}`, 'font-size: large');
 });
 
-applicationModel.points.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
-  trace(event.type);
+pointsModel.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
+  trace(`%c${event.type}`, 'font-weight: bold');
 });

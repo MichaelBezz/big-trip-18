@@ -1,7 +1,5 @@
 /** Generic Model */
 export default class Model extends EventTarget {
-  async ready() {}
-
   /**
    * @override
    * @param {string | string[]} type
@@ -13,4 +11,6 @@ export default class Model extends EventTarget {
       super.addEventListener(name, listener, options);
     });
   }
+
+  async ready() {}
 }
