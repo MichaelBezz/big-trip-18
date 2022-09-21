@@ -14,10 +14,12 @@ export default class DatePickerView extends View {
   constructor() {
     super();
 
-    this.#startDateCalendar = initCalendar(this.querySelector('[name="event-start-time"]'));
-    this.#endDateCalendar = initCalendar(this.querySelector('[name="event-end-time"]'));
-
     this.classList.add('event__field-group', 'event__field-group--time');
+
+    this.addEventListener('keydown', this.onKeydown, true);
+
+    this.#startDateCalendar = initCalendar(this.querySelector('#event-start-time-1'));
+    this.#endDateCalendar = initCalendar(this.querySelector('#event-end-time-1'));
   }
 
   /** @override */
@@ -29,6 +31,10 @@ export default class DatePickerView extends View {
       <label class="visually-hidden" for="event-end-time-1">To</label>
       <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="">
     `;
+  }
+
+  get disallowedKeys() {
+    return ['Backspace', 'Delete'];
   }
 
   /**
@@ -58,6 +64,15 @@ export default class DatePickerView extends View {
       this.#startDateCalendar.selectedDates[0]?.toJSON(),
       this.#endDateCalendar.selectedDates[0]?.toJSON()
     ];
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   */
+  onKeydown(event) {
+    if (this.disallowedKeys.includes(event.key)) {
+      event.stopPropagation();
+    }
   }
 
   /**
