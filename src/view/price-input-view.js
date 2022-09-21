@@ -23,9 +23,12 @@ export default class PriceInputView extends View {
         class="event__input  event__input--price"
         id="event-price-1"
         type="number"
-        pattern="/^([1-9]\d*)$/"
+        min="1"
+        max="1000000"
+        step="1"
         name="base_price"
         value=""
+        required
       >
     `;
   }
