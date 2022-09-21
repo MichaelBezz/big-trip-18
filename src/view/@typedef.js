@@ -19,7 +19,7 @@
  * @prop {string} title
  * @prop {string} startTime
  * @prop {string} endTime
- * @prop {number} price
+ * @prop {string} price
  * @prop {PointOfferState[]} offers
  */
 

@@ -1,7 +1,11 @@
 import Presenter from './presenter.js';
 
+import he from 'he';
+import {formatDate, formatNumber} from '../format.js';
 import Mode from '../enum/mode.js';
-import {formatDate, formatTime} from '../utils.js';
+
+const DATE_FORMAT = 'MMM D';
+const TIME_FORMAT = 'HH:mm';
 
 /**
  * Презентор списка точек
@@ -50,12 +54,12 @@ export default class PointListPresenter extends Presenter {
         id,
         startIsoDate: startDate,
         endIsoDate: endDate,
-        date: formatDate(startDate),
-        startTime: formatTime(startDate),
-        endTime: formatTime(endDate),
+        date: formatDate(startDate, DATE_FORMAT),
+        startTime: formatDate(startDate, TIME_FORMAT),
+        endTime: formatDate(endDate, TIME_FORMAT),
         icon: type,
         title: compositeTitle,
-        price: basePrice,
+        price: he.encode(formatNumber(basePrice)),
         offers: offerStates
       };
     });

@@ -1,7 +1,5 @@
-import he from 'he';
-import './price-input-view.css';
-
 import View, {html} from './view.js';
+import './price-input-view.css';
 
 /** Представление цены */
 export default class PriceInputView extends View {
@@ -42,7 +40,7 @@ export default class PriceInputView extends View {
   }
 
   getPrice() {
-    return he.encode(this.inputView.value);
+    return this.inputView.value;
   }
 }
 
