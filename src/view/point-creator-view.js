@@ -133,19 +133,28 @@ export default class PointCreatorView extends PointItemView {
   /**
    * @param {boolean} flag
    */
+  setDisabled(flag) {
+    [...this.formView].forEach((/** @type {HTMLFormElement} */view) => {
+      view.disabled = flag;
+    });
+  }
+
+  /**
+   * @param {boolean} flag
+   */
   setSavingState(flag) {
     /** @type {HTMLButtonElement} */
     const submitButtonView = this.querySelector('.event__save-btn');
-
-    submitButtonView.disabled = flag;
     submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
 
+    this.setDisabled(flag);
     this.loaderView.display(flag);
   }
 
   /**
-   * NOTE Стандартный метод обработки события на объекте
-   * NOTE Событие без key при выборе опции в PointTypeSelectView
+   * NOTE
+   * Стандартный метод обработки события на объекте
+   * Событие без key при выборе опции в PointTypeSelectView
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
