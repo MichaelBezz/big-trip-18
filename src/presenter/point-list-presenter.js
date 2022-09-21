@@ -67,16 +67,16 @@ export default class PointListPresenter extends Presenter {
     this.view.setPoints(states);
   }
 
-  /*
-  TODO Реализовать удаление point-view без полной перерисовки списка
-    @param {CollectionModelEvent<PointAdapter>} event
+  /**
+   * @param {CollectionModelEvent<PointAdapter>} event
+   */
+  onPointsModelChange(event) {
     if (event.type === 'remove') {
       this.view.findById(event.detail.id).remove();
+
       return;
     }
-  */
 
-  onPointsModelChange() {
     this.updateView();
   }
 

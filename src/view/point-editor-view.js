@@ -31,6 +31,8 @@ export default class PointEditorView extends PointCreatorView {
    * @param {boolean} flag
    */
   display(flag) {
+    this.id = this.targetView?.id;
+
     (flag ? this.targetView : this).replaceWith(flag ? this : this.targetView);
 
     return this;
