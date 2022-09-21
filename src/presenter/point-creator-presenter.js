@@ -62,7 +62,13 @@ export default class PointCreatorPresenter extends Presenter {
 
         this.view.datePickerView.configure({}, {minDate});
       }]
-    }, {});
+    }, {
+      onValueUpdate: [() => {
+        const [startDate, endDate = startDate] = this.view.datePickerView.getDates();
+
+        this.view.datePickerView.setDates(startDate, endDate, false);
+      }]
+    });
   }
 
   /** PointTypeSelect -> setValue */
@@ -85,7 +91,7 @@ export default class PointCreatorPresenter extends Presenter {
   updateDatePickerView() {
     const {startDate, endDate} = this.model.activePoint;
 
-    this.view.datePickerView.setDate(startDate, endDate);
+    this.view.datePickerView.setDates(startDate, endDate);
   }
 
   /** PriceInput -> setPrice */
