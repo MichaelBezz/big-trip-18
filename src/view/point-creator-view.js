@@ -151,14 +151,15 @@ export default class PointCreatorView extends PointItemView {
     this.loaderView.display(flag);
   }
 
+  get closeKeys() {
+    return ['Escape', 'Esc'];
+  }
+
   /**
-   * NOTE
-   * Стандартный метод обработки события на объекте
-   * Событие без key при выборе опции в PointTypeSelectView
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
-    if (!event.key?.startsWith('Esc')) {
+    if (!this.closeKeys.includes(event.key)) {
       return;
     }
 
