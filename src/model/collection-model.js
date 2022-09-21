@@ -107,9 +107,9 @@ export default class CollectionModel extends Model {
    */
   async update(id, item) {
     const updatedItem = await this.#store.update(id, item.toJSON());
-    const detail = this.#adapt(updatedItem);
-
     const index = this.findIndexById(id);
+    const detail = [this.item(index), this.#adapt(updatedItem)];
+
     this.#items.splice(index, 1, updatedItem);
 
     this.dispatchEvent(new CustomEvent('update', {detail}));
