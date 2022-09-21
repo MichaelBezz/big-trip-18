@@ -38,6 +38,24 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectViewChange.bind(this));
   }
 
+  /** Соберет данные с формы в PointAdapter */
+  get activePoint() {
+    const point = this.model.activePoint;
+
+    const destinationName = this.view.destinationSelectView.getDestination();
+    const [startDate, endDate] = this.view.datePickerView.getDates();
+
+    point.type = this.view.pointTypeSelectView.getValue();
+    point.destinationId = this.model.destinationsModel.findBy('name', destinationName)?.id;
+    point.startDate = startDate;
+    point.endDate = endDate;
+    point.basePrice = Number(this.view.priceInputView.getPrice());
+    point.offerIds = this.view.offerSelectView.getCheckedValues().map(Number);
+    point.isFavorite = false;
+
+    return point;
+  }
+
   /** TypeSelect -> setOptions */
   buildPointTypeSelectView() {
     /** @type {PointTypeOptionState[]} */
@@ -140,24 +158,6 @@ export default class PointCreatorPresenter extends Presenter {
     this.updatePriceInputView();
     this.updateOfferSelectView(true);
     this.updateDestinationView();
-  }
-
-  /** Соберет данные с формы в PointAdapter */
-  get activePoint() {
-    const point = this.model.activePoint;
-
-    const destinationName = this.view.destinationSelectView.getDestination();
-    const [startDate, endDate] = this.view.datePickerView.getDates();
-
-    point.type = this.view.pointTypeSelectView.getValue();
-    point.destinationId = this.model.destinationsModel.findBy('name', destinationName)?.id;
-    point.startDate = startDate;
-    point.endDate = endDate;
-    point.basePrice = Number(this.view.priceInputView.getPrice());
-    point.offerIds = this.view.offerSelectView.getCheckedValues().map(Number);
-    point.isFavorite = false;
-
-    return point;
   }
 
   /** Добавит activePoint в модель */

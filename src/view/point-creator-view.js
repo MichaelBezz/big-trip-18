@@ -45,6 +45,24 @@ export default class PointCreatorView extends PointItemView {
     this.formView = this.querySelector('form');
   }
 
+  get closeKeys() {
+    return ['Escape', 'Esc'];
+  }
+
+  /**
+   * @override
+   * @param {boolean} flag
+   */
+  display(flag) {
+    if (flag) {
+      this.targetView?.prepend(this);
+    } else {
+      this.remove();
+    }
+
+    return this;
+  }
+
   /** @override */
   createAdjacentHtml() {
     return html`
@@ -82,20 +100,6 @@ export default class PointCreatorView extends PointItemView {
    */
   target(view) {
     this.targetView = view;
-
-    return this;
-  }
-
-  /**
-   * @override
-   * @param {boolean} flag
-   */
-  display(flag) {
-    if (flag) {
-      this.targetView?.prepend(this);
-    } else {
-      this.remove();
-    }
 
     return this;
   }
@@ -150,10 +154,6 @@ export default class PointCreatorView extends PointItemView {
     submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
 
     this.setLoading(flag);
-  }
-
-  get closeKeys() {
-    return ['Escape', 'Esc'];
   }
 
   /**

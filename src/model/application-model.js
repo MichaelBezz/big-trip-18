@@ -10,26 +10,17 @@ export default class ApplicationModel extends Model {
   #mode;
 
   /**
-   * @param {DataTableModel<Point,PointAdapter>} points
-   * @param {CollectionModel<Destination,DestinationAdapter>} destinations
-   * @param {CollectionModel<OfferGroup,OfferGroupAdapter>} offerGroups
+   * @param {DataTableModel<Point,PointAdapter>} pointsModel
+   * @param {CollectionModel<Destination,DestinationAdapter>} destinationsModel
+   * @param {CollectionModel<OfferGroup,OfferGroupAdapter>} offerGroupsModel
    */
-  constructor(points, destinations, offerGroups) {
+  constructor(pointsModel, destinationsModel, offerGroupsModel) {
     super();
 
-    this.pointsModel = points;
+    this.pointsModel = pointsModel;
     this.activePoint = null;
-    this.destinationsModel = destinations;
-    this.offerGroupsModel = offerGroups;
-  }
-
-  /** override */
-  async ready() {
-    await Promise.all([
-      this.pointsModel.ready(),
-      this.destinationsModel.ready(),
-      this.offerGroupsModel.ready()
-    ]);
+    this.destinationsModel = destinationsModel;
+    this.offerGroupsModel = offerGroupsModel;
   }
 
   get defaultPoint() {
@@ -44,6 +35,15 @@ export default class ApplicationModel extends Model {
     point.isFavorite = false;
 
     return point;
+  }
+
+  /** @override */
+  async ready() {
+    await Promise.all([
+      this.pointsModel.ready(),
+      this.destinationsModel.ready(),
+      this.offerGroupsModel.ready()
+    ]);
   }
 
   /**

@@ -22,6 +22,10 @@ export default class DatePickerView extends View {
     this.#endDateCalendar = initCalendar(this.querySelector('#event-end-time-1'));
   }
 
+  get disallowedKeys() {
+    return ['Backspace', 'Delete'];
+  }
+
   /** @override */
   createAdjacentHtml() {
     return html`
@@ -31,10 +35,6 @@ export default class DatePickerView extends View {
       <label class="visually-hidden" for="event-end-time-1">To</label>
       <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="">
     `;
-  }
-
-  get disallowedKeys() {
-    return ['Backspace', 'Delete'];
   }
 
   /**

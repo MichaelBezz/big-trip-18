@@ -22,6 +22,11 @@ export default class DestinationSelectView extends View {
     this.addEventListener('blur', this.onBlur, true);
   }
 
+  /** Вернет доступные клавиши */
+  get allowedKeys() {
+    return ['Escape', 'Esc', 'Tab', 'ArrowUp', 'ArrowDown'];
+  }
+
   /** @override */
   createAdjacentHtml() {
     return html`
@@ -75,11 +80,6 @@ export default class DestinationSelectView extends View {
   /** Получит место назначения */
   getDestination() {
     return this.inputView.value || this.inputView.placeholder;
-  }
-
-  /** Вернет доступные клавиши */
-  get allowedKeys() {
-    return ['Escape', 'Tab', 'ArrowUp', 'ArrowDown'];
   }
 
   /** Заменит placeholder на value */

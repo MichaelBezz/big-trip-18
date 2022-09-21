@@ -3,7 +3,7 @@ import Presenter from './presenter.js';
 import Mode from '../enum/mode.js';
 import SortType from '../enum/sort-type.js';
 import SortLabel from '../enum/sort-label.js';
-import SortDisabled from '../enum/sort-disabled.js';
+import SortDisabledOption from '../enum/sort-disabled-option.js';
 import SortCompare from '../enum/sort-compare.js';
 
 /**
@@ -32,7 +32,7 @@ export default class SortPresenter extends Presenter {
 
     this.view
       .setOptions(optionStates)
-      .setOptionsDisabled(Object.values(SortDisabled));
+      .setOptionsDisabled(Object.values(SortDisabledOption));
 
     this.updateViewValue();
     this.updateViewDisplay();
