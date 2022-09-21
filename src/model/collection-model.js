@@ -12,6 +12,9 @@ export default class CollectionModel extends Model {
   /** @type {Item[]} */
   #items;
 
+  /** @type {Promise<void>} */
+  #ready;
+
   /**
    * @param {Store<Item>} store
    * @param {(item?: Item) => ItemAdapter} adapt
@@ -31,10 +34,12 @@ export default class CollectionModel extends Model {
    * Запишет Item по готовности
    * @override
    */
-  async ready() {
-    if (!this.#items) {
-      this.#items = await this.#store.list();
-    }
+  ready() {
+    this.#ready ??= this.#store.list().then((items) => {
+      this.#items = items;
+    });
+
+    return this.#ready;
   }
 
   /** Вернет список ItemAdapter */
