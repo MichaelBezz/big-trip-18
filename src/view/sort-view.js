@@ -35,7 +35,6 @@ export default class SortView extends RadioGroupView {
   }
 
   /**
-   * Установит пункты сортировки
    * @param {SortOptionState[]} states
    */
   setOptions(states) {

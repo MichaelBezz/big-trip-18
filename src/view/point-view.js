@@ -70,13 +70,11 @@ export default class PointView extends PointItemView {
     `;
   }
 
-  /** Получит #id из поля state.id */
   getId() {
     return this.#id;
   }
 
   /**
-   * Установит (выбранные) дополнительные опции
    * @param {PointOfferState[]} states
    */
   setOffers(states) {
@@ -99,7 +97,6 @@ export default class PointView extends PointItemView {
   }
 
   /**
-   * Найдет PointView по атрибуту id
    * @param {number} id
    * @param {Document | Element} rootView
    * @return {PointView}

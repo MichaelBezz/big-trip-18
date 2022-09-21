@@ -45,7 +45,6 @@ export default class OfferSelectView extends View {
   }
 
   /**
-   * Установит доступные опции
    * @param {OfferOptionState[]} states
    */
   setOptions(states) {

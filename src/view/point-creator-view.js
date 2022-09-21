@@ -95,7 +95,6 @@ export default class PointCreatorView extends PointItemView {
   }
 
   /**
-   * Назначит целевой элемент
    * @param {Element} view
    */
   target(view) {
@@ -104,10 +103,6 @@ export default class PointCreatorView extends PointItemView {
     return this;
   }
 
-  /**
-   * Подключит view
-   * Обработает события по Esc
-   */
   open() {
     this.display(true);
 
@@ -117,9 +112,6 @@ export default class PointCreatorView extends PointItemView {
   }
 
   /**
-   * Отключит view
-   * Удалит события по Esc
-   * При необходимости создаст событие close
    * @param {boolean} notify
    */
   close(notify = false) {

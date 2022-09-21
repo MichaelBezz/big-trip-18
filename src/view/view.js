@@ -58,6 +58,7 @@ export default class View extends HTMLElement {
     return this;
   }
 
+  /** Эффект покачивания */
   shake() {
     this.classList.add('shake');
 

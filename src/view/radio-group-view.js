@@ -20,7 +20,7 @@ export default class RadioGroupView extends View {
   }
 
   /**
-   * Установит input свойство checked
+   * Установит значение input и свойство checked
    * @param {string} value
    */
   setValue(value) {

@@ -22,7 +22,6 @@ export default class DestinationSelectView extends View {
     this.addEventListener('blur', this.onBlur, true);
   }
 
-  /** Вернет доступные клавиши */
   get allowedKeys() {
     return ['Escape', 'Esc', 'Tab', 'ArrowUp', 'ArrowDown'];
   }
@@ -46,7 +45,6 @@ export default class DestinationSelectView extends View {
   }
 
   /**
-   * Установит пункты назначения в datalist
    * @param {DestinationOptionState[]} states
    */
   setOptions(states) {
@@ -58,7 +56,6 @@ export default class DestinationSelectView extends View {
   }
 
   /**
-   * Установит название типа точки (перед пунктом назначения)
    * @param {string} value
    */
   setLabel(value) {
@@ -68,7 +65,6 @@ export default class DestinationSelectView extends View {
   }
 
   /**
-   * Установит место назначения
    * @param {string} destination
    */
   setDestination(destination) {
@@ -77,12 +73,10 @@ export default class DestinationSelectView extends View {
     return this;
   }
 
-  /** Получит место назначения */
   getDestination() {
     return this.inputView.value || this.inputView.placeholder;
   }
 
-  /** Заменит placeholder на value */
   moveValueToPlaceholder() {
     const {inputView} = this;
 
@@ -90,7 +84,6 @@ export default class DestinationSelectView extends View {
     inputView.value = '';
   }
 
-  /** Заменит value на placeholder */
   movePlaceholderToValue() {
     const {inputView} = this;
 

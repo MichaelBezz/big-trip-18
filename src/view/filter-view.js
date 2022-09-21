@@ -42,7 +42,6 @@ export default class FilterView extends RadioGroupView {
   }
 
   /**
-   * Установит фильтры
    * @param {FilterOptionState[]} states
    */
   setOptions(states) {

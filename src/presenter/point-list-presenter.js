@@ -1,6 +1,7 @@
+import he from 'he';
+
 import Presenter from './presenter.js';
 
-import he from 'he';
 import {formatDate, formatNumber} from '../format.js';
 import Mode from '../enum/mode.js';
 

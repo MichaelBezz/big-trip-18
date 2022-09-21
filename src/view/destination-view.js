@@ -22,7 +22,6 @@ export default class DestinationView extends View {
   }
 
   /**
-   * Установит описание
    * @param {string} description
    */
   setDescription(description) {
@@ -32,7 +31,6 @@ export default class DestinationView extends View {
   }
 
   /**
-   * Установит картинки
    * @param {DestinationPictureState[]} states
    */
   setPictures(states) {

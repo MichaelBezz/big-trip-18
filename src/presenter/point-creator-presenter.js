@@ -38,7 +38,6 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.destinationSelectView.addEventListener('change', this.onDestinationSelectViewChange.bind(this));
   }
 
-  /** Соберет данные с формы в PointAdapter */
   get activePoint() {
     const point = this.model.activePoint;
 
@@ -160,16 +159,10 @@ export default class PointCreatorPresenter extends Presenter {
     this.updateDestinationView();
   }
 
-  /** Добавит activePoint в модель */
   saveActivePoint() {
     return this.model.pointsModel.add(this.activePoint);
   }
 
-  /**
-   * Обработает событие CREATE
-   * Обработает событие EDIT
-   * Закроет creator-view, если модель в режиме edit
-   */
   onModelChange() {
     if (this.model.getMode() === Mode.CREATE) {
       this.updateView();
@@ -182,7 +175,6 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   /**
-   * Обработает событие SUBMIT(button SAVE)
    * @param {Event} event
    */
   async onViewSubmit(event) {
@@ -209,7 +201,6 @@ export default class PointCreatorPresenter extends Presenter {
   }
 
   /**
-   * Обработает событие RESET(button CLOSE)
    * @param {Event} event
    */
   onViewReset(event) {
@@ -218,16 +209,10 @@ export default class PointCreatorPresenter extends Presenter {
     this.view.close();
   }
 
-  /** Обработает событие CLOSE */
   onViewClose() {
     this.model.setMode(Mode.VIEW);
   }
 
-  /**
-   * Обработает событие CHANGE на PointTypeSelect
-   * Обновит название типа точки (перед пунктом назначения)
-   * Перерисует доступные опции
-   */
   onPointTypeSelectViewChange() {
     const selectedPointType = this.view.pointTypeSelectView.getValue();
     const key = PointType.findKey(selectedPointType);
@@ -236,10 +221,6 @@ export default class PointCreatorPresenter extends Presenter {
     this.updateOfferSelectView();
   }
 
-  /**
-   * Обработает событие CHANGE на DestinationSelect
-   * Перерисует блок с описанием и картинками пункта назначения
-   */
   onDestinationSelectViewChange() {
     this.updateDestinationView();
   }

@@ -21,7 +21,6 @@ export default class PointListView extends View {
   }
 
   /**
-   * Найдет PointView в PointListView по атрибуту id
    * @param {number} id
    */
   findById(id) {

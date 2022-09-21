@@ -11,25 +11,12 @@ import Mode from '../enum/mode.js';
  */
 export default class PointEditorPresenter extends PointCreatorPresenter {
 
-  /**
-   * @override
-   * Обновит activePoint в модели
-   */
+  /** @override */
   saveActivePoint() {
     return this.model.pointsModel.update(this.model.activePoint.id, this.activePoint);
   }
 
-  /** Удалит activePoint из модели */
-  deleteActivePoint() {
-    return this.model.pointsModel.remove(this.model.activePoint.id);
-  }
-
-  /**
-   * @override
-   * Обработает событие CREATE
-   * Закроет editor-view, если модель в режиме create
-   * Обработает событие EDIT
-   */
+  /** @override */
   onModelChange() {
     if (this.model.getMode() === Mode.CREATE) {
       this.view.close(true);
@@ -49,7 +36,6 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
   }
 
   /**
-   * Обработает событие RESET(button DELETE)
    * @override
    * @param {Event} event
    */
@@ -67,5 +53,9 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     }
 
     this.view.setDeleting(false);
+  }
+
+  deleteActivePoint() {
+    return this.model.pointsModel.remove(this.model.activePoint.id);
   }
 }

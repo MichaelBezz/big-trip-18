@@ -1,8 +1,7 @@
 const BAD_REQUEST = 400;
 
 /**
- * Generic Store
- * Интерфейс для работы с сервером
+ * Generic Store - интерфейс для работы с сервером
  * @template Item
  */
 export default class Store {

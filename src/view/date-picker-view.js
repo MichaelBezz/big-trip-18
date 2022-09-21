@@ -1,7 +1,7 @@
-import View, {html} from './view.js';
-
 import initCalendar from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+
+import View, {html} from './view.js';
 
 /** Представление даты и времени */
 export default class DatePickerView extends View {
