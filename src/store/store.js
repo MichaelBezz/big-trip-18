@@ -1,5 +1,3 @@
-const BAD_REQUEST = 400;
-
 /**
  * Generic Store - интерфейс для работы с сервером
  * @template Item
@@ -89,16 +87,6 @@ export default class Store {
    * @param {Response} response
    */
   static async assert(response) {
-    if (response.status === BAD_REQUEST) {
-
-      /** @type {BadRequestErrorCause} */
-      const data = await response.json();
-
-      throw new Error(data.message, {
-        cause: data.error ?? data.errors
-      });
-    }
-
     if (!response.ok) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
