@@ -3,6 +3,8 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 import View, {html} from './view.js';
 
+import KeyboardCommand from '../enum/keyboard-command.js';
+
 /** Представление даты и времени */
 export default class DatePickerView extends View {
   /** @type {Calendar} */
@@ -14,16 +16,20 @@ export default class DatePickerView extends View {
   constructor() {
     super();
 
+    this.#startDateCalendar = initCalendar(this.querySelector('#event-start-time-1'));
+    this.#endDateCalendar = initCalendar(this.querySelector('#event-end-time-1'));
+
     this.classList.add('event__field-group', 'event__field-group--time');
 
     this.addEventListener('keydown', this.onKeydown, true);
-
-    this.#startDateCalendar = initCalendar(this.querySelector('#event-start-time-1'));
-    this.#endDateCalendar = initCalendar(this.querySelector('#event-end-time-1'));
   }
 
   get disallowedKeys() {
     return ['Backspace', 'Delete'];
+  }
+
+  get isOpen() {
+    return this.#startDateCalendar.isOpen || this.#endDateCalendar.isOpen;
   }
 
   /** @override */
@@ -66,12 +72,25 @@ export default class DatePickerView extends View {
     ];
   }
 
+  close() {
+    this.#startDateCalendar.close();
+    this.#endDateCalendar.close();
+  }
+
   /**
    * @param {KeyboardEvent} event
    */
   onKeydown(event) {
     if (this.disallowedKeys.includes(event.key)) {
       event.stopPropagation();
+
+      return;
+    }
+
+    if (KeyboardCommand.EXIT.includes(event.key) && this.isOpen) {
+      event.stopPropagation();
+
+      this.close();
     }
   }
 

@@ -1,5 +1,7 @@
 import View, {html} from './view.js';
 
+import KeyboardCommand from '../enum/keyboard-command.js';
+
 /** Представление пункта назначения */
 export default class DestinationSelectView extends View {
   constructor() {
@@ -23,7 +25,7 @@ export default class DestinationSelectView extends View {
   }
 
   get allowedKeys() {
-    return ['Escape', 'Esc', 'Tab', 'ArrowUp', 'ArrowDown'];
+    return ['Tab', 'ArrowUp', 'ArrowDown', ...KeyboardCommand.EXIT];
   }
 
   /** @override */

@@ -9,6 +9,7 @@ import OfferSelectView from './offer-select-view.js';
 import DestinationView from './destination-view.js';
 
 import SaveButtonLabel from '../enum/save-button-label.js';
+import KeyboardCommand from '../enum/keyboard-command.js';
 
 export * from './point-item-view.js';
 
@@ -43,10 +44,6 @@ export default class PointCreatorView extends PointItemView {
 
     /** @type {HTMLFormElement} */
     this.formView = this.querySelector('form');
-  }
-
-  get closeKeys() {
-    return ['Escape', 'Esc'];
   }
 
   /**
@@ -115,6 +112,8 @@ export default class PointCreatorView extends PointItemView {
    * @param {boolean} notify
    */
   close(notify = false) {
+    this.datePickerView.close();
+
     this.display(false);
 
     document.removeEventListener('keydown', this);
@@ -152,13 +151,9 @@ export default class PointCreatorView extends PointItemView {
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
-    if (!this.closeKeys.includes(event.key)) {
-      return;
+    if (KeyboardCommand.EXIT.includes(event.key)) {
+      this.close();
     }
-
-    event.preventDefault();
-
-    this.close();
   }
 }
 
