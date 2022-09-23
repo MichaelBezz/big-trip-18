@@ -1,4 +1,4 @@
-import PointItemView, {html} from './point-item-view.js';
+import View, {html} from './view.js';
 
 import LoaderView from './loader-view.js';
 import PointTypeSelectView from './point-type-select-view.js';
@@ -11,10 +11,8 @@ import DestinationView from './destination-view.js';
 import SaveButtonLabel from '../enum/save-button-label.js';
 import KeyboardCommand from '../enum/keyboard-command.js';
 
-export * from './point-item-view.js';
-
 /** Представление формы создания точки */
-export default class PointCreatorView extends PointItemView {
+export default class PointCreatorView extends View {
   constructor() {
     super();
 
@@ -44,6 +42,8 @@ export default class PointCreatorView extends PointItemView {
 
     /** @type {HTMLFormElement} */
     this.formView = this.querySelector('form');
+
+    this.classList.add('trip-events__item');
   }
 
   /**

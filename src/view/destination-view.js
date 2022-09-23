@@ -1,4 +1,5 @@
 import View, {html} from './view.js';
+import './destination-view.css';
 
 /** Представление описания пункта назначения */
 export default class DestinationView extends View {

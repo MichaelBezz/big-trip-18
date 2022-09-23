@@ -1,7 +1,8 @@
-import PointItemView, {html} from './point-item-view.js';
+import View, {html} from './view.js';
+import './point-view.css';
 
 /** Представление точки на маршруте */
-export default class PointView extends PointItemView {
+export default class PointView extends View {
   #id;
 
   /**
@@ -17,6 +18,9 @@ export default class PointView extends PointItemView {
     this.id = `${this.constructor}-${state.id}`;
 
     this.setOffers(state.offers);
+
+    this.classList.add('trip-events__item');
+
     this.addEventListener('click', this.onClick);
   }
 

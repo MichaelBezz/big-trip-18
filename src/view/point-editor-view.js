@@ -1,4 +1,5 @@
-import PointCreatorView, {html} from './point-creator-view.js';
+import {html} from './view.js';
+import PointCreatorView from './point-creator-view.js';
 
 import SaveButtonLabel from '../enum/save-button-label.js';
 import DeleteButtonLabel from '../enum/delete-button-label.js';
