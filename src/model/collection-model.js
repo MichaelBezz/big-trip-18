@@ -68,7 +68,7 @@ export default class CollectionModel extends Model {
 
   /**
    * Найдет ItemAdapter по свойству id
-   * @param {ItemId} value
+   * @param {string} value
    */
   findById(value) {
     return this.findBy('id', value);
@@ -85,7 +85,7 @@ export default class CollectionModel extends Model {
 
   /**
    * Найдет индекс ItemAdapter по свойству id
-   * @param {ItemId} value
+   * @param {string} value
    */
   findIndexById(value) {
     return this.findIndexBy('id', value);
@@ -107,7 +107,7 @@ export default class CollectionModel extends Model {
 
   /**
    * Обновит ItemAdapter в списке
-   * @param {ItemId} id
+   * @param {string} id
    * @param {ItemAdapter} item
    */
   async update(id, item) {
@@ -122,7 +122,7 @@ export default class CollectionModel extends Model {
 
   /**
    * Удалит ItemAdapter из списка
-   * @param {ItemId} id
+   * @param {string} id
    */
   async remove(id) {
     await this.#store.remove(id);

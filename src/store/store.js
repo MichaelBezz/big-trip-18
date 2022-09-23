@@ -39,7 +39,7 @@ export default class Store {
 
   /**
    * Обновит Item
-   * @param {ItemId} id
+   * @param {string} id
    * @param {Item} item
    * @return {Promise<Item>}
    */
@@ -52,7 +52,7 @@ export default class Store {
 
   /**
    * Удалит Item
-   * @param {ItemId} id
+   * @param {string} id
    * @return {Promise<Item>}
    */
   remove(id) {

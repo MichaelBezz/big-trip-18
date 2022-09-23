@@ -7,13 +7,13 @@ export default class PointAdapter extends Adapter {
   constructor(point = {}) {
     super();
 
-    this.id = Number(point.id);
+    this.id = point.id;
     this.type = point.type;
-    this.destinationId = point.destination;
+    this.destinationId = String(point.destination);
     this.startDate = point.date_from;
     this.endDate = point.date_to;
     this.basePrice = point.base_price;
-    this.offerIds = point.offers?.slice();
+    this.offerIds = point.offers?.map(String);
     this.isFavorite = point.is_favorite;
   }
 
@@ -23,13 +23,13 @@ export default class PointAdapter extends Adapter {
    */
   toJSON() {
     return {
-      'id': String(this.id),
+      'id': this.id,
       'type': this.type,
-      'destination': this.destinationId,
+      'destination': Number(this.destinationId),
       'date_from': this.startDate,
       'date_to': this.endDate,
       'base_price': this.basePrice,
-      'offers': this.offerIds,
+      'offers': this.offerIds?.map(Number),
       'is_favorite': this.isFavorite
     };
   }
