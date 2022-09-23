@@ -34,8 +34,9 @@ export default class OfferSelectView extends View {
           name="event-offer"
           value="${id}"
           ${isChecked ? 'checked' : ''}
+          tabindex="-1"
         >
-        <label class="event__offer-label" for="event-offer-${id}">
+        <label class="event__offer-label" for="event-offer-${id}" tabindex="0">
           <span class="event__offer-title">${title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${price}</span>

@@ -7,6 +7,13 @@ export default class RadioGroupView extends View {
     return '[type="radio"]';
   }
 
+  /**
+   * @return {NodeListOf<HTMLInputElement>}
+   */
+  get inputViews() {
+    return this.querySelectorAll(this.inputSelector);
+  }
+
   /** Получит значение у input */
   getValue() {
     /** @type {HTMLInputElement} */
@@ -34,15 +41,32 @@ export default class RadioGroupView extends View {
     return this;
   }
 
+  getIndex() {
+    return [...this.inputViews].findIndex((view) => view.checked);
+  }
+
+  /**
+   * @param {number} index
+   */
+  setIndex(index, notify = true) {
+    const views = this.inputViews;
+    const rangeIndex = (views.length + index) % views.length;
+
+    views[rangeIndex].checked = true;
+
+    if (notify) {
+      views[rangeIndex].dispatchEvent(new Event('change', {bubbles: true}));
+    }
+
+    return this;
+  }
+
   /**
    * Установит input свойство disabled
    * @param {boolean[]} flags
    */
   setOptionsDisabled(flags) {
-    /** @type {NodeListOf<HTMLInputElement>} */
-    const views = this.querySelectorAll(this.inputSelector);
-
-    views.forEach((view, index) => {
+    this.inputViews.forEach((view, index) => {
       view.disabled = flags[index];
     });
 

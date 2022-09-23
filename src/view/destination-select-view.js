@@ -25,7 +25,7 @@ export default class DestinationSelectView extends View {
   }
 
   get allowedKeys() {
-    return ['Tab', 'ArrowUp', 'ArrowDown', ...KeyboardCommand.EXIT];
+    return ['Tab', ...Object.values(KeyboardCommand).flat()];
   }
 
   /** @override */
