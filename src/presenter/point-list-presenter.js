@@ -1,4 +1,4 @@
-import he from 'he';
+import {escape} from 'he';
 
 import Presenter from './presenter.js';
 
@@ -41,26 +41,26 @@ export default class PointListPresenter extends Presenter {
       const destination = this.model.destinationsModel.findById(destinationId);
       const offerGroup = this.model.offerGroupsModel.findById(type);
 
-      const compositeTitle = `${type} ${destination.name}`;
+      const title = `${type} ${destination.name}`;
 
       /** @type {PointOfferState[]} */
       const offerStates = offerGroup.items.reduce((result, offer) => {
         if (offerIds.includes(offer.id)) {
-          result.push([offer.title, offer.price]);
+          result.push([escape(offer.title), escape(formatNumber(offer.price))]);
         }
         return result;
       }, []);
 
       return {
-        id,
-        startIsoDate: startDate,
-        endIsoDate: endDate,
+        id: escape(id),
+        startIsoDate: escape(startDate),
+        endIsoDate: escape(endDate),
         date: formatDate(startDate, DATE_FORMAT),
         startTime: formatDate(startDate, TIME_FORMAT),
         endTime: formatDate(endDate, TIME_FORMAT),
-        icon: type,
-        title: compositeTitle,
-        price: he.encode(formatNumber(basePrice)),
+        icon: escape(type),
+        title: escape(title),
+        price: escape(formatNumber(basePrice)),
         offers: offerStates
       };
     });
