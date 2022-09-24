@@ -1,7 +1,6 @@
 import View, {html} from './view.js';
 import './destination-view.css';
 
-/** Представление описания пункта назначения */
 export default class DestinationView extends View {
   constructor() {
     super();
@@ -23,27 +22,32 @@ export default class DestinationView extends View {
   }
 
   /**
-   * @param {string} description
+   * @param  {DestinationPictureState} state
    */
-  setDescription(description) {
-    this.querySelector('.event__destination-description').textContent = description;
+  createPictureHtml(...state) {
+    const [src, alt] = state;
 
-    return this;
+    return html`
+      <img class="event__photo" src="${src}" alt="${alt}">
+    `;
   }
 
   /**
    * @param {DestinationPictureState[]} states
    */
   setPictures(states) {
-    const views = states.map(([src, alt]) =>
-      Object.assign(new Image(), {
-        src,
-        alt,
-        className: 'event__photo'
-      })
-    );
+    this.querySelector('.event__photos-tape').innerHTML = html`${
+      states.map((state) => this.createPictureHtml(...state))
+    }`;
 
-    this.querySelector('.event__photos-tape').replaceChildren(...views);
+    return this;
+  }
+
+  /**
+   * @param {string} description
+   */
+  setDescription(description) {
+    this.querySelector('.event__destination-description').textContent = description;
 
     return this;
   }
