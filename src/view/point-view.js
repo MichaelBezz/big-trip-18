@@ -1,7 +1,6 @@
 import View, {html} from './view.js';
 import './point-view.css';
 
-/** Представление точки на маршруте */
 export default class PointView extends View {
   #id;
 
@@ -11,13 +10,8 @@ export default class PointView extends View {
   constructor(state) {
     super(state);
 
-    /** NOTE PointListPresenter - setMode(EDIT, getId) */
     this.#id = state.id;
-
-    /** NOTE PointEditorPresenter - target(findById) */
     this.id = `${this.constructor}-${state.id}`;
-
-    this.setOffers(state.offers);
 
     this.classList.add('trip-events__item');
 
@@ -29,28 +23,32 @@ export default class PointView extends View {
    * @param {PointState} state
    */
   createAdjacentHtml(state) {
-    const {date, startIsoDate, endIsoDate, icon, title, startTime, endTime, price} = state;
-
     return html`
       <div class="event">
-        <time class="event__date" datetime="${startIsoDate}">${date}</time>
+        <time class="event__date" datetime="${state.startIsoDate}">${state.date}</time>
         <div class="event__type">
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${state.icon}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${title}</h3>
+        <h3 class="event__title">${state.title}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${startIsoDate}">${startTime}</time>
+            <time class="event__start-time" datetime="${state.startIsoDate}">${state.startTime}</time>
             &mdash;
-            <time class="event__end-time" datetime="${endIsoDate}">${endTime}</time>
+            <time class="event__end-time" datetime="${state.endIsoDate}">${state.endTime}</time>
           </p>
         </div>
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${price}</span>
+          &euro;&nbsp;<span class="event__price-value">${state.price}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <div class="event__selected-offers">
-          <!-- PointOfferView -->
+          ${state.offers.map(([title, price]) => html`
+            <div class="event__offer">
+              <span class="event__offer-title">${title}</span>
+              &plus;&euro;&nbsp;
+              <span class="event__offer-price">${price}</span>
+            </div>
+          `)}
         </div>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
@@ -59,34 +57,8 @@ export default class PointView extends View {
     `;
   }
 
-  /**
-   * @param  {PointOfferState} state
-   */
-  createOfferHtml(...state) {
-    const [title, price] = state;
-
-    return html`
-      <div class="event__offer">
-        <span class="event__offer-title">${title}</span>
-        &plus;&euro;&nbsp;
-        <span class="event__offer-price">${price}</span>
-      </div>
-    `;
-  }
-
   getId() {
     return this.#id;
-  }
-
-  /**
-   * @param {PointOfferState[]} states
-   */
-  setOffers(states) {
-    this.querySelector('.event__selected-offers').innerHTML = html`${
-      states.map((state) => this.createOfferHtml(...state))
-    }`;
-
-    return this;
   }
 
   /**
