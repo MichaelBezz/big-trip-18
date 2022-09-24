@@ -49,7 +49,7 @@ export default class PointCreatorPresenter extends Presenter {
     point.startDate = startDate;
     point.endDate = endDate;
     point.basePrice = Number(this.view.priceInputView.getPrice());
-    point.offerIds = this.view.offerSelectView.getCheckedValues().map(Number);
+    point.offerIds = this.view.offerSelectView.getCheckedValues();
     point.isFavorite = false;
 
     return point;

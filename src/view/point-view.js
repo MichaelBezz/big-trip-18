@@ -73,7 +73,7 @@ export default class PointView extends View {
   }
 
   /**
-   * @param {number} id
+   * @param {string} id
    * @param {Document | Element} rootView
    * @return {PointView}
    */

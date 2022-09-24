@@ -21,7 +21,7 @@ export default class PointListView extends View {
   }
 
   /**
-   * @param {number} id
+   * @param {string} id
    */
   findById(id) {
     return PointView.findById(id, this);
