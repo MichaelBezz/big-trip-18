@@ -2,11 +2,8 @@ import {escape} from 'he';
 
 import Presenter from './presenter.js';
 
-import {formatDate, formatNumber} from '../format.js';
+import {formatDate, formatTime, formatNumber} from '../format.js';
 import Mode from '../enum/mode.js';
-
-const DATE_FORMAT = 'MMM D';
-const TIME_FORMAT = 'HH:mm';
 
 /**
  * @template {ApplicationModel} Model
@@ -54,9 +51,9 @@ export default class PointListPresenter extends Presenter {
         id: escape(id),
         startIsoDate: escape(startDate),
         endIsoDate: escape(endDate),
-        date: formatDate(startDate, DATE_FORMAT),
-        startTime: formatDate(startDate, TIME_FORMAT),
-        endTime: formatDate(endDate, TIME_FORMAT),
+        date: formatDate(startDate),
+        startTime: formatTime(startDate),
+        endTime: formatTime(endDate),
         icon: escape(type),
         title: escape(title),
         price: escape(formatNumber(basePrice)),

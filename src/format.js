@@ -1,10 +1,19 @@
 import dayjs from 'dayjs';
 
 /**
+ * Вернет дату в формате 'MMM D'
  * @param {string} isoDate
- * @param {string} format
+ * @param {string} template
+ * @return {string}
  */
-export const formatDate = (isoDate, format) => dayjs(isoDate).format(format);
+export const formatDate = (isoDate, template = 'MMM D') => dayjs(isoDate).format(template);
+
+/**
+   * Вернет время в формате 'HH:mm'
+   * @param {string} isoDate
+   * @return {string}
+   */
+export const formatTime = (isoDate, template = 'HH:mm') => dayjs(isoDate).format(template);
 
 /**
  * @param {number} value
