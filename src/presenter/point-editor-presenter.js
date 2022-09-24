@@ -4,7 +4,6 @@ import PointView from '../view/point-view.js';
 import Mode from '../enum/mode.js';
 
 /**
- * Презентор формы редактирования
  * @template {ApplicationModel} Model
  * @template {PointEditorView} View
  * @extends {PointCreatorPresenter<Model,View>}

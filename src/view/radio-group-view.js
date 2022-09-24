@@ -14,7 +14,7 @@ export default class RadioGroupView extends View {
     return this.querySelectorAll(this.inputSelector);
   }
 
-  /** Получит значение у input */
+  /** Получит значение у input:checked */
   getValue() {
     /** @type {HTMLInputElement} */
     const checkedView = this.querySelector(`${this.inputSelector}:checked`);

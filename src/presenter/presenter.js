@@ -1,5 +1,4 @@
 /**
- * Generic Presenter
  * @template Model
  * @template View
  */

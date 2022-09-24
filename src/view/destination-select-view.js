@@ -2,7 +2,6 @@ import View, {html} from './view.js';
 
 import KeyboardCommand from '../enum/keyboard-command.js';
 
-/** Представление пункта назначения */
 export default class DestinationSelectView extends View {
   constructor() {
     super();

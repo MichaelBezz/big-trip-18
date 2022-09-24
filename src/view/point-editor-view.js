@@ -4,7 +4,6 @@ import PointCreatorView from './point-creator-view.js';
 import SaveButtonLabel from '../enum/save-button-label.js';
 import DeleteButtonLabel from '../enum/delete-button-label.js';
 
-/** Представление формы редактирования точки */
 export default class PointEditorView extends PointCreatorView {
   constructor() {
     super();

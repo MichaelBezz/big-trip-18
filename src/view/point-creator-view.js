@@ -11,7 +11,6 @@ import DestinationView from './destination-view.js';
 import SaveButtonLabel from '../enum/save-button-label.js';
 import KeyboardCommand from '../enum/keyboard-command.js';
 
-/** Представление формы создания точки */
 export default class PointCreatorView extends View {
   constructor() {
     super();

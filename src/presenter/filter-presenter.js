@@ -6,7 +6,6 @@ import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
 
 /**
- * Презентор фильтра
  * @template {ApplicationModel} Model
  * @template {FilterView} View
  * @extends {Presenter<Model,View>}

@@ -5,7 +5,6 @@ import View, {html} from './view.js';
 
 import KeyboardCommand from '../enum/keyboard-command.js';
 
-/** Представление даты и времени */
 export default class DatePickerView extends View {
   /** @type {Calendar} */
   #startDateCalendar;

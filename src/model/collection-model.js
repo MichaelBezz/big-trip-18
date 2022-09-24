@@ -1,7 +1,7 @@
 import Model from './model.js';
 
 /**
- * Абстрактная модель коллекции Item
+ * Модель коллекции Item
  * @template Item
  * @template {Adapter} ItemAdapter
  */
@@ -93,7 +93,6 @@ export default class CollectionModel extends Model {
 
   /**
    * Добавит ItemAdapter в список
-   * NOTE item.toJSON() из-за преобразования в adapter
    * @param {ItemAdapter} item
    */
   async add(item) {

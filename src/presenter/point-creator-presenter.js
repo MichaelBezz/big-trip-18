@@ -14,7 +14,6 @@ DatePickerView.setDefaults({
 });
 
 /**
- * Презентор формы создания
  * @template {ApplicationModel} Model
  * @template {PointCreatorView} View
  * @extends {Presenter<Model,View>}

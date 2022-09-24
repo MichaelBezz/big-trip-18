@@ -1,6 +1,5 @@
 import RadioGroupView, {html} from './radio-group-view.js';
 
-/** Представление списка сортировки */
 export default class SortView extends RadioGroupView {
 
   /** @override */

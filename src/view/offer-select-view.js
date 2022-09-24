@@ -1,7 +1,6 @@
 import View, {html} from './view.js';
 import './offer-select-view.css';
 
-/** Представление списка (доступных) опций в редакторе */
 export default class OfferSelectView extends View {
   constructor() {
     super();

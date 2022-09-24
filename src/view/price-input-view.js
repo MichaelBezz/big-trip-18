@@ -1,7 +1,6 @@
 import View, {html} from './view.js';
 import './price-input-view.css';
 
-/** Представление цены */
 export default class PriceInputView extends View {
   constructor() {
     super();

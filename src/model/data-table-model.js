@@ -1,7 +1,7 @@
 import CollectionModel from './collection-model';
 
 /**
- * Абстрактная model для фильтрации и сортировки
+ * Модель для фильтрации и сортировки
  * @template Item
  * @template {Adapter} ItemAdapter
  * @extends {CollectionModel<Item,ItemAdapter>}

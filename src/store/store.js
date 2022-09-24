@@ -1,5 +1,5 @@
 /**
- * Generic Store - интерфейс для работы с сервером
+ * Интерфейс для работы с сервером
  * @template Item
  */
 export default class Store {

@@ -7,7 +7,6 @@ import SortDisabledOption from '../enum/sort-disabled-option.js';
 import SortCompare from '../enum/sort-compare.js';
 
 /**
- * Презентор сортировки
  * @template {ApplicationModel} Model
  * @template {SortView} View
  * @extends {Presenter<Model,View>}

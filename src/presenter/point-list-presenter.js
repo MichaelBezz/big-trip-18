@@ -9,7 +9,6 @@ const DATE_FORMAT = 'MMM D';
 const TIME_FORMAT = 'HH:mm';
 
 /**
- * Презентор списка точек
  * @template {ApplicationModel} Model
  * @template {PointListView} View
  * @extends {Presenter<Model,View>}

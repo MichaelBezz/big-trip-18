@@ -2,7 +2,6 @@ import RadioGroupView, {html} from './radio-group-view.js';
 
 import KeyboardCommand from '../enum/keyboard-command.js';
 
-/** Представление меню типов */
 export default class PointTypeSelectView extends RadioGroupView {
   constructor() {
     super();

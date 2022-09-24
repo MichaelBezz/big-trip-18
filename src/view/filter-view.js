@@ -1,6 +1,5 @@
 import RadioGroupView, {html} from './radio-group-view.js';
 
-/** Представление списка фильтров */
 export default class FilterView extends RadioGroupView {
   constructor() {
     super();
