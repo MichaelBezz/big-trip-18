@@ -47,12 +47,23 @@ export default class DestinationSelectView extends View {
   }
 
   /**
+   * @param {DestinationOptionState} state
+   */
+  createOptionHtml(...state) {
+    const [text, value] = state;
+
+    return html`
+      <option value="${value}">${text}</option>
+    `;
+  }
+
+  /**
    * @param {DestinationOptionState[]} states
    */
   setOptions(states) {
-    const views = states.map((state) => new Option(...state));
-
-    this.datalistView.replaceChildren(...views);
+    this.datalistView.innerHTML = html`${
+      states.map((state) => this.createOptionHtml(...state))
+    }`;
 
     return this;
   }
