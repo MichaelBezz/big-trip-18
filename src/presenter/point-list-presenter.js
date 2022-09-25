@@ -1,15 +1,11 @@
-import he from 'he';
+import {escape} from 'he';
 
 import Presenter from './presenter.js';
 
-import {formatDate, formatNumber} from '../format.js';
+import {formatDate, formatTime, formatNumber} from '../format.js';
 import Mode from '../enum/mode.js';
 
-const DATE_FORMAT = 'MMM D';
-const TIME_FORMAT = 'HH:mm';
-
 /**
- * Презентор списка точек
  * @template {ApplicationModel} Model
  * @template {PointListView} View
  * @extends {Presenter<Model,View>}
@@ -28,7 +24,7 @@ export default class PointListPresenter extends Presenter {
       this.onPointsModelChange.bind(this)
     );
 
-    this.view.addEventListener('point-edit', this.onViewPointEdit.bind(this));
+    this.view.addEventListener('edit', this.onViewEdit.bind(this));
   }
 
   updateView() {
@@ -41,26 +37,26 @@ export default class PointListPresenter extends Presenter {
       const destination = this.model.destinationsModel.findById(destinationId);
       const offerGroup = this.model.offerGroupsModel.findById(type);
 
-      const compositeTitle = `${type} ${destination.name}`;
+      const title = `${type} ${destination.name}`;
 
       /** @type {PointOfferState[]} */
       const offerStates = offerGroup.items.reduce((result, offer) => {
         if (offerIds.includes(offer.id)) {
-          result.push([offer.title, offer.price]);
+          result.push([escape(offer.title), escape(formatNumber(offer.price))]);
         }
         return result;
       }, []);
 
       return {
-        id,
-        startIsoDate: startDate,
-        endIsoDate: endDate,
-        date: formatDate(startDate, DATE_FORMAT),
-        startTime: formatDate(startDate, TIME_FORMAT),
-        endTime: formatDate(endDate, TIME_FORMAT),
-        icon: type,
-        title: compositeTitle,
-        price: he.encode(formatNumber(basePrice)),
+        id: escape(id),
+        startIsoDate: escape(startDate),
+        endIsoDate: escape(endDate),
+        date: formatDate(startDate),
+        startTime: formatTime(startDate),
+        endTime: formatTime(endDate),
+        icon: escape(type),
+        title: escape(title),
+        price: escape(formatNumber(basePrice)),
         offers: offerStates
       };
     });
@@ -84,7 +80,7 @@ export default class PointListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: PointView}} event
    */
-  onViewPointEdit(event) {
+  onViewEdit(event) {
     this.model.setMode(Mode.EDIT, event.target.getId());
   }
 }

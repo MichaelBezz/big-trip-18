@@ -4,34 +4,35 @@ import PointView from '../view/point-view.js';
 import Mode from '../enum/mode.js';
 
 /**
- * Презентор формы редактирования
  * @template {ApplicationModel} Model
  * @template {PointEditorView} View
  * @extends {PointCreatorPresenter<Model,View>}
  */
 export default class PointEditorPresenter extends PointCreatorPresenter {
 
-  /** @override */
+  /**
+   * @override
+   */
   saveActivePoint() {
     return this.model.pointsModel.update(this.model.activePoint.id, this.activePoint);
   }
 
-  /** @override */
-  onModelChange() {
-    if (this.model.getMode() === Mode.CREATE) {
-      this.view.close(true);
-    }
+  deleteActivePoint() {
+    return this.model.pointsModel.remove(this.model.activePoint.id);
+  }
+
+  /**
+   * @override
+   */
+  onModelMode() {
+    this.view.close(false);
 
     if (this.model.getMode() === Mode.EDIT) {
       const pointView = PointView.findById(this.model.activePoint.id);
 
-      this.view.close(true);
-
       this.updateView();
 
-      this.view
-        .target(pointView)
-        .open();
+      this.view.target(pointView).open();
     }
   }
 
@@ -53,9 +54,5 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     }
 
     this.view.setDeleting(false);
-  }
-
-  deleteActivePoint() {
-    return this.model.pointsModel.remove(this.model.activePoint.id);
   }
 }

@@ -1,7 +1,5 @@
-const BAD_REQUEST = 400;
-
 /**
- * Generic Store - интерфейс для работы с сервером
+ * Удаленное хранилище элементов в формате JSON
  * @template Item
  */
 export default class Store {
@@ -9,8 +7,8 @@ export default class Store {
   #auth;
 
   /**
-   * @param {string} baseUrl
-   * @param {string} auth
+   * @param {string} baseUrl Базовый адрес хранилища
+   * @param {string} auth Учетные данные в формате `Basic <случайная_строка>`
    */
   constructor(baseUrl, auth) {
     this.#baseUrl = baseUrl;
@@ -18,7 +16,7 @@ export default class Store {
   }
 
   /**
-   * Получит список Item
+   * Вернет все элементы, которые есть в хранилище
    * @return {Promise<Item[]>}
    */
   list() {
@@ -28,9 +26,9 @@ export default class Store {
   }
 
   /**
-   * Добавит Item
+   * Добавит элемент в хранилище
    * @param {Item} item
-   * @return {Promise<Item>}
+   * @return {Promise<Item>} Объект с присвоенным идентификатором
    */
   add(item) {
     return this.request('/', {
@@ -40,8 +38,8 @@ export default class Store {
   }
 
   /**
-   * Обновит Item
-   * @param {ItemId} id
+   * Обновит свойства элемента
+   * @param {string} id
    * @param {Item} item
    * @return {Promise<Item>}
    */
@@ -53,9 +51,9 @@ export default class Store {
   }
 
   /**
-   * Удалит Item
-   * @param {ItemId} id
-   * @return {Promise<Item>}
+   * Удалит элемент из хранилища
+   * @param {string} id
+   * @return {Promise<string>} Текст `ОК`
    */
   remove(id) {
     return this.request(`/${id}`, {
@@ -64,6 +62,7 @@ export default class Store {
   }
 
   /**
+   * Отправит http-запрос (служебный метод)
    * @param {string} path
    * @param {RequestInit} options
    */
@@ -89,18 +88,8 @@ export default class Store {
    * @param {Response} response
    */
   static async assert(response) {
-    if (response.status === BAD_REQUEST) {
-
-      /** @type {BadRequestErrorCause} */
-      const data = await response.json();
-
-      throw new Error(data.message, {
-        cause: data.error ?? data.errors
-      });
-    }
-
     if (!response.ok) {
-      throw new Error(`${response.status}: ${response.statusText}`);
+      throw new Error(`${response.status} - ${response.statusText}`);
     }
   }
 

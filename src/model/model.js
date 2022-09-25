@@ -1,4 +1,3 @@
-/** Generic Model */
 export default class Model extends EventTarget {
   /**
    * @override
@@ -12,5 +11,11 @@ export default class Model extends EventTarget {
     });
   }
 
+  /**
+   * Вернет `Promise`, который выполнится когда модель завершит основные
+   * асинхронные операции
+   *
+   * Реализация этого метода обязательна для всех моделей
+   */
   async ready() {}
 }

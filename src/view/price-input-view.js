@@ -1,7 +1,6 @@
 import View, {html} from './view.js';
 import './price-input-view.css';
 
-/** Представление цены */
 export default class PriceInputView extends View {
   constructor() {
     super();
@@ -12,7 +11,9 @@ export default class PriceInputView extends View {
     this.classList.add('event__field-group', 'event__field-group--price');
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <label class="event__label" for="event-price-1">

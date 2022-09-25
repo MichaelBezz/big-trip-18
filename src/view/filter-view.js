@@ -1,6 +1,5 @@
 import RadioGroupView, {html} from './radio-group-view.js';
 
-/** Представление списка фильтров */
 export default class FilterView extends RadioGroupView {
   constructor() {
     super();
@@ -8,12 +7,14 @@ export default class FilterView extends RadioGroupView {
     this.classList.add('trip-controls__filters');
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <h2 class="visually-hidden">Filter events</h2>
       <form class="trip-filters" action="#" method="get">
-        <!-- FilterOptionView -->
+        <!-- Options -->
         <button class="visually-hidden" type="submit">Accept filter</button>
       </form>
     `;

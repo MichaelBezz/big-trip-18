@@ -1,7 +1,6 @@
 import View from './view.js';
 import PointView from './point-view.js';
 
-/** Представление списка точек */
 export default class PointListView extends View {
   constructor() {
     super();
@@ -21,7 +20,7 @@ export default class PointListView extends View {
   }
 
   /**
-   * @param {number} id
+   * @param {string} id
    */
   findById(id) {
     return PointView.findById(id, this);

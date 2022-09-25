@@ -1,4 +1,4 @@
-import PointItemView, {html} from './point-item-view.js';
+import View, {html} from './view.js';
 
 import LoaderView from './loader-view.js';
 import PointTypeSelectView from './point-type-select-view.js';
@@ -9,11 +9,12 @@ import OfferSelectView from './offer-select-view.js';
 import DestinationView from './destination-view.js';
 
 import SaveButtonLabel from '../enum/save-button-label.js';
+import KeyboardCommand from '../enum/keyboard-command.js';
 
-export * from './point-item-view.js';
-
-/** Представление формы создания точки */
-export default class PointCreatorView extends PointItemView {
+/**
+ * @implements {EventListenerObject}
+ */
+export default class PointCreatorView extends View {
   constructor() {
     super();
 
@@ -43,10 +44,8 @@ export default class PointCreatorView extends PointItemView {
 
     /** @type {HTMLFormElement} */
     this.formView = this.querySelector('form');
-  }
 
-  get closeKeys() {
-    return ['Escape', 'Esc'];
+    this.classList.add('trip-events__item');
   }
 
   /**
@@ -63,7 +62,9 @@ export default class PointCreatorView extends PointItemView {
     return this;
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <form class="event event--edit" action="#" method="post">
@@ -111,15 +112,14 @@ export default class PointCreatorView extends PointItemView {
     return this;
   }
 
-  /**
-   * @param {boolean} notify
-   */
-  close(notify = false) {
+  close(notify = true) {
+    this.datePickerView.close();
+
     this.display(false);
 
     document.removeEventListener('keydown', this);
 
-    if (!notify) {
+    if (notify) {
       this.dispatchEvent(new CustomEvent('close'));
     }
 
@@ -132,7 +132,7 @@ export default class PointCreatorView extends PointItemView {
   setLoading(flag) {
     this.loaderView.display(flag);
 
-    [...this.formView].forEach((/** @type {HTMLFormElement} */view) => {
+    [...this.formView].forEach((/** @type {HTMLInputElement} */view) => {
       view.disabled = flag;
     });
   }
@@ -143,6 +143,7 @@ export default class PointCreatorView extends PointItemView {
   setSaving(flag) {
     /** @type {HTMLButtonElement} */
     const submitButtonView = this.querySelector('.event__save-btn');
+
     submitButtonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
 
     this.setLoading(flag);
@@ -152,13 +153,9 @@ export default class PointCreatorView extends PointItemView {
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
-    if (!this.closeKeys.includes(event.key)) {
-      return;
+    if (KeyboardCommand.EXIT.includes(event.key)) {
+      this.close();
     }
-
-    event.preventDefault();
-
-    this.close();
   }
 }
 

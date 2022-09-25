@@ -1,30 +1,22 @@
 import CollectionModel from './collection-model';
 
 /**
- * Абстрактная model для фильтрации и сортировки
+ * Модель таблицы данных
  * @template Item
  * @template {Adapter} ItemAdapter
  * @extends {CollectionModel<Item,ItemAdapter>}
  */
 export default class DataTableModel extends CollectionModel {
 
-  /** @typedef {(item: ItemAdapter) => boolean} FilterPredicate */
-  /** @typedef {(item: ItemAdapter, nextItem: ItemAdapter) => number} SortCompare */
+  /** @type {Predicate<ItemAdapter>} */
+  #filter;
 
-  /** @type {FilterPredicate} */
-  #filter = () => true;
-
-  /** @type {SortCompare} */
-  #sort = () => 0;
-
-  /** Получит callback фильтра */
-  getFilter() {
-    return this.#filter;
-  }
+  /** @type {Compare<ItemAdapter>} */
+  #sort;
 
   /**
-   * Установит фильтр
-   * @param {FilterPredicate} predicate
+   * Установит функцию фильтрации
+   * @param {Predicate<ItemAdapter>} predicate
    */
   setFilter(predicate, notify = true) {
     this.#filter = predicate;
@@ -36,14 +28,13 @@ export default class DataTableModel extends CollectionModel {
     return this;
   }
 
-  /** Получит callback сортировки */
-  getSort() {
-    return this.#sort;
+  getFilter() {
+    return this.#filter;
   }
 
   /**
-   * Установит сортировку
-   * @param {SortCompare} compare
+   * Установит функцию сортировки
+   * @param {Compare<ItemAdapter>} compare
    */
   setSort(compare, notify = true) {
     this.#sort = compare;
@@ -55,6 +46,13 @@ export default class DataTableModel extends CollectionModel {
     return this;
   }
 
+  getSort() {
+    return this.#sort;
+  }
+
+  /**
+   * Вернет отфильтрованные и отсортированные элементы
+   */
   list(predicate = this.getFilter(), compare = this.getSort()) {
     return this.listAll().filter(predicate).sort(compare);
   }

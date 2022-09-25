@@ -1,9 +1,14 @@
 import View from './view.js';
 import './loader-view.css';
 
+/**
+ * @implements {EventListenerObject}
+ */
 export default class LoaderView extends View {
   constructor() {
     super();
+
+    this.rootView = document.body;
 
     this.classList.add('loader');
   }
@@ -11,12 +16,26 @@ export default class LoaderView extends View {
   /**
    * @override
    * @param {boolean} flag
-   * @param {HTMLElement} rootView
    */
-  display(flag, rootView = document.body) {
-    rootView[flag ? 'append' : 'removeChild'](this);
+  display(flag) {
+    this.rootView[flag ? 'append' : 'removeChild'](this);
 
     return this;
+  }
+
+  connectedCallback() {
+    this.rootView.addEventListener('keydown', this);
+  }
+
+  disconnectedCallback() {
+    this.rootView.removeEventListener('keydown', this);
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   */
+  handleEvent(event) {
+    event.preventDefault();
   }
 }
 

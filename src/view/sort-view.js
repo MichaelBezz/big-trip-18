@@ -1,13 +1,13 @@
 import RadioGroupView, {html} from './radio-group-view.js';
 
-/** Представление списка сортировки */
 export default class SortView extends RadioGroupView {
-
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-        <!-- SortOptionView -->
+        <!-- Options -->
       </form>
     `;
   }

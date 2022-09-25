@@ -11,7 +11,7 @@
 
 /**
  * @typedef PointState
- * @prop {number} id
+ * @prop {string} id
  * @prop {string} date
  * @prop {string} startIsoDate
  * @prop {string} endIsoDate
@@ -28,5 +28,5 @@
 /** @typedef {[title: string, price: number]} PointOfferState */
 /** @typedef {[label: string, value: string]} PointTypeOptionState */
 /** @typedef {[text: string, value: string]} DestinationOptionState */
-/** @typedef {[id: number, title: string, price: number, isChecked: boolean]} OfferOptionState */
+/** @typedef {[id: string, title: string, price: string, isChecked: boolean]} OfferOptionState */
 /** @typedef {[src: string, alt: string]} DestinationPictureState */

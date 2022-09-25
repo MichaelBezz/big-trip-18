@@ -1,9 +1,9 @@
-import PointCreatorView, {html} from './point-creator-view.js';
+import {html} from './view.js';
+import PointCreatorView from './point-creator-view.js';
 
 import SaveButtonLabel from '../enum/save-button-label.js';
 import DeleteButtonLabel from '../enum/delete-button-label.js';
 
-/** Представление формы редактирования точки */
 export default class PointEditorView extends PointCreatorView {
   constructor() {
     super();
@@ -11,7 +11,9 @@ export default class PointEditorView extends PointCreatorView {
     this.addEventListener('click', this.onClick);
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createButtonsHtml() {
     return html`
       <button class="event__save-btn  btn  btn--blue" type="submit">
@@ -44,6 +46,7 @@ export default class PointEditorView extends PointCreatorView {
   setDeleting(flag) {
     /** @type {HTMLButtonElement} */
     const resetButtonView = this.querySelector('.event__reset-btn');
+
     resetButtonView.textContent = flag ? DeleteButtonLabel.PRESSED : DeleteButtonLabel.DEFAULT;
 
     this.setLoading(flag);

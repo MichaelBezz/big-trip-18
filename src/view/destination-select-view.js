@@ -1,6 +1,7 @@
 import View, {html} from './view.js';
 
-/** Представление пункта назначения */
+import KeyboardCommand from '../enum/keyboard-command.js';
+
 export default class DestinationSelectView extends View {
   constructor() {
     super();
@@ -23,10 +24,12 @@ export default class DestinationSelectView extends View {
   }
 
   get allowedKeys() {
-    return ['Escape', 'Esc', 'Tab', 'ArrowUp', 'ArrowDown'];
+    return ['Tab', ...Object.values(KeyboardCommand).flat()];
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <label class="event__label  event__type-output" for="event-destination-1"></label>
@@ -39,8 +42,19 @@ export default class DestinationSelectView extends View {
         list="destination-list-1"
       >
       <datalist id="destination-list-1">
-        <!-- option -->
+        <!-- Options -->
       </datalist>
+    `;
+  }
+
+  /**
+   * @param {DestinationOptionState} state
+   */
+  createOptionHtml(...state) {
+    const [text, value] = state;
+
+    return html`
+      <option value="${value}">${text}</option>
     `;
   }
 
@@ -48,9 +62,9 @@ export default class DestinationSelectView extends View {
    * @param {DestinationOptionState[]} states
    */
   setOptions(states) {
-    const views = states.map((state) => new Option(...state));
-
-    this.datalistView.replaceChildren(...views);
+    this.datalistView.innerHTML = html`${
+      states.map((state) => this.createOptionHtml(...state))
+    }`;
 
     return this;
   }

@@ -1,7 +1,6 @@
 import View, {html} from './view.js';
 import './offer-select-view.css';
 
-/** Представление списка (доступных) опций в редакторе */
 export default class OfferSelectView extends View {
   constructor() {
     super();
@@ -9,12 +8,14 @@ export default class OfferSelectView extends View {
     this.classList.add('event__section', 'event__section--offers');
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
       <div class="event__available-offers">
-        <!-- OfferOptionView -->
+        <!-- Options -->
       </div>
     `;
   }
@@ -34,8 +35,9 @@ export default class OfferSelectView extends View {
           name="event-offer"
           value="${id}"
           ${isChecked ? 'checked' : ''}
+          tabindex="-1"
         >
-        <label class="event__offer-label" for="event-offer-${id}">
+        <label class="event__offer-label" for="event-offer-${id}" tabindex="0">
           <span class="event__offer-title">${title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${price}</span>

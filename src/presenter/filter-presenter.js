@@ -6,7 +6,6 @@ import FilterLabel from '../enum/filter-label.js';
 import FilterPredicate from '../enum/filter-predicate.js';
 
 /**
- * Презентор фильтра
  * @template {ApplicationModel} Model
  * @template {FilterView} View
  * @extends {Presenter<Model,View>}
@@ -20,7 +19,7 @@ export default class FilterPresenter extends Presenter {
 
     this.buildView();
 
-    this.model.addEventListener('mode', this.onModelChange.bind(this));
+    this.model.addEventListener('mode', this.onModelMode.bind(this));
     this.model.pointsModel.addEventListener(['add', 'update', 'remove'], this.onPointsModelChange.bind(this));
 
     this.view.addEventListener('change', this.onViewChange.bind(this));
@@ -50,7 +49,7 @@ export default class FilterPresenter extends Presenter {
     this.view.setOptionsDisabled(states);
   }
 
-  onModelChange() {
+  onModelMode() {
     if (this.model.getMode() === Mode.CREATE) {
       this.model.pointsModel.setFilter(FilterPredicate.EVERYTHING);
 
