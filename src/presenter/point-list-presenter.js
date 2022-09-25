@@ -24,7 +24,7 @@ export default class PointListPresenter extends Presenter {
       this.onPointsModelChange.bind(this)
     );
 
-    this.view.addEventListener('point-edit', this.onViewPointEdit.bind(this));
+    this.view.addEventListener('edit', this.onViewEdit.bind(this));
   }
 
   updateView() {
@@ -80,7 +80,7 @@ export default class PointListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: PointView}} event
    */
-  onViewPointEdit(event) {
+  onViewEdit(event) {
     this.model.setMode(Mode.EDIT, event.target.getId());
   }
 }

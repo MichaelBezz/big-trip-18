@@ -1,7 +1,7 @@
 import Model from './model.js';
 
 /**
- * Модель коллекции Item
+ * Модель коллекции
  * @template Item
  * @template {Adapter} ItemAdapter
  */
@@ -31,7 +31,10 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Запишет Item по готовности
+   * Вернет `Promise`, который выполнится после получения данных
+   * из хранилища
+   *
+   * Вызов этого метода обязателен перед началом работы с коллекцией
    * @override
    */
   ready() {
@@ -42,13 +45,15 @@ export default class CollectionModel extends Model {
     return this.#ready;
   }
 
-  /** Вернет список ItemAdapter */
+  /**
+   * Вернет все элементы коллекции
+   */
   listAll() {
     return this.#items.map(this.#adapt);
   }
 
   /**
-   * Вернет ItemAdapter по индексу
+   * Найдет элемент по индексу
    * @param {number} index
    */
   item(index) {
@@ -58,7 +63,7 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Найдет ItemAdapter по свойству key со значением value
+   * Найдет элемент по свойству `key` и значению `value`
    * @param {string} key
    * @param {*} value
    */
@@ -67,7 +72,7 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Найдет ItemAdapter по свойству id
+   * Найдет элемент по идентификатору
    * @param {string} value
    */
   findById(value) {
@@ -75,7 +80,7 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Найдет индекс ItemAdapter по свойству key со значением value
+   * Найдет индекс элемента по свойству `key` и значению `value`
    * @param {string} key
    * @param {*} value
    */
@@ -84,7 +89,7 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Найдет индекс ItemAdapter по свойству id
+   * Найдет индекс элемента по идентификатору
    * @param {string} value
    */
   findIndexById(value) {
@@ -92,7 +97,7 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Добавит ItemAdapter в список
+   * Добавит элемент в коллекцию
    * @param {ItemAdapter} item
    */
   async add(item) {
@@ -105,14 +110,14 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Обновит ItemAdapter в списке
+   * Обновит свойства элемента
    * @param {string} id
    * @param {ItemAdapter} item
    */
   async update(id, item) {
     const updatedItem = await this.#store.update(id, item.toJSON());
     const index = this.findIndexById(id);
-    const detail = [this.item(index), this.#adapt(updatedItem)];
+    const detail = [this.#adapt(updatedItem), this.item(index)];
 
     this.#items.splice(index, 1, updatedItem);
 
@@ -120,7 +125,7 @@ export default class CollectionModel extends Model {
   }
 
   /**
-   * Удалит ItemAdapter из списка
+   * Удалит элемент из коллекции
    * @param {string} id
    */
   async remove(id) {

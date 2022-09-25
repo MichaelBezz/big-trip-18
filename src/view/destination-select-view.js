@@ -27,7 +27,9 @@ export default class DestinationSelectView extends View {
     return ['Tab', ...Object.values(KeyboardCommand).flat()];
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <label class="event__label  event__type-output" for="event-destination-1"></label>
@@ -40,7 +42,7 @@ export default class DestinationSelectView extends View {
         list="destination-list-1"
       >
       <datalist id="destination-list-1">
-        <!-- option -->
+        <!-- Options -->
       </datalist>
     `;
   }

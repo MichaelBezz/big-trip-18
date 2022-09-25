@@ -1,7 +1,7 @@
 import './view.css';
 
 /**
- * Теговый шаблон html
+ * Тег шаблонных html-строк
  * @param {TemplateStringsArray} strings
  * @param {...*} values
  * @return {string}
@@ -21,35 +21,36 @@ export const html = (strings, ...values) =>
 
   }, strings[0]);
 
-/** Базовое представление View */
+/**
+ * Базовое представление
+ */
 export default class View extends HTMLElement {
-  /**
-   * @param  {...*} data
-   */
-  constructor(...data) {
+  constructor() {
     super();
 
     this.insertAdjacentHTML(
-      this.position,
-      this.createAdjacentHtml(...data)
+      this.adjacentHtmlPosition,
+      this.createAdjacentHtml(...arguments)
     );
   }
 
   /**
-   * Задаст позицию дополнительной html-разметки
+   * Позиция дополнительной html-разметки
    * @type {InsertPosition}
    */
-  get position() {
+  get adjacentHtmlPosition() {
     return 'beforeend';
   }
 
-  /** Создаст дополнительную html-разметку */
+  /**
+   * Создаст дополнительную html-разметку (аргументы передает конструктор)
+   */
   createAdjacentHtml() {
     return html`${[...arguments]}`;
   }
 
   /**
-   * Переключит свойство hidden
+   * Переключит видимость представления
    * @param {boolean} flag
    */
   display(flag) {
@@ -58,7 +59,9 @@ export default class View extends HTMLElement {
     return this;
   }
 
-  /** Эффект покачивания */
+  /**
+   * Применит эффект покачивания
+   */
   shake() {
     this.classList.add('shake');
 
@@ -73,19 +76,26 @@ export default class View extends HTMLElement {
     return true;
   }
 
-  /** Получит префикс тега */
+  /**
+   * Префикс html-тега
+   */
   static get tagNamePrefix() {
     return 'trip';
   }
 
-  /** Получит имя тега */
+  /**
+   * Имя html-тега (формируется из имени конструктора)
+   *
+   * @example
+   * PointView.tagName // 'trip-point'
+   * DatePickerView.tagName // 'trip-date-picker'
+   */
   static get tagName() {
     const hyphenCaseName = this.name.replace(/[A-Z]/g, '-$&').toLowerCase();
 
     return this.tagNamePrefix + hyphenCaseName.replace(/-view$/, '');
   }
 
-  /** Вернет имя тега */
   static toString() {
     return this.tagName;
   }

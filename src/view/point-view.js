@@ -65,11 +65,9 @@ export default class PointView extends View {
    * @param {Event & {target: HTMLButtonElement}} event
    */
   onClick(event) {
-    if (!event.target.closest('.event__rollup-btn')) {
-      return;
+    if (event.target.closest('.event__rollup-btn')) {
+      this.dispatchEvent(new CustomEvent('edit', {bubbles: true}));
     }
-
-    this.dispatchEvent(new CustomEvent('point-edit', {bubbles: true}));
   }
 
   /**

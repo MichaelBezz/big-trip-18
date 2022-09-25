@@ -8,13 +8,15 @@ export default class RadioGroupView extends View {
   }
 
   /**
-   * @return {NodeListOf<HTMLInputElement>}
+   * @type {NodeListOf<HTMLInputElement>}
    */
   get inputViews() {
     return this.querySelectorAll(this.inputSelector);
   }
 
-  /** Получит значение у input:checked */
+  /**
+   * Вернет значение выбранной радиокнопки
+   */
   getValue() {
     /** @type {HTMLInputElement} */
     const checkedView = this.querySelector(`${this.inputSelector}:checked`);
@@ -27,7 +29,7 @@ export default class RadioGroupView extends View {
   }
 
   /**
-   * Установит значение input и свойство checked
+   * Выберет радиокнопку по значению
    * @param {string} value
    */
   setValue(value) {
@@ -41,11 +43,15 @@ export default class RadioGroupView extends View {
     return this;
   }
 
+  /**
+   * Вернет индекс выбранной радиокнопки
+   */
   getIndex() {
     return [...this.inputViews].findIndex((view) => view.checked);
   }
 
   /**
+   * Выберет радиокнопку по индексу
    * @param {number} index
    */
   setIndex(index, notify = true) {
@@ -62,7 +68,7 @@ export default class RadioGroupView extends View {
   }
 
   /**
-   * Установит input свойство disabled
+   * Переключит состояние disabled у радиокнопок
    * @param {boolean[]} flags
    */
   setOptionsDisabled(flags) {

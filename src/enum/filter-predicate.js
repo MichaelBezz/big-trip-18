@@ -1,7 +1,6 @@
 import Enum from './enum.js';
 
 export default class FilterPredicate extends Enum {
-
   /** @type {Predicate<PointAdapter>} */
   static EVERYTHING = () => true;
 

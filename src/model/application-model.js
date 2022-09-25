@@ -3,11 +3,11 @@ import Model from './model.js';
 import Mode from '../enum/mode.js';
 import PointType from '../enum/point-type.js';
 
-/** Модель приложения */
+/**
+ * Модель приложения
+ */
 export default class ApplicationModel extends Model {
-
-  /** @type {number} */
-  #mode;
+  #mode = Mode.VIEW;
 
   /**
    * @param {DataTableModel<Point,PointAdapter>} pointsModel
@@ -37,7 +37,9 @@ export default class ApplicationModel extends Model {
     return point;
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   async ready() {
     await Promise.all([
       this.pointsModel.ready(),
@@ -47,7 +49,7 @@ export default class ApplicationModel extends Model {
   }
 
   /**
-   * Установит режим модели
+   * Установит режим приложения
    * @param {number} mode
    * @param {string} activePointId
    */
@@ -71,7 +73,9 @@ export default class ApplicationModel extends Model {
     this.dispatchEvent(new CustomEvent('mode'));
   }
 
-  /** Получит режим модели */
+  /**
+   * Получит режим приложения
+   */
   getMode() {
     return this.#mode;
   }

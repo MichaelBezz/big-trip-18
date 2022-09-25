@@ -31,7 +31,9 @@ export default class DatePickerView extends View {
     return this.#startDateCalendar.isOpen || this.#endDateCalendar.isOpen;
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <label class="visually-hidden" for="event-start-time-1">From</label>

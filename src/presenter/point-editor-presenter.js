@@ -10,7 +10,9 @@ import Mode from '../enum/mode.js';
  */
 export default class PointEditorPresenter extends PointCreatorPresenter {
 
-  /** @override */
+  /**
+   * @override
+   */
   saveActivePoint() {
     return this.model.pointsModel.update(this.model.activePoint.id, this.activePoint);
   }
@@ -19,20 +21,18 @@ export default class PointEditorPresenter extends PointCreatorPresenter {
     return this.model.pointsModel.remove(this.model.activePoint.id);
   }
 
-  /** @override */
-  onModelChange() {
-    this.view.close(true);
+  /**
+   * @override
+   */
+  onModelMode() {
+    this.view.close(false);
 
     if (this.model.getMode() === Mode.EDIT) {
       const pointView = PointView.findById(this.model.activePoint.id);
 
-      this.view.close(true);
-
       this.updateView();
 
-      this.view
-        .target(pointView)
-        .open();
+      this.view.target(pointView).open();
     }
   }
 

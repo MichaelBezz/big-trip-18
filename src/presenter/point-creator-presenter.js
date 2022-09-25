@@ -29,7 +29,7 @@ export default class PointCreatorPresenter extends Presenter {
     this.buildDestinationSelectView();
     this.buildDatePickerView();
 
-    this.model.addEventListener('mode', this.onModelChange.bind(this));
+    this.model.addEventListener('mode', this.onModelMode.bind(this));
 
     this.view.addEventListener('submit', this.onViewSubmit.bind(this));
     this.view.addEventListener('reset', this.onViewReset.bind(this));
@@ -164,8 +164,8 @@ export default class PointCreatorPresenter extends Presenter {
     return this.model.pointsModel.add(this.activePoint);
   }
 
-  onModelChange() {
-    this.view.close(true);
+  onModelMode() {
+    this.view.close(false);
 
     if (this.model.getMode() === Mode.CREATE) {
       this.updateView();

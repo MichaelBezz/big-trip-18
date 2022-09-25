@@ -22,15 +22,16 @@ import PointListPresenter from './presenter/point-list-presenter.js';
 import PointCreatorPresenter from './presenter/point-creator-presenter.js';
 import PointEditorPresenter from './presenter/point-editor-presenter.js';
 
-import Mode from './enum/mode.js';
 import SortCompare from './enum/sort-compare.js';
 import FilterPredicate from './enum/filter-predicate.js';
+
 
 const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
 const POINTS_URL = `${BASE_URL}/points`;
 const DESTINATIONS_URL = `${BASE_URL}/destinations`;
 const OFFERS_URL = `${BASE_URL}/offers`;
 const AUTH = 'Basic er883jde';
+
 
 /** @type {Store<Point>} */
 const pointsStore = new Store(POINTS_URL, AUTH);
@@ -41,15 +42,17 @@ const destinationsStore = new Store(DESTINATIONS_URL, AUTH);
 /** @type {Store<OfferGroup>} */
 const offerGroupsStore = new Store(OFFERS_URL, AUTH);
 
-const pointsModel = new DataTableModel(pointsStore, (point) => new PointAdapter(point))
+
+const pointsModel = new DataTableModel(pointsStore, (item) => new PointAdapter(item))
   .setFilter(FilterPredicate.EVERYTHING)
   .setSort(SortCompare.DAY);
 
-const destinationsModel = new CollectionModel(destinationsStore, (destination) => new DestinationAdapter(destination));
+const destinationsModel = new CollectionModel(destinationsStore, (item) => new DestinationAdapter(item));
 
-const offerGroupsModel = new CollectionModel(offerGroupsStore, (offerGroup) => new OfferGroupAdapter(offerGroup));
+const offerGroupsModel = new CollectionModel(offerGroupsStore, (item) => new OfferGroupAdapter(item));
 
 const applicationModel = new ApplicationModel(pointsModel, destinationsModel, offerGroupsModel);
+
 
 /** @type {HTMLButtonElement} */
 const createButtonView = document.querySelector('.trip-main__event-add-btn');
@@ -66,11 +69,10 @@ const sortView = document.querySelector(String(SortView));
 /** @type {PointListView} */
 const pointListView = document.querySelector(String(PointListView));
 
-/** @type {PointCreatorView} */
 const pointCreatorView = new PointCreatorView().target(pointListView);
 
-/** @type {PointEditorView} */
 const pointEditorView = new PointEditorView();
+
 
 applicationModel.ready().then(() => {
   new CreateButtonPresenter(applicationModel, createButtonView);
@@ -80,16 +82,6 @@ applicationModel.ready().then(() => {
   new PointListPresenter(applicationModel, pointListView);
   new PointCreatorPresenter(applicationModel, pointCreatorView);
   new PointEditorPresenter(applicationModel, pointEditorView);
-});
-
-
-// TODO debug
-const {trace} = console;
-
-applicationModel.addEventListener('mode', () => {
-  trace(`%cMode.${Mode.findKey(applicationModel.getMode())}`, 'font-size: large');
-});
-
-pointsModel.addEventListener(['add', 'update', 'remove', 'filter', 'sort'], (event) => {
-  trace(`%c${event.type}`, 'font-weight: bold');
+}).catch((exception) => {
+  placeholderView.textContent = exception;
 });

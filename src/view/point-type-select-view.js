@@ -19,7 +19,9 @@ export default class PointTypeSelectView extends RadioGroupView {
     this.addEventListener('pointerdown', this.onPointerdown);
   }
 
-  /** @override */
+  /**
+   * @override
+   */
   createAdjacentHtml() {
     return html`
       <label class="event__type  event__type-btn" for="event-type-toggle-1" tabindex="0">
@@ -30,7 +32,7 @@ export default class PointTypeSelectView extends RadioGroupView {
       <div class="event__type-list">
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Event type</legend>
-          <!-- TypeOptionView -->
+          <!-- Options -->
         </fieldset>
       </div>
     `;
