@@ -15,6 +15,14 @@ export default class PointView extends View {
 
     this.classList.add('trip-events__item');
 
+    if (state.index !== null) {
+      this.style.setProperty('--index', String(state.index));
+
+      this.classList.add('trip-events__item--reveal');
+
+      this.addEventListener('animationend', this.onAnimationend);
+    }
+
     this.addEventListener('click', this.onClick);
   }
 
@@ -68,6 +76,10 @@ export default class PointView extends View {
     if (event.target.closest('.event__rollup-btn')) {
       this.dispatchEvent(new CustomEvent('edit', {bubbles: true}));
     }
+  }
+
+  onAnimationend() {
+    this.style.removeProperty('--index');
   }
 
   /**

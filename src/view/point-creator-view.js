@@ -45,7 +45,7 @@ export default class PointCreatorView extends View {
     /** @type {HTMLFormElement} */
     this.formView = this.querySelector('form');
 
-    this.classList.add('trip-events__item');
+    this.classList.add('trip-events__item', 'trip-events__item--reveal-alternate');
   }
 
   /**

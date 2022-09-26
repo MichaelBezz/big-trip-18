@@ -11,8 +11,3 @@
  * @template {Adapter} ItemAdapter
  * @typedef {import('./data-table-model').default<Item,ItemAdapter>} DataTableModel
  */
-
-/**
- * @template {Adapter} ItemAdapter
- * @typedef {CustomEvent<ItemAdapter>} CollectionModelEvent
- */
